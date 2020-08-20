@@ -1,1 +1,1 @@
-# LuminosityFunction
+# Luminosity Function Constructor
