@@ -13,10 +13,11 @@ functions:
     * get_rest_mag - converts apparent magnitudes into rest-frame magnitudes
     * get_volume - returns comoving volume of input survey area and redshift
     * get_binned_phi - bins and weighs galaxy counts per magnitude implementing the 1/Vmax estimator
+    * get_patches_centers - finds centers of equally distributed and equally sized patches over survey area
     * get_patches - divides survey into equally distributed and equally sized patches
     * get_binned_phi_error - returns spatial variance on galaxy number density per magnitude
-    * get_plot_LF - plots the 1/Vmax weighted luminosity function from data, binned by magnitude.
-    * get_analyse_LF_by_colour - plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours
+    * plot_LF - plots the 1/Vmax weighted luminosity function from data, binned by magnitude.
+    * analyse_LF_by_colour - plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours
     * SchechterMagModel - single Schechter luminosity function in terms of magnitude
     * DoubleSchechterMagModel - double Schechter luminosity function in terms of magnitude 
     * get_gof - returns reduced chi squared estimate of goodness of fit
@@ -226,6 +227,52 @@ def get_binned_phi(rest_mag_list: np.ndarray, Vmax_list: np.ndarray, n_mag_bins:
         phi_list[i] = phi * ((h)**3) / M_err_list[i]
 
     return mid_M_list, M_err_list, phi_list
+
+def get_patches_centers(uniform_random_RA_list: np.ndarray,
+                        uniform_random_DEC_list: np.ndarray,
+                        n_patches: int,
+                        survey='kids': str):
+    """
+    Divides a uniform random survey into equally distributed and equally sized patches.
+    Returns centers as [RA,Dec] of n_patches from RA, Dec and number of patches.
+
+    Parameters
+    ----------
+    (1) numpy array of all RA values in a uniform random catalogue
+    (2) numpy array of all corresponding Dec values in a uniform random catalogue
+    (3) integer value of number of patches required
+    (4) string with survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA
+
+    Returns
+    ------- 
+    (1) (n_patches, 2) numpy array tuple of patch center guesses [RA,Dec]
+    """
+
+    # MAKE SURE ALL PATCHES ARE SITCHED ON SKY
+    # works for most surveys - GAMA, KiDS - check rest
+    if survey == 'kids':
+        corrected_uniform_random_RA_list = np.where(
+            uniform_random_RA_list > 320., uniform_random_RA_list - 360.,
+            uniform_random_RA_list)
+    # use if a survey patch covers/connects over 320 degrees RA
+    # and does not connect over 360 to 0 degree RA
+    if survey != 'kids':
+        corrected_uniform_random_RA_list = uniform_random_RA_list
+
+    # STACK RA AND DEC AS uniform_random_X
+    uniform_random_X = np.column_stack(
+        (corrected_uniform_random_RA_list, uniform_random_DEC_list))
+
+    # DIVIDE uniform_random_X INTO EQUAL n_patches
+    uniform_random_km = kmeans_sample(uniform_random_X,
+                                      n_patches,
+                                      maxiter=100,
+                                      tol=1.0e-5)
+    center_guesses = uniform_random_km.centers
+    ra_guesses = center_guesses[:, 0]
+    dec_guesses = center_guesses[:, 1]
+    centers_tuple = np.column_stack((ra_guesses, dec_guesses))
+    return centers_tuple
 
 def get_patches(RA_list: np.ndarray,
                 DEC_list: np.ndarray,

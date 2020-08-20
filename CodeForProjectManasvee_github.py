@@ -47,7 +47,7 @@ def get_maggy(app_mag_list):
     Argument: 
     (1) numpy array of all apparent magnitude values
     Return: 
-    (1) numpy array of all correspoding maggy values
+    (1) numpy array of all corresponding maggy values
     """
     maggies_list = 10**(app_mag_list / (-2.5))
     return maggies_list
@@ -201,7 +201,7 @@ def get_binned_phi(rest_mag_list, Vmax_list, n_mag_bins):
     sorted_Vmax_list = np.array(Vmax_list)[sorted_index]
     sorted_rest_mag_list = np.sort(rest_mag_list)
 
-    # ceate empty lists for mid_M, phi and M_err
+    # create empty lists for mid_M, phi and M_err
     mid_M_list = np.empty(n_mag_bins)
     M_err_list = np.empty(n_mag_bins)
     phi_list = np.empty(n_mag_bins)
@@ -260,6 +260,64 @@ get_binned_phi(
 
 # ### Error on the $1/V_{max}$ weighted Luminosity Function
 
+# #### Finding centers of equal patches of the survey
+
+# In[ ]:
+
+
+# CENTER GUESSES FROM RA AND DEC IN A RANDOM UNIFORM CATALOGUE AND NUMBER OF PATCHES
+
+
+def get_patches_centers(uniform_random_RA_list,
+                        uniform_random_DEC_list,
+                        n_patches,
+                        survey='kids'):
+    """
+    Arguments:
+    (1) numpy array of all RA values in a uniform random catalogue
+    (2) numpy array of all corresponding Dec values in a uniform random catalogue
+    (3) integer value of number of patches required
+    (4) string with survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA
+    Return: 
+    (1) (n_patches, 2) numpy array tuple of patch center guesses [RA,Dec]
+    """
+
+    # MAKE SURE ALL PATCHES ARE SITCHED ON SKY
+    # works for most surveys - GAMA, KiDS - check rest
+    if survey == 'kids':
+        corrected_uniform_random_RA_list = np.where(
+            uniform_random_RA_list > 320., uniform_random_RA_list - 360.,
+            uniform_random_RA_list)
+    # use if a survey patch covers/connects over 320 degrees RA
+    # and does not connect over 360 to 0 degree RA
+    if survey != 'kids':
+        corrected_uniform_random_RA_list = uniform_random_RA_list
+
+    # STACK RA AND DEC AS uniform_random_X
+    uniform_random_X = np.column_stack(
+        (corrected_uniform_random_RA_list, uniform_random_DEC_list))
+
+    # DIVIDE uniform_random_X INTO EQUAL n_patches
+    uniform_random_km = kmeans_sample(uniform_random_X,
+                                      n_patches,
+                                      maxiter=100,
+                                      tol=1.0e-5)
+    center_guesses = uniform_random_km.centers
+    ra_guesses = center_guesses[:, 0]
+    dec_guesses = center_guesses[:, 1]
+    centers_tuple = np.column_stack((ra_guesses, dec_guesses))
+    return centers_tuple
+
+
+# In[ ]:
+
+
+get_patches_centers(np.array([20, 21, 22, 20, 21, 22]),
+                    np.array([20, 21, 22, 20, 21, 22]),
+                    3,
+                    survey='kids')
+
+
 # #### Dividing survey area into equal patches
 
 # In[12]:
@@ -290,7 +348,7 @@ def get_patches(RA_list,
     (1) numpy array of patch assignment labels for each RA entry
     """
 
-    # MAKE SURE ALL PATCHES ARE STITCHED ON SKY
+    # MAKE SURE ALL PATCHES ARE SITCHED ON SKY
     # works for most surveys - GAMA, KiDS - check rest
     if survey == 'kids':
         corrected_RA_list = np.where(RA_list > 320., RA_list - 360., RA_list)
@@ -530,7 +588,7 @@ def analyse_LF_by_colour(dichotomy_slope,
     """
     Arguments:
     (1) float value of the slope of the colour dichotomy line
-    (2) float value of the intercept of the colour dichotomy line
+    (2) float vlaue of the intercept of the colour dichotomy line
     (3) numpy array of all rest-frame magnitudes
     (4) numpy array of all corresponding maximum volumes
     (5) integer value of number of magnitude bins required
@@ -714,10 +772,10 @@ def DoubleSchechterMagModel(M_list, M_star, phi_star1, alpha1, phi_star2,
     Arguments:
     (1) numpy array of magnitudes (i.e. x)
     (2) float value of parameter M_star 
-    (3) float value of parameter phi_star1
-    (4) float value of parameter alpha1
-    (5) float value of parameter phi_star2
-    (6) float value of parameter alpha2
+    (3) float value of parameter phi_star_1
+    (4) float value of parameter alpha_1
+    (5) float value of parameter phi_star_2
+    (6) float value of parameter alpha_2
     Return: 
     (1) numpy array of Double Schechter modelled phi (i.e. y)
     """
@@ -835,7 +893,7 @@ def get_schechter_phi(M_list,
     (2) numpy array of magnitudes error (i.e. x-error) value of each bin
     (3) numpy array of phi (i.e. y) value of each bin
     (4) numpy array of phi error (i.e. y-error) value of each bin
-    (5) numpy array of Schechter parameter guesses in order [M_star, phi_star, aplha]
+    (5) numpy array of Schechter paramater guesses in order [M_star, phi_star, aplha]
     (6) string with name and extension to save plot as
     Return:
     (1) numpy array of Schechter modelled phi (i.e. y)
@@ -959,7 +1017,7 @@ def get_double_schechter_phi(M_list,
     (2) numpy array of magnitudes error (i.e. x-error) value of each bin
     (3) numpy array of phi (i.e. y) value of each bin
     (4) numpy array of phi error (i.e. y-error) value of each bin
-    (5) numpy array of Schechter parameter guesses in order:
+    (5) numpy array of Schechter paramater guesses in order:
             [M_star, phi_star_1, aplha_1, phi_star_2, aplha_2]
     (6) string with name and extension to save plot as
     Return:
