@@ -41,6 +41,8 @@ from astropy.cosmology import FlatLambdaCDM
 import astropy.units as u
 cosmo = FlatLambdaCDM(H0=70 * u.km / u.s / u.Mpc, Tcmb0=2.725 * u.K, Om0=0.3)
 
+from typing import Tuple
+
 # -----------------------
 # Methods
 # -----------------------
@@ -231,7 +233,7 @@ def get_binned_phi(rest_mag_list: np.ndarray, Vmax_list: np.ndarray, n_mag_bins:
 def get_patches_centers(uniform_random_RA_list: np.ndarray,
                         uniform_random_DEC_list: np.ndarray,
                         n_patches: int,
-                        survey='kids': str):
+                        survey='kids'):
     """
     Divides a uniform random survey into equally distributed and equally sized patches.
     Returns centers as [RA,Dec] of n_patches from RA, Dec and number of patches.
@@ -278,9 +280,9 @@ def get_patches(RA_list: np.ndarray,
                 DEC_list: np.ndarray,
                 n_patches: int,
                 center_guesses: np.ndarray,
-                survey='kids': str,
-                numba_installed=True: bool,
-                plot_savename='none': str) -> np.ndarray:
+                survey='kids',
+                numba_installed=True,
+                plot_savename='none') -> np.ndarray:
     """
     Divides survey into equally distributed and equally sized patches.
     Returns labels for patches from RA, Dec, Number of patches and patch center guesses.
@@ -367,7 +369,6 @@ def get_patches(RA_list: np.ndarray,
 
     return labels
 
-
 def get_binned_phi_error(rest_mag_list: np.ndarray, 
 			 Vmax_list: np.ndarray, 
 		         labels: np.ndarray, 
@@ -418,9 +419,9 @@ def plot_LF(rest_mag_list: np.ndarray,
             DEC_list: np.ndarray,
             n_patches: int,
             center_guesses: np.ndarray,
-            survey='kids': str,
-            numba_installed=True: bool,
-            plot_savename='none': str) -> np.ndarray:
+            survey='kids',
+            numba_installed=True,
+            plot_savename='none') -> np.ndarray:
     """
     Plots the 1/Vmax weighted luminosity function from data, binned by magnitude.
 
@@ -508,9 +509,9 @@ def analyse_LF_by_colour(dichotomy_slope: float,
                          DEC_list: np.ndarray,
                          n_patches: int,
                          center_guesses: np.ndarray,
-                         survey='kids': str,
-                         numba_installed=True: bool,
-                         plot_savename='none': str) -> np.ndarray:
+                         survey='kids',
+                         numba_installed=True,
+                         plot_savename='none') -> np.ndarray:
     """
     Plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours.
 
@@ -767,7 +768,7 @@ def get_schechter_phi(M_list: np.ndarray,
                       phi_list: np.ndarray,
                       phi_err_list: np.ndarray,
                       guesses: np.ndarray,
-                      plot_savename='none': str) -> Tuple[np.ndarray, float, float, float, float, float, float, float]:
+                      plot_savename='none') -> Tuple[np.ndarray, float, float, float, float, float, float, float]:
     """
     Best fits single Schechter model on data. Returns best fit phi and reduced chi squared estimate alongside Schechter parameters and their errors.
 
@@ -881,7 +882,7 @@ def get_double_schechter_phi(M_list: np.ndarray,
                              phi_list: np.ndarray,
                              phi_err_list: np.ndarray,
                              guesses: np.ndarray,
-                             plot_savename='none': str) -> Tuple[np.ndarray, float, float, float, float, float, float, float, float, float, float, float]:
+                             plot_savename='none') -> Tuple[np.ndarray, float, float, float, float, float, float, float, float, float, float, float]:
     """
     Parameters
     ----------
