@@ -367,6 +367,7 @@ def get_patches(RA_list: np.ndarray,
 
     return labels
 
+
 def get_binned_phi_error(rest_mag_list: np.ndarray, 
 			 Vmax_list: np.ndarray, 
 		         labels: np.ndarray, 
