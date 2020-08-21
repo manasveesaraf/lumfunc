@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='lumfunc',  
-     version='0.1.3',
+     version='0.1.4',
      author="Manasvee Saraf",
      author_email="saraf.manasvee@gmail.com",
      description="Galaxian Luminosity Function Constructor package using the 1/Vmax estimator and Schechter model.",
