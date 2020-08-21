@@ -92,7 +92,8 @@ def get_rest_mag(redshift_list: np.ndarray,
                  app_mag_list: np.ndarray, 
                  maggy_ratio_list: np.ndarray) -> np.ndarray:
     """
-    Converts apparent magnitudes into rest-frame magnitudes using the apparent magnitudes, redshifts and maggy ratios.
+    Converts apparent magnitudes into rest-frame magnitudes.
+    It uses the apparent magnitudes, redshifts and maggy ratios.
     
     Parameters
     ----------
@@ -165,7 +166,8 @@ def get_binned_phi(rest_mag_list: np.ndarray,
                    Vmax_list: np.ndarray, 
                    n_mag_bins: int) -> np.ndarray:
     """
-    Bins and weighs galaxy counts per magnitude implementing the 1/Vmax estimator. Returns phi using rest-frame magnitude, maximum observed volume and the number of bins.
+    Bins and weighs galaxy counts per magnitude implementing the 1/Vmax estimator. 
+    Returns phi using rest-frame magnitude, maximum observed volume and the number of bins.
     
     Parameters
     ----------
@@ -244,10 +246,10 @@ def get_patches_centers(uniform_random_RA_list: np.ndarray,
                         uniform_random_DEC_list: np.ndarray, 
                         n_patches: int, 
                         survey='kids',
-                        max_iterations=100, 
+                        max_iterations=int(100), 
                         tolerance=1.0e-5) -> np.ndarray:
     """
-    Divides the input uniform random survey into equally distributed and equally sized patches. Returns centers as [RA,Dec] of n_patches from RA, Dec and number of patches.
+    Divides the input uniform random survey into equally distributed and equally sized patches. Returns n_patches centers as [RA,Dec] from RA, Dec and number of patches.
     
     Parameters
     ----------
@@ -258,7 +260,7 @@ def get_patches_centers(uniform_random_RA_list: np.ndarray,
     n_patches : int
         number of equal survey area patches required
     survey : str, optional
-        survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA 
+        survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA 
     max_iterations: int, optional
         maximum number of iterations to run
     tolerance: float, optional
@@ -289,8 +291,8 @@ def get_patches_centers(uniform_random_RA_list: np.ndarray,
     # DIVIDE uniform_random_X INTO EQUAL n_patches
     uniform_random_km = kmeans_sample(uniform_random_X,
                                       n_patches,
-                                      max_iterations,
-                                      tolerance)
+                                      maxiter=max_iterations,
+                                      tol=tolerance)
     center_guesses = uniform_random_km.centers
     ra_guesses = center_guesses[:, 0]
     dec_guesses = center_guesses[:, 1]
@@ -318,7 +320,7 @@ def get_patches(RA_list: np.ndarray,
     center_guesses : np.ndarray
         (n_patches, 2) array of patch center guesses [RA, Dec]
     survey : str, optional
-        survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA 
+        survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA 
     numba_installed : bool, optional
         mark as False if numba is not installed
     plot_savename : str, optional
@@ -379,8 +381,8 @@ def get_patches(RA_list: np.ndarray,
             # plt.xlim(120, 240)
             # plt.ylim(-10, 10)
         # if 'kids' in datasetname:
-        	# plt.xlim(-50, 250)
-        	# plt.ylim(-40, 10)
+            # plt.xlim(-50, 250)
+            # plt.ylim(-40, 10)
         plt.xlabel("RA(J2000)/ deg", fontsize=20)
         plt.ylabel("Dec(J2000)/ deg", fontsize=20)
 
@@ -395,7 +397,8 @@ def get_binned_phi_error(rest_mag_list: np.ndarray,
                          n_patches: int, 
                          n_mag_bins: int) -> np.ndarray:
     """
-    Spatial variance on galaxy number density per magnitude. Returns error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
+    Spatial variance on galaxy number density per magnitude. 
+    Returns error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
     
     Parameters
     ----------
@@ -462,7 +465,7 @@ def plot_LF(rest_mag_list: np.ndarray,
     center_guesses : np.ndarray
         (n_patches, 2) equal survey area patch center guesses [RA,Dec]
     survey : str, optional
-        survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA 
+        survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA
     numba_installed : bool, optional
         mark as False if numba is not installed
     plot_savename : str, optional
@@ -534,7 +537,7 @@ def analyse_LF_by_colour(dichotomy_slope: float,
                          numba_installed=True, 
                          plot_savename='none') -> np.ndarray:
     """
-    Plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters can be inferred from a CMD plot
+    Plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters can be inferred from a CMD plot.
     
     Parameters
     ----------
@@ -557,7 +560,7 @@ def analyse_LF_by_colour(dichotomy_slope: float,
     center_guesses : np.ndarray
         (n_patches, 2) equal survey area patch center guesses [RA,Dec]
     survey : str, optional
-        survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA 
+        survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA
     numba_installed : bool, optional
         mark as False if numba is not installed
     plot_savename : str, optional
@@ -808,7 +811,7 @@ def get_schechter_phi(M_list: np.ndarray,
                       plot_savename='none') -> Tuple[np.ndarray, float, float, float, float, float, float, float]:
     """
     Best fits single Schechter function model on data.
-    Returns best fit phi and reduced chi squared estimate alongside the 3 Schechter parameters and their errors.
+    Returns best fit phi, reduced chi squared estimate and the 3 Schechter parameters with their errors.
     
     Parameters
     ----------
@@ -923,7 +926,8 @@ def get_double_schechter_phi(M_list: np.ndarray,
                              guesses: np.ndarray, 
                              plot_savename='none') -> Tuple[np.ndarray, float, float, float, float, float, float, float, float, float, float, float]:
     """
-    Best fits double Schechter function model on data. Returns best fit phi and reduced chi squared estimate alongside the 5 Schechter parameters and their errors.
+    Best fits double Schechter function model on data.
+    Returns best fit phi, reduced chi squared estimate and the 5 Schechter parameters with their errors.
     
     Parameters
     ----------
