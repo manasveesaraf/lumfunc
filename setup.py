@@ -1,3 +1,8 @@
+# python setup.py sdist bdist_wheel
+# twine check dist/*
+# twine upload dist/*
+# pip install --upgrade lumfunc
+
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -5,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='lumfunc',  
-     version='0.1.2',
+     version='0.1.3',
      author="Manasvee Saraf",
      author_email="saraf.manasvee@gmail.com",
      description="Galaxian Luminosity Function Constructor package using the 1/Vmax estimator and Schechter model.",
