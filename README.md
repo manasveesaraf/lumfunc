@@ -1,6 +1,6 @@
 # Luminosity Function Constructor and Modeller
 
-This packag allows the user to construct and model Galaxian Luminosity Functions using the $\frac{1}{V_{max}}$ estimator and Schechter function.  
+This packag allows the user to construct and model Galaxian Luminosity Functions using the <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{300}&space;\large&space;\frac{1}{V_{max}}" target="_blank"><img height="40" src="https://latex.codecogs.com/gif.latex?\dpi{300}&space;\large&space;\frac{1}{V_{max}}" title="\large \frac{1}{V_{max}}" /></a> estimator and Schechter function.  
 
 ![PyPI](https://img.shields.io/pypi/v/lumfunc?color=sucess) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lumfunc)    ![PyPI - Downloads](https://img.shields.io/pypi/dm/lumfunc?color=blue&label=downloads%20%E2%AC%87)  [![GitHub issues](https://img.shields.io/github/issues/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/issues) [![GitHub stars](https://img.shields.io/github/stars/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/stargazers)   [![GitHub forks](https://img.shields.io/github/forks/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/network)  [![GitHub license](https://img.shields.io/github/license/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/blob/master/LICENSE)
 
@@ -21,6 +21,7 @@ import numpy as np
 
 lf.get_maggy(np.array([10, 100, 20])) # returns maggy values
 ```
+
 <details><summary><b>get_maggy( )</b></summary>
 <p>
 
@@ -51,7 +52,7 @@ lf.get_patches(np.array([20, 21, 22, 20, 21, 22]),
 # Displays the plot
 ```
 
-![get_patches](docs/test_patches.png)
+![get_patches](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/docs/test_patches.png)
 
 </p>
 </details>
