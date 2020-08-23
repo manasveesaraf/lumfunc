@@ -810,7 +810,7 @@ def get_schechter_phi(M_list: np.ndarray,
                       guesses: np.ndarray, 
                       plot_savename='none') -> Tuple[np.ndarray, float, float, float, float, float, float, float]:
     """
-    Best fits single Schechter function model on data.
+    Least square fits single Schechter function model on data.
     Returns best fit phi, reduced chi squared estimate and the 3 Schechter parameters with their errors.
     
     Parameters
@@ -926,7 +926,7 @@ def get_double_schechter_phi(M_list: np.ndarray,
                              guesses: np.ndarray, 
                              plot_savename='none') -> Tuple[np.ndarray, float, float, float, float, float, float, float, float, float, float, float]:
     """
-    Best fits double Schechter function model on data.
+    Least square fits double Schechter function model on data.
     Returns best fit phi, reduced chi squared estimate and the 5 Schechter parameters with their errors.
     
     Parameters
