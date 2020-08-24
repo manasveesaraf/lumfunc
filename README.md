@@ -198,16 +198,16 @@ centers_array = lf.get_patch_centers(uniform_RA_list,
                                      tolerance=1.0e-1)
 print(centers_array)
 # returns
-# [[223.14598923   1.41920976]
-#  [223.20391197   0.51178337]
-#  [223.25991937  -0.79624346]
-#  [223.28288439   1.0680993 ]
-#  [223.21604089  -1.45187853]
-#  [223.25022217  -0.2376229 ]
-#  [223.22077723   2.47724817]
-#  [223.22337304   1.86789658]
-#  [223.21732614  -1.81036826]
-#  [223.12400092  -1.13952779]]
+# [[ 2.23297633e+02  9.81275815e-01]
+#  [ 2.23193101e+02  2.50219646e+00]
+#  [ 2.23213260e+02  3.28612546e-01]
+#  [ 2.23265647e+02 -1.95982283e-01]
+#  [ 2.23186387e+02  1.42541364e+00]
+#  [ 2.23225546e+02 -7.99113067e-01]
+#  [ 2.23204490e+02 -1.56123960e+00]
+#  [ 2.23300703e+02  2.86857892e+00]
+#  [ 2.23160532e+02  6.87340764e-01]
+#  [ 2.23235093e+02  2.00605106e+00]]
 ```
 
 </p>
@@ -243,8 +243,8 @@ Return error on phi from rest-frame magnitude, maximum observed volume, labels, 
 phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, Vmax_list, labels, 10, 10)
 print(phi_err_list)
 # returns
-# [6.51069007e+02 5.73814814e+02 5.14270184e-05 1.05945659e-04 4.14049337e-04 
-#  6.03358074e-04 6.94527484e-04 4.64177159e-03 3.28583313e-03 1.60789859e-01]
+# [6.31512459e+02 5.32152268e+02 4.31666309e-05 2.22841109e-04 4.81148550e-04 
+#  3.16386417e-04 6.52443936e-04 4.68698737e-03 2.05929233e-03 1.60744165e-01]
 ```
 
 </p>
@@ -283,6 +283,14 @@ M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
 
 <details><summary><b>filter_plot_by_colour( )</b>: Study the luminosity function by colour properties by specifying the colour dichotomy</summary>
 <p>
+
+Calculate rest-frame magnitudes in a higher wavelength band.
+
+```python
+maggy_ratios_table = pd.read_csv('test_g_maggy_ratios.csv', delimiter=' ')
+g_maggy_ratio_list = np.array(maggy_ratios_table['maggy_ratio'])
+g_rest_mag_list = lf.get_rest_mag(z_photo_list, g_app_mag_list, g_maggy_ratio_list)
+```                                  
 
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters must be inferred first from a CMD plot.
 
@@ -369,7 +377,7 @@ m = 3
 gof = lf.get_gof(phi_list, phi_err_list, sch1_model_phi_list, m)
 print(gof)
 # returns
-# 92.50772762457441
+# 79.66254082924551
 ```
 
 </p>
