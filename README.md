@@ -239,7 +239,7 @@ labels = lf.get_patch_labels(RA_list,
 Return error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
 
 ```python
-phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, V_list, labels, 10, 10)
+phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, Vmax_list, labels, 10, 10)
 print(phi_err_list)
 # returns
 # [6.51069007e+02 5.73814814e+02 5.14270184e-05 1.05945659e-04 4.14049337e-04 
