@@ -47,7 +47,6 @@ z_photo_list = np.array(data_table['z_photo'])
 <p>
 
 Return maggies from magnitudes.
-$$ f = 10^{\frac{m}{-2.5}}$$
 
 ```python
 r_maggies_list = lf.get_maggy(r_app_mag_list) 
