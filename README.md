@@ -129,7 +129,8 @@ lf.get_volume(100.0, np.array([0.42, 0.24, 0.46, 0.09]))
 </p>
 </details>
 
-<details><summary><b>get_binned_phi( ):</b> Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"</summary>
+<details>
+  <summary><b>get_binned_phi( ):</b> Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"</summary>
 <p>
 
 Return M, M errors and phi from the rest-frame magnitudes, ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) values and number of bins.
@@ -166,11 +167,9 @@ lf.get_binned_phi(
 </p>
 </details>
 
-To get spatial variances of the phi (![phi](https://render.githubusercontent.com/render/math?math=\phi )) values, first 
-divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches: 
-
-<details><summary><b>get_patch_centers( )</b></summary>
-<p>
+<details>
+  <summary><b>get_patch_centers( ):</b> To get spatial variances of the phi <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi"> values, first divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches</summary>
+  <p>
 
 Return patch centers as (RA, Dec) from the RA, Dec and number of patches.
 
@@ -196,12 +195,10 @@ print(centers_array)
 #  [ 1.38831187e+02  5.23810834e-01]]
 ```
 
-</p>
+  </p>
 </details>
 
-Then use the patch centers to label the survey data points by equally distributed and equally sized patches: 
-
-<details><summary><b>get_patch_labels( )</b></summary>
+<details><summary><b>get_patch_labels( ):</b> Then use the patch centers to label the survey data points by equally distributed and equally sized patches: </summary>
 <p>
 
 Return patch labels for each data point from RA, Dec, number of patches and patch center guesses.
@@ -222,9 +219,7 @@ labels = lf.get_patch_labels(RA_list,
 </p>
 </details>
 
-Using the patch labels, lastly compute the spatial variances of ![phi](https://render.githubusercontent.com/render/math?math=\phi ):
-
-<details><summary><b>get_binned_phi_error( )</b></summary>
+<details><summary><b>get_binned_phi_error( ):</b> Using the patch labels, lastly compute the spatial variances of <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi"></summary>
 <p>
 
 Return error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
@@ -241,9 +236,9 @@ print(phi_err_list)
 </p>
 </details>
 
-Instead, perform get_binned_phi(), get_patches_centers(), get_patches() and get_binned_phi_error() functions using only one function and visualise the luminsoity function:
 
-<details><summary><b>get_plot( )</b></summary>
+
+<details><summary><b>get_plot( ):</b> Instead, perform get_binned_phi(), get_patches_centers(), get_patches() and get_binned_phi_error() functions using only one function and visualise the luminsoity function:</summary>
 <p>
 
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
@@ -268,6 +263,8 @@ M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
 
 </p>
 </details>
+
+
 <details><summary><b>filter_plot_by_colour( )</b></summary>
 <p>
 
