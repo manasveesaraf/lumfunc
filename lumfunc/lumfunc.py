@@ -601,18 +601,18 @@ def filter_plot_by_colour(dichotomy_slope: float,
     blue_index = np.where(colour_mag_list < dichotomy_line)[0]
 
     # all
-    M_list, M_err_list, phi_list, phi_err_list = plot_LF(
+    M_list, M_err_list, phi_list, phi_err_list = get_plot(
         rest_mag_list, Vmax_list, n_mag_bins, RA_list, DEC_list, n_patches,
         center_guesses, survey, numba_installed)
 
     # red
-    red_M_list, red_M_err_list, red_phi_list, red_phi_err_list = plot_LF(
+    red_M_list, red_M_err_list, red_phi_list, red_phi_err_list = get_plot(
         rest_mag_list[red_index], Vmax_list[red_index], n_mag_bins,
         RA_list[red_index], DEC_list[red_index], n_patches, center_guesses,
         survey, numba_installed)
 
     # blue
-    blue_M_list, blue_M_err_list, blue_phi_list, blue_phi_err_list = plot_LF(
+    blue_M_list, blue_M_err_list, blue_phi_list, blue_phi_err_list = get_plot(
         rest_mag_list[blue_index], Vmax_list[blue_index], n_mag_bins,
         RA_list[blue_index], DEC_list[blue_index], n_patches, center_guesses,
         survey, numba_installed)
