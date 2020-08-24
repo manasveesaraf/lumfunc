@@ -129,27 +129,28 @@ lf.get_volume(100.0, np.array([0.42, 0.24, 0.46, 0.09]))
 </p>
 </details>
 
-<details>
-  <summary><b>get_binned_phi( ):</b> Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"</summary>
-<p>
 
-Return M, M errors and phi from the rest-frame magnitudes, ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) values and number of bins.
+<details>
+  <summary><b>get_binned_phi( ):</b> Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> </summary>
+  <p>
     
+Return M, M errors and phi from the rest-frame magnitudes, ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) values and number of bins.
+
 ```python
 n_bins = 10
 M_list, M_err_list, phi_list = lf.get_binned_phi(r_rest_mag_list, V_list, n_bins)
 print(M_list)
 # returns
 # [-27.75116273 -26.26581137 -24.78046    -23.29510864 -21.80975727
-   -20.32440591 -18.83905454 -17.35370318 -15.86835182 -14.38300045]
+#  -20.32440591 -18.83905454 -17.35370318 -15.86835182 -14.38300045]
 print(M_err_list)
 # returns
 # [0.74267568 0.74267568 0.74267568 0.74267568 0.74267568 
-   0.74267568 0.74267568 0.74267568 0.74267568 0.74267568]
+#  0.74267568 0.74267568 0.74267568 0.74267568 0.74267568]
 print(phi_list)
 # returns 
 # [5.12016808e-10 0.00000000e+00 6.87358202e-08 3.55674570e-06 1.18791217e-05 
-   2.44735150e-05 5.43431411e-05 1.30067824e-04 1.04554476e-04 1.74886746e-03]
+#  2.44735150e-05 5.43431411e-05 1.30067824e-04 1.04554476e-04 1.74886746e-03]
 
 # OR a rudimentarily example:
 lf.get_binned_phi(
@@ -160,11 +161,11 @@ lf.get_binned_phi(
     ]), 4)
 # returns 
 # (array([-22.5, -21.5, -20.5, -19.5]),
-   array([0.5, 0.5, 0.5, 0.5]),
-   array([1.06411667e-08, 1.02900000e-08, 0.00000000e+00, 1.32300000e-07]))
+#  array([0.5, 0.5, 0.5, 0.5]),
+#  array([1.06411667e-08, 1.02900000e-08, 0.00000000e+00, 1.32300000e-07]))
 ```
 
-</p>
+  </p>
 </details>
 
 <details>
@@ -238,7 +239,7 @@ print(phi_err_list)
 
 
 
-<details><summary><b>get_plot( ):</b> Instead, perform `get_binned_phi()`, `get_patches_centers()`, `get_patches()` and `get_binned_phi_error()` functions using only one function and visualise the luminsoity function</summary>
+<details><summary><b>get_plot( ):</b> Instead, perform `get_binned_phi()` , `get_patches_centers()` , `get_patches()` and `get_binned_phi_error()` functions using only one function and visualise the luminsoity function</summary>
 <p>
 
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
