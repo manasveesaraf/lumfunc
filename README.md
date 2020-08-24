@@ -39,12 +39,12 @@ r_app_mag_err_list = np.array(data_table['r_mag_err'])
 z_photo_list = np.array(data_table['z_photo'])
 ```
 
-Convert the measurements of flux in magnitudes to maggies for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python).
+Convert the measurements of flux in magnitudes to maggies for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python):
 
 <details><summary><b>get_maggy( )</b></summary>
 <p>
 
-Converts magnitudes into maggies.
+Return maggies from magnitudes.
 
 ```python
 r_maggies_list = lf.get_maggy(r_app_mag_list) 
@@ -61,12 +61,12 @@ lf.get_maggy(np.array([19.342, 19.107, 19.685, 17.367]))
 </p>
 </details>
 
-Convert the magnitude errors to maggy inverse variances for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python).
+Convert the magnitude errors to maggy inverse variances for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python):
 
 <details><summary><b>get_maggy_inv_var( )</b></summary>
 <p>
-    
-Returns inverse variances on maggies using maggies and magnitude errors.
+
+Return maggy inverse variances from maggies and magnitude errors.
 
 ```python
 r_maggy_inv_var_list = lf.get_maggy_inv_var(r_maggies_list, r_app_mag_err_list)
@@ -84,18 +84,18 @@ lf.get_maggy_inv_var(np.array([1.83315843e-08, 2.27614539e-08, 1.33659552e-08, 1
 </p>
 </details>
 
-Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and output from [kcorrect_python](https://github.com/nirinA/kcorrect_python) functions.
-
-```python
-maggy_ratios_table = pd.read_csv('test_maggy_ratios.csv', delimiter=' ')
-r_maggy_ratio_list = np.array(maggy_ratios_table['maggy_ratio'])
-```
+Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and output from [kcorrect_python](https://github.com/nirinA/kcorrect_python) functions:
 
 <details><summary><b>get_rest_mag( )</b></summary>
 <p>
     
-Converts apparent magnitudes into rest-frame magnitudes.
-It uses the apparent magnitudes, redshifts and maggy ratios.
+Load maggy ratios output file from [kcorrect_python](https://github.com/nirinA/kcorrect_python).
+
+```python
+maggy_ratios_table = pd.read_csv('test_maggy_ratios.csv', delimiter=' ')
+r_maggy_ratio_list = np.array(maggy_ratios_table['maggy_ratio'])
+```    
+Return rest-frame magnitudes from the apparent magnitudes, redshifts and maggy ratios.
 
 ```python
 r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
@@ -114,12 +114,12 @@ lf.get_rest_mag(np.array([0.42, 0.24, 0.46, 0.09]),
 </p>
 </details>
 
-Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. Use to estimate ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values.
+Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values.
 
 <details><summary><b>get_volume( )</b></summary>
 <p>
-    
-Returns comoving volume of input survey area and redshift.
+
+Return comoving volume from the survey area and redshifts.
 
 ```python
 survey_area = 100.0 #sq. degrees
@@ -137,64 +137,148 @@ lf.get_volume(100.0, np.array([0.42, 0.24, 0.46, 0.09]))
 </p>
 </details>
 
+Bin and weigh galaxy counts per magnitude by ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ):
+
 <details><summary><b>get_binned_phi( )</b></summary>
 <p>
 
-Bins and weighs galaxy counts per magnitude implementing the 1/Vmax estimator. 
-Returns phi using rest-frame magnitude, maximum observed volume and the number of bins.
-
-</p>
-</details>
-
-<details><summary><b>get_patches_centers( )</b></summary>
-<p>
-
-Divides the input uniform random survey into equally distributed and equally sized patches. 
-Returns n_patches centers as (RA,Dec) from RA, Dec and number of patches.
-
-</p>
-</details>
-
-<details><summary><b>get_patches( )</b></summary>
-<p>
-
-Divides survey into equally distributed and equally sized patches. 
-Returns labels for patches from RA, Dec, number of patches and patch center guesses.
-
+Return M, M errors and phi from the rest-frame magnitudes, ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) values and number of bins.
+    
 ```python
-lf.get_patches(np.array([20, 21, 22, 20, 21, 22]),
-            np.array([20, 21, 22, 20, 21, 22]),
-            3,
-            np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20],
-                      [21, 22]]),
-            survey='kids',
-            numba_installed=True,
-            plot_savename='test_patches.png')
-# Displays the plot
+n_bins = 10
+M_list, M_err_list, phi_list = lf.get_binned_phi(r_rest_mag_list, V_list, n_bins)
+print(M_list)
+# returns
+# [-27.75116273 -26.26581137 -24.78046    -23.29510864 -21.80975727
+   -20.32440591 -18.83905454 -17.35370318 -15.86835182 -14.38300045]
+print(M_err_list)
+# returns
+# [0.74267568 0.74267568 0.74267568 0.74267568 0.74267568 
+   0.74267568 0.74267568 0.74267568 0.74267568 0.74267568]
+print(phi_list)
+# returns 
+# [5.12016808e-10 0.00000000e+00 6.87358202e-08 3.55674570e-06 1.18791217e-05 
+   2.44735150e-05 5.43431411e-05 1.30067824e-04 1.04554476e-04 1.74886746e-03]
+
+# OR a rudimentarily example:
+lf.get_binned_phi(
+    np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19, -21]),
+    np.array([
+        8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08, 6e+08,
+        7e+06, 1e+08
+    ]), 4)
+# returns 
+# (array([-22.5, -21.5, -20.5, -19.5]),
+   array([0.5, 0.5, 0.5, 0.5]),
+   array([1.06411667e-08, 1.02900000e-08, 0.00000000e+00, 1.32300000e-07]))
 ```
 
-![get_patches](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/docs/test_patches.png)
+</p>
+</details>
+
+To get spatial variances of the phi (![phi](https://render.githubusercontent.com/render/math?math=\phi )) values, first 
+divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches: 
+
+<details><summary><b>get_patch_centers( )</b></summary>
+<p>
+
+Return patch centers as (RA, Dec) from the RA, Dec and number of patches.
+
+```python
+n_patches = 10
+centers_array = lf.get_patch_centers(RA_list,
+                                     Dec_list,
+                                     n_patches,
+                                     survey='kids',
+                                     max_iterations=int(100),
+                                     tolerance=1.0e-1)
+print(centers_array)
+# returns
+# [[ 1.38832190e+02 -1.00733144e+00]
+#  [ 2.17105380e+02  1.08365630e+00]
+#  [ 1.80666296e+02 -2.73070692e-01]
+#  [ 1.34335764e+02  1.31532218e-01]
+#  [ 1.38831715e+02  2.15292944e+00]
+#  [ 1.29005160e+02  1.01211250e+00]
+#  [ 2.13883209e+02 -1.52070351e-02]
+#  [ 1.32326750e+02  2.01815821e+00]
+#  [ 2.21141020e+02  4.73369162e-01]
+#  [ 1.38831187e+02  5.23810834e-01]]
+```
 
 </p>
 </details>
+
+Then use the patch centers to label the survey data points by equally distributed and equally sized patches: 
+
+<details><summary><b>get_patch_labels( )</b></summary>
+<p>
+
+Return patch labels for each data point from RA, Dec, number of patches and patch center guesses.
+
+```python
+labels = lf.get_patch_labels(RA_list,
+                             Dec_list,
+                             n_patches,
+                             centers_array,
+                             survey='kids',
+                             numba_installed=True,
+                             plot_savename='test_patches.png')
+# displays plot
+```
+
+![get_patches](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_patches.png)
+
+</p>
+</details>
+
+Using the patch labels, lastly compute the spatial variances of ![phi](https://render.githubusercontent.com/render/math?math=\phi ):
 
 <details><summary><b>get_binned_phi_error( )</b></summary>
 <p>
 
-Spatial variance on galaxy number density per magnitude. 
-Returns error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
+Return error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
+
+```python
+phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, V_list, labels, 10, 10)
+print(phi_err_list)
+# returns
+# [3.03839559e-06 7.40731159e-06 9.37491641e-06 1.52090965e-05
+#  3.56343615e-05 5.44297508e-05 4.18036097e-05 1.39310857e-04
+#  2.08627224e-04 3.58080092e-03]
+```
 
 </p>
 </details>
 
-<details><summary><b>plot_LF( )</b></summary>
+Instead, perform get_binned_phi(), get_patches_centers(), get_patches() and get_binned_phi_error() functions using only one function and visualise the luminsoity function:
+
+<details><summary><b>get_plot( )</b></summary>
 <p>
 
-Plots the 1/Vmax weighted luminosity function from data, binned by magnitude.
+Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
+
+```python
+M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
+    r_rest_mag_list,
+    V_list,
+    10,
+    RA_list,
+    Dec_list,
+    10,
+    centers_array,
+    survey='kids',
+    numba_installed=True,
+    plot_savename='test_LF.png')
+
+# displays plot
+```
+
+![plot_LF](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_LF.png)
 
 </p>
 </details>
-<details><summary><b>analyse_LF_by_colour( )</b></summary>
+<details><summary><b>filter_plot_by_colour( )</b></summary>
 <p>
 
 Plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters can be inferred from a CMD plot.

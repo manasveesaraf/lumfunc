@@ -13,11 +13,11 @@ functions:
     * get_rest_mag - converts apparent magnitudes into rest-frame magnitudes
     * get_volume - returns comoving volume of input survey area and redshift
     * get_binned_phi - bins and weights galaxy counts per magnitude by 1/Vmax
-    * get_patches_centers - returns centers of equal patches over survey area
-    * get_patches - divides survey into equal patches
+    * get_patch_centers - returns centers of equal patches over survey area
+    * get_patch_labels - divides survey into equal patches
     * get_binned_phi_error - returns spatial variance of the luminosity function 
-    * plot_LF - plots magnitude-binned and 1/Vmax weighted luminosity function
-    * analyse_LF_by_colour - plots luminosity functions filtered by galaxy colour
+    * get_plot - plots magnitude-binned and 1/Vmax weighted luminosity function
+    * filter_plot_by_colour - plots luminosity functions filtered by galaxy colour
     * SchechterMagModel - single Schechter function in terms of magnitude
     * DoubleSchechterMagModel - double Schechter function in terms of magnitude 
     * get_gof - returns reduced chi squared estimate of goodness of fit
@@ -242,12 +242,12 @@ def get_binned_phi(rest_mag_list: np.ndarray,
 
     return mid_M_list, M_err_list, phi_list
 
-def get_patches_centers(uniform_random_RA_list: np.ndarray, 
-                        uniform_random_DEC_list: np.ndarray, 
-                        n_patches: int, 
-                        survey='kids',
-                        max_iterations=int(100), 
-                        tolerance=1.0e-5) -> np.ndarray:
+def get_patch_centers(uniform_random_RA_list: np.ndarray,
+                      uniform_random_DEC_list: np.ndarray,
+                      n_patches: int,
+                      survey='kids',
+                      max_iterations=int(100),
+                      tolerance=1.0e-5) -> np.ndarray:
     """
     Divides the input uniform random survey into equally distributed and equally sized patches. Returns n_patches centers as [RA,Dec] from RA, Dec and number of patches.
     
@@ -299,13 +299,13 @@ def get_patches_centers(uniform_random_RA_list: np.ndarray,
     centers_array = np.column_stack((ra_guesses, dec_guesses))
     return centers_array
 
-def get_patches(RA_list: np.ndarray, 
-                DEC_list: np.ndarray, 
-                n_patches: int, 
-                center_guesses: np.ndarray, 
-                survey='kids', 
-                numba_installed=True, 
-                plot_savename='none') -> np.ndarray:
+def get_patch_labels(RA_list: np.ndarray,
+                     DEC_list: np.ndarray,
+                     n_patches: int,
+                     center_guesses: np.ndarray,
+                     survey='kids',
+                     numba_installed=True,
+                     plot_savename='none') -> np.ndarray:
     """
     Divides survey into equally distributed and equally sized patches. Returns labels for patches from RA, Dec, number of patches and patch center guesses.
     
@@ -435,16 +435,16 @@ def get_binned_phi_error(rest_mag_list: np.ndarray,
 
     return phi_err_list
 
-def plot_LF(rest_mag_list: np.ndarray, 
-            Vmax_list: np.ndarray, 
-            n_mag_bins: int, 
-            RA_list: np.ndarray, 
-            DEC_list: np.ndarray, 
-            n_patches: int, 
-            center_guesses: np.ndarray, 
-            survey='kids', 
-            numba_installed=True, 
-            plot_savename='none') -> np.ndarray:
+def get_plot(rest_mag_list: np.ndarray,
+             Vmax_list: np.ndarray,
+             n_mag_bins: int,
+             RA_list: np.ndarray,
+             DEC_list: np.ndarray,
+             n_patches: int,
+             center_guesses: np.ndarray,
+             survey='kids',
+             numba_installed=True, 
+             plot_savename='none') -> np.ndarray:
     """
     Plots the 1/Vmax weighted luminosity function from data, binned by magnitude.
     
@@ -524,18 +524,18 @@ def plot_LF(rest_mag_list: np.ndarray,
 
     return M_list, M_err_list, phi_list, phi_err_list
 
-def analyse_LF_by_colour(dichotomy_slope: float, 
-                         dichotomy_intercept: float, 
-                         rest_mag_list: np.ndarray, 
-                         Vmax_list: np.ndarray, 
-                         n_mag_bins: int, 
-                         RA_list: np.ndarray, 
-                         DEC_list: np.ndarray, 
-                         n_patches: int, 
-                         center_guesses: np.ndarray, 
-                         survey='kids', 
-                         numba_installed=True, 
-                         plot_savename='none') -> np.ndarray:
+def filter_plot_by_colour(dichotomy_slope: float,
+                          dichotomy_intercept: float,
+                          rest_mag_list: np.ndarray,
+                          Vmax_list: np.ndarray,
+                          n_mag_bins: int,
+                          RA_list: np.ndarray,
+                          DEC_list: np.ndarray,
+                          n_patches: int,
+                          center_guesses: np.ndarray,
+                          survey='kids',
+                          numba_installed=True,
+                          plot_savename='none') -> np.ndarray:
     """
     Plots the 1/Vmax weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters can be inferred from a CMD plot.
     
@@ -547,6 +547,8 @@ def analyse_LF_by_colour(dichotomy_slope: float,
         intercept of the colour dichotomy line
     rest_mag_list : np.ndarray
         rest-frame magnitude of each data point (galaxy)
+    higher_band_rest_mag_list : np.ndarray
+        rest-frame magnitudes of each data point (galaxy) from a higher wavelength band
     Vmax_list : np.ndarray
         all corresponding maximum volumes
     n_mag_bins : int
@@ -595,9 +597,10 @@ def analyse_LF_by_colour(dichotomy_slope: float,
         
     """
 
+    colour_mag_list = higher_band_rest_mag_list - rest_mag_list
     dichotomy_line = dichotomy_slope * rest_mag_list + dichotomy_intercept
-    red_index = np.where(rest_mag_list >= dichotomy_line)[0]
-    blue_index = np.where(rest_mag_list < dichotomy_line)[0]
+    red_index = np.where(colour_mag_list >= dichotomy_line)[0]
+    blue_index = np.where(colour_mag_list < dichotomy_line)[0]
 
     # all
     M_list, M_err_list, phi_list, phi_err_list = plot_LF(
