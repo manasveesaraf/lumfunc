@@ -185,7 +185,7 @@ lf.get_binned_phi(
 <p>
 Load RA and Dec from uniformly distributed catalogue.
     
-Return patch centers as (RA, Dec) from the RA, Dec and number of patches.
+Return patch centers as (RA, Dec) from the uniform RA, Dec and number of patches.
 
 ```python
 n_patches = 10
@@ -358,7 +358,7 @@ print(sch2_model_phi_list)
 </p>
 </details>
 
-<details><summary><b>get_gof( )</b>: Estimate the goodness of the fit by the reduced chi square, <img src="https://render.githubusercontent.com/render/math?math=\chi_{\nu}^{2}" alt="redchisq"> )</summary>
+<details><summary><b>get_gof( )</b>: Estimate the goodness of the fit by the reduced chi square, <img src="https://render.githubusercontent.com/render/math?math=\chi_{\nu}^{2}" alt="redchisq"></summary>
 <p>
 
 Returns reduced chi squared estimate of goodness of fit from observed values, modelled values, errors and number of free parameters used in model.
