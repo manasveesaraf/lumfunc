@@ -40,7 +40,7 @@ r_app_mag_err_list = np.array(data_table['r_mag_err'])
 z_photo_list = np.array(data_table['z_photo'])
 ```
 <br />
-### 1. K-correction and Malmquist bias reduction:
+### A. K-correction and Malmquist bias reduction:
 
 <details><summary><b>get_maggy( )</b>: Convert the measurements of flux in magnitudes to maggies for use with <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a></summary>
 <p>
@@ -178,7 +178,7 @@ lf.get_binned_phi(
 </details>
 
 <br />
-### 2. Spatial variances of the phi, <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi">, values:
+### B. Spatial variances of the phi, <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi">, values:
 
 <details><summary><b>get_patch_centers( )</b>: First, divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches</summary>
 <p>
@@ -249,7 +249,7 @@ print(phi_err_list)
 </details>
 
 <br />
-### 3. Visualisation:
+### C. Visualisation:
 
 <details><summary><b>get_plot( )</b>: Perform <code>get_binned_phi()</code> , <code>get_patches()</code> and <code>get_binned_phi_error()</code> functions using only one composite function and visualise the luminsoity function</summary>
 <p>
@@ -311,7 +311,7 @@ all_M_list, all_M_err_list, all_phi_list, all_phi_err_list, red_M_list, red_M_er
 </details>
 
 <br />
-### 4. Modelling with Schechter functions:
+### D. Modelling with Schechter functions:
 
 <details><summary><b>SchechterMagModel( )</b></summary>
 <p>
