@@ -39,8 +39,8 @@ r_app_mag_list = np.array(data_table['r_mag'])
 r_app_mag_err_list = np.array(data_table['r_mag_err'])
 z_photo_list = np.array(data_table['z_photo'])
 ```
-<br />
-### A. K-correction and Malmquist bias reduction:
+
+### (A) K-correction and Malmquist bias reduction:
 
 <details><summary><b>get_maggy( )</b>: Convert the measurements of flux in magnitudes to maggies for use with <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a></summary>
 <p>
