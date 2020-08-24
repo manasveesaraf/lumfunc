@@ -39,9 +39,7 @@ r_app_mag_err_list = np.array(data_table['r_mag_err'])
 z_photo_list = np.array(data_table['z_photo'])
 ```
 
-Convert the measurements of flux in magnitudes to maggies for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python):
-
-<details><summary><b>get_maggy( )</b></summary>
+<details><summary><b>get_maggy( ):</b> Convert the measurements of flux in magnitudes to maggies for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python):</summary>
 <p>
 
 Return maggies from magnitudes.
@@ -61,9 +59,7 @@ lf.get_maggy(np.array([19.342, 19.107, 19.685, 17.367]))
 </p>
 </details>
 
-Convert the magnitude errors to maggy inverse variances for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python):
-
-<details><summary><b>get_maggy_inv_var( )</b></summary>
+<details><summary><b>get_maggy_inv_var( ):</b> Convert the magnitude errors to maggy inverse variances for use with [kcorrect_python](https://github.com/nirinA/kcorrect_python)</summary>
 <p>
 
 Return maggy inverse variances from maggies and magnitude errors.
