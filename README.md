@@ -1,6 +1,6 @@
 # Luminosity Function Constructor and Modeller
 
-This package allows the user to construct and model Galaxian Luminosity Functions using the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) estimator and Schechter function. 
+This package allows the user to construct and model Galaxian Luminosity Functions using the <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> estimator and Schechter function. 
 
 ![PyPI](https://img.shields.io/pypi/v/lumfunc?color=sucess)    ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lumfunc)    ![PyPI - Downloads](https://img.shields.io/pypi/dm/lumfunc?color=blue&label=downloads%20%E2%AC%87)    [![GitHub issues](https://img.shields.io/github/issues/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/issues)    [![GitHub stars](https://img.shields.io/github/stars/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/stargazers)    [![GitHub forks](https://img.shields.io/github/forks/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/network)    [![GitHub license](https://img.shields.io/github/license/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/blob/master/LICENSE)
 
@@ -87,7 +87,7 @@ lf.get_maggy_inv_var(
 <details><summary><b>get_rest_mag( )</b>: Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and output from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a> functions</summary>
 <p>
     
-Load maggy ratios output file from [kcorrect_python](https://github.com/nirinA/kcorrect_python).
+Load maggy ratios output file from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a>.
 
 ```python
 maggy_ratios_table = pd.read_csv('test_maggy_ratios.csv', delimiter=' ')
@@ -143,7 +143,7 @@ lf.get_volume(2.5, np.array([0.50523681, 0.21884399, 0.57489149, 0.55985663]))
 <details><summary><b>get_binned_phi( )</b>: Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"></summary>
 <p>
 
-Return M, M errors and phi from the rest-frame magnitudes, ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) values and number of bins.
+Return M, M errors and phi from the rest-frame magnitudes, <img src="https://render.githubusercontent.com/render/math?math={V_{max}}" alt="Vmax" /> values and number of bins.
     
 ```python
 n_bins = 10
@@ -252,7 +252,7 @@ print(phi_err_list)
 <details><summary><b>get_plot( )</b>: Perform <code>get_binned_phi()</code> , <code>get_patches()</code> and <code>get_binned_phi_error()</code> functions using only one composite function and visualise the luminsoity function</summary>
 <p>
 
-Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
+Plot the <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> weighted luminosity function, binned by magnitude.
 
 ```python
 M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
@@ -280,7 +280,7 @@ M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
 <details><summary><b>filter_plot_by_colour( )</b>: Study the luminosity function by colour properties by specifying the colour dichotomy</summary>
 <p>
 
-Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters must be inferred first from a CMD plot.
+Plot the <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters must be inferred first from a CMD plot.
 
 ```python
 colour_cut_slope = 0.0
