@@ -485,14 +485,11 @@ def get_plot(rest_mag_list: np.ndarray,
     """
 
     # phi
-    M_list, M_err_list, phi_list = get_binned_phi(rest_mag_list, Vmax_list,
-                                                  n_mag_bins)
+    M_list, M_err_list, phi_list = get_binned_phi(rest_mag_list, Vmax_list, n_mag_bins)
     # patches
-    labels = get_patches(RA_list, DEC_list, n_patches, center_guesses, survey,
-                         numba_installed)
+    labels = get_patch_labels(RA_list, DEC_list, n_patches, center_guesses, survey, numba_installed)
     # phi errors
-    phi_err_list = get_binned_phi_error(rest_mag_list, Vmax_list, labels,
-                                        n_patches, n_mag_bins)
+    phi_err_list = get_binned_phi_error(rest_mag_list, Vmax_list, labels, n_patches, n_mag_bins)
 
     if plot_savename != 'none':
         plt.figure(figsize=(10, 10))
@@ -527,6 +524,7 @@ def get_plot(rest_mag_list: np.ndarray,
 def filter_plot_by_colour(dichotomy_slope: float,
                           dichotomy_intercept: float,
                           rest_mag_list: np.ndarray,
+                          higher_band_rest_mag_list: np.ndarray,
                           Vmax_list: np.ndarray,
                           n_mag_bins: int,
                           RA_list: np.ndarray,
