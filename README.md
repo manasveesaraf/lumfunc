@@ -114,7 +114,7 @@ lf.get_rest_mag(np.array([0.42, 0.24, 0.46, 0.09]),
 </p>
 </details>
 
-Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values.
+Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values:
 
 <details><summary><b>get_volume( )</b></summary>
 <p>
