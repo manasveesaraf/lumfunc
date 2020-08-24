@@ -239,7 +239,7 @@ print(phi_err_list)
 
 
 
-<details><summary><b>get_plot( ):</b> Instead, perform `get_binned_phi()` , `get_patches_centers()` , `get_patches()` and `get_binned_phi_error()` functions using only one function and visualise the luminsoity function</summary>
+<details><summary><b>get_plot( ):</b> Instead, perform <code>get_binned_phi()</code> , <code>get_patches_centers()</code> , <code>get_patches()</code> and <code>get_binned_phi_error()</code> functions using only one function and visualise the luminsoity function</summary>
 <p>
 
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
