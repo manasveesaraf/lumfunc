@@ -293,7 +293,7 @@ all_M_list, all_M_err_list, all_phi_list, all_phi_err_list, red_M_list, red_M_er
     colour_cut_intercept,
     r_rest_mag_list,
     g_rest_mag_list,
-    V_list,
+    Vmax_list,
     n_bins,
     RA_list,
     Dec_list,
