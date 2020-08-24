@@ -108,7 +108,7 @@ lf.get_rest_mag(np.array([0.42, 0.24, 0.46, 0.09]),
 </p>
 </details>
 
-<details><summary><b>get_volume( ):</b> Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate <img src="https://render.githubusercontent.com/render/math?math={V_{max}}" alt"Vmax" /> from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values </summary>
+<details><summary><b>get_volume( ):</b> Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate <img src="https://render.githubusercontent.com/render/math?math={V_{max}}" alt="Vmax" /> from <img src = "https://render.githubusercontent.com/render/math?math={z_{max}}" alt="Zmax" /> values </summary>
 <p>
 
 Return comoving volume from the survey area and redshifts.
@@ -129,9 +129,7 @@ lf.get_volume(100.0, np.array([0.42, 0.24, 0.46, 0.09]))
 </p>
 </details>
 
-Bin and weigh galaxy counts per magnitude by ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ):
-
-<details><summary><b>get_binned_phi( )</b></summary>
+<details><summary><b>get_binned_phi( ):</b> Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"</summary>
 <p>
 
 Return M, M errors and phi from the rest-frame magnitudes, ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) values and number of bins.
