@@ -80,7 +80,7 @@ lf.get_maggy_inv_var(np.array([1.83315843e-08, 2.27614539e-08, 1.33659552e-08, 1
 </p>
 </details>
 
-<details><summary><b>get_rest_mag( ):</b> Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and output from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python functions</a></summary>
+<details><summary><b>get_rest_mag( ):</b> Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and output from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a> functions</summary>
 <p>
     
 Load maggy ratios output file from [kcorrect_python](https://github.com/nirinA/kcorrect_python).
@@ -108,7 +108,7 @@ lf.get_rest_mag(np.array([0.42, 0.24, 0.46, 0.09]),
 </p>
 </details>
 
-<details><summary><b>get_volume( ):</b> Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate ![Vmax](https://render.githubusercontent.com/render/math?math={V_{max}} ) from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values </summary>
+<details><summary><b>get_volume( ):</b> Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate <img src="https://render.githubusercontent.com/render/math?math={V_{max}}" alt"Vmax" /> from ![zmax](https://render.githubusercontent.com/render/math?math={z_{max}} ) values </summary>
 <p>
 
 Return comoving volume from the survey area and redshifts.
