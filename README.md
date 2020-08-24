@@ -228,7 +228,7 @@ labels = lf.get_patch_labels(RA_list,
 # displays plot
 ```
 
-![get_patches](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_patches.png)
+![get_patch_labels](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_patches.png)
 
 </p>
 </details>
@@ -252,7 +252,7 @@ print(phi_err_list)
 
 ### 3. Visualisation:
 
-<details><summary><b>get_plot( )</b>: Perform <code>get_binned_phi()</code> , <code>get_patches()</code> and <code>get_binned_phi_error()</code> functions using only one composite function and visualise the luminsoity function</summary>
+<details><summary><b>get_plot( )</b>: Perform <code>get_binned_phi()</code> , <code>get_patch_labels()</code> and <code>get_binned_phi_error()</code> functions using only one composite function and visualise the luminsoity function</summary>
 <p>
 
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
