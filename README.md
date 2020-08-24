@@ -365,7 +365,8 @@ print(sch2_model_phi_list)
 Returns reduced chi squared estimate of goodness of fit from observed values, modelled values, errors and number of free parameters used in model.
 
 ```python
-gof = lf.get_gof(phi_list, phi_err_list, sch1_model_phi_list, 3)
+m = 3
+gof = lf.get_gof(phi_list, phi_err_list, sch1_model_phi_list, m)
 print(gof)
 # returns
 # 92.50772762457441
