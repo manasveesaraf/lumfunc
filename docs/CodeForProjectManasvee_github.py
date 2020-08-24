@@ -271,13 +271,17 @@ get_binned_phi(
 def get_patches_centers(uniform_random_RA_list,
                         uniform_random_DEC_list,
                         n_patches,
-                        survey='kids'):
+                        survey='kids',
+                        max_iterations=100,
+                        tolerance=1.0e-5):
     """
     Arguments:
     (1) numpy array of all RA values in a uniform random catalogue
     (2) numpy array of all corresponding Dec values in a uniform random catalogue
     (3) integer value of number of patches required
     (4) string with survey name - only change if survey area covers/connects over 320 degree RA and does not connect over 360 to 0 degree RA
+    (5) integer value of max number of iterations to run.
+    (6) float value of the relative change in the average distance to centers, signifies convergence
     Return: 
     (1) (n_patches, 2) numpy array tuple of patch center guesses [RA,Dec]
     """
@@ -300,13 +304,13 @@ def get_patches_centers(uniform_random_RA_list,
     # DIVIDE uniform_random_X INTO EQUAL n_patches
     uniform_random_km = kmeans_sample(uniform_random_X,
                                       n_patches,
-                                      maxiter=100,
-                                      tol=1.0e-5)
+                                      max_iterations,
+                                      tolerance)
     center_guesses = uniform_random_km.centers
     ra_guesses = center_guesses[:, 0]
     dec_guesses = center_guesses[:, 1]
-    centers_tuple = np.column_stack((ra_guesses, dec_guesses))
-    return centers_tuple
+    centers_array = np.column_stack((ra_guesses, dec_guesses))
+    return centers_array
 
 
 # In[ ]:
@@ -315,7 +319,9 @@ def get_patches_centers(uniform_random_RA_list,
 get_patches_centers(np.array([20, 21, 22, 20, 21, 22]),
                     np.array([20, 21, 22, 20, 21, 22]),
                     3,
-                    survey='kids')
+                    survey='kids',
+                    max_iterations=100,
+                    tolerance=1.0e-5)
 
 
 # #### Dividing survey area into equal patches
@@ -576,6 +582,7 @@ plot_LF(np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19, -21]),
 def analyse_LF_by_colour(dichotomy_slope,
                          dichotomy_intercept,
                          rest_mag_list,
+                         higher_band_rest_mag_list,
                          Vmax_list,
                          n_mag_bins,
                          RA_list,
@@ -590,6 +597,7 @@ def analyse_LF_by_colour(dichotomy_slope,
     (1) float value of the slope of the colour dichotomy line
     (2) float vlaue of the intercept of the colour dichotomy line
     (3) numpy array of all rest-frame magnitudes
+    (4) numpy array of all rest-frame magnitudes from a higher wavelength band than previous
     (4) numpy array of all corresponding maximum volumes
     (5) integer value of number of magnitude bins required
     (6) numpy array of all RA values
@@ -616,9 +624,10 @@ def analyse_LF_by_colour(dichotomy_slope,
     (12) numpy array of phi error (i.e. y-error) value of each bin for LF of blue galaxies
     """
 
+    colour_mag_list = higher_band_rest_mag_list - rest_mag_list
     dichotomy_line = dichotomy_slope * rest_mag_list + dichotomy_intercept
-    red_index = np.where(rest_mag_list >= dichotomy_line)[0]
-    blue_index = np.where(rest_mag_list < dichotomy_line)[0]
+    red_index = np.where(colour_mag_list >= dichotomy_line)[0]
+    blue_index = np.where(colour_mag_list < dichotomy_line)[0]
 
     # all
     M_list, M_err_list, phi_list, phi_err_list = plot_LF(
