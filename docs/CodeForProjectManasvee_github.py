@@ -262,18 +262,18 @@ get_binned_phi(
 
 # #### Finding centers of equal patches of the survey
 
-# In[ ]:
+# In[12]:
 
 
 # CENTER GUESSES FROM RA AND DEC IN A RANDOM UNIFORM CATALOGUE AND NUMBER OF PATCHES
 
 
-def get_patches_centers(uniform_random_RA_list,
-                        uniform_random_DEC_list,
-                        n_patches,
-                        survey='kids',
-                        max_iterations=100,
-                        tolerance=1.0e-5):
+def get_patch_centers(uniform_random_RA_list,
+                      uniform_random_DEC_list,
+                      n_patches,
+                      survey='kids',
+                      max_iterations=100,
+                      tolerance=1.0e-5):
     """
     Arguments:
     (1) numpy array of all RA values in a uniform random catalogue
@@ -302,10 +302,8 @@ def get_patches_centers(uniform_random_RA_list,
         (corrected_uniform_random_RA_list, uniform_random_DEC_list))
 
     # DIVIDE uniform_random_X INTO EQUAL n_patches
-    uniform_random_km = kmeans_sample(uniform_random_X,
-                                      n_patches,
-                                      max_iterations,
-                                      tolerance)
+    uniform_random_km = kmeans_sample(uniform_random_X, n_patches,
+                                      max_iterations, tolerance)
     center_guesses = uniform_random_km.centers
     ra_guesses = center_guesses[:, 0]
     dec_guesses = center_guesses[:, 1]
@@ -313,32 +311,32 @@ def get_patches_centers(uniform_random_RA_list,
     return centers_array
 
 
-# In[ ]:
+# In[13]:
 
 
-get_patches_centers(np.array([20, 21, 22, 20, 21, 22]),
-                    np.array([20, 21, 22, 20, 21, 22]),
-                    3,
-                    survey='kids',
-                    max_iterations=100,
-                    tolerance=1.0e-5)
+# get_patch_centers(np.array([20, 21, 22, 20, 21, 22]),
+#                     np.array([20, 21, 22, 20, 21, 22]),
+#                     3,
+#                     survey='kids',
+#                     max_iterations=100,
+#                     tolerance=1.0e-5)
 
 
 # #### Dividing survey area into equal patches
 
-# In[12]:
+# In[14]:
 
 
 # LABELS FOR PATCHES FROM RA, DEC, NUMBER OF PATCHES AND CENTER GUESSES
 
 
-def get_patches(RA_list,
-                DEC_list,
-                n_patches,
-                center_guesses,
-                survey='kids',
-                numba_installed=True,
-                plot_savename='none'):
+def get_patch_labels(RA_list,
+                     DEC_list,
+                     n_patches,
+                     center_guesses,
+                     survey='kids',
+                     numba_installed=True,
+                     plot_savename='none'):
     """
     Arguments:
     (1) numpy array of all RA values
@@ -413,22 +411,22 @@ def get_patches(RA_list,
     return labels
 
 
-# In[13]:
+# In[15]:
 
 
-get_patches(np.array([20, 21, 22, 20, 21, 22]),
-            np.array([20, 21, 22, 20, 21, 22]),
-            3,
-            np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20],
-                      [21, 22]]),
-            survey='kids',
-            numba_installed=True,
-            plot_savename='test_patches.png')
+get_patche_labels(np.array([20, 21, 22, 20, 21, 22]),
+                  np.array([20, 21, 22, 20, 21, 22]),
+                  3,
+                  np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20],
+                            [21, 22]]),
+                  survey='kids',
+                  numba_installed=True,
+                  plot_savename='test_patches.png')
 
 
 # #### Errors on $\phi$ values
 
-# In[14]:
+# In[16]:
 
 
 # PHI ERROR FROM REST-FRAME MAG, MAXIMUM GALAXY VOLUME VALUES, LABELS, NUMBER OF PATCHES AND NUMBER OF BINS
@@ -463,7 +461,7 @@ def get_binned_phi_error(rest_mag_list, Vmax_list, labels, n_patches,
     return phi_err_list
 
 
-# In[15]:
+# In[17]:
 
 
 get_binned_phi_error(
@@ -476,22 +474,22 @@ get_binned_phi_error(
 
 # ### Plot Luminosity Function
 
-# In[16]:
+# In[18]:
 
 
 # PLOT OF WEIGHTED AND BINNED MAGNITUDE DISTRIBUTION
 
 
-def plot_LF(rest_mag_list,
-            Vmax_list,
-            n_mag_bins,
-            RA_list,
-            DEC_list,
-            n_patches,
-            center_guesses,
-            survey='kids',
-            numba_installed=True,
-            plot_savename='none'):
+def get_plot(rest_mag_list,
+             Vmax_list,
+             n_mag_bins,
+             RA_list,
+             DEC_list,
+             n_patches,
+             center_guesses,
+             survey='kids',
+             numba_installed=True,
+             plot_savename='none'):
     """
     Arguments:
     (1) numpy array of all rest-frame magnitudes
@@ -517,8 +515,8 @@ def plot_LF(rest_mag_list,
     M_list, M_err_list, phi_list = get_binned_phi(rest_mag_list, Vmax_list,
                                                   n_mag_bins)
     # patches
-    labels = get_patches(RA_list, DEC_list, n_patches, center_guesses, survey,
-                         numba_installed)
+    labels = get_patch_labels(RA_list, DEC_list, n_patches, center_guesses,
+                              survey, numba_installed)
     # phi errors
     phi_err_list = get_binned_phi_error(rest_mag_list, Vmax_list, labels,
                                         n_patches, n_mag_bins)
@@ -554,44 +552,46 @@ def plot_LF(rest_mag_list,
     return M_list, M_err_list, phi_list, phi_err_list
 
 
-# In[17]:
+# In[19]:
 
 
-plot_LF(np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19, -21]),
-        np.array([
-            8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08,
-            6e+08, 7e+06, 1e+08
-        ]),
-        4,
-        np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
-        np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
-        3,
-        np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22],
-                  [20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22]]),
-        plot_savename='test_LF.png')
+get_plot(np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19,
+                   -21]),
+         np.array([
+             8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08,
+             6e+08, 7e+06, 1e+08
+         ]),
+         4,
+         np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
+         np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
+         3,
+         np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22],
+                   [20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21,
+                                                                      22]]),
+         plot_savename='test_LF.png')
 
 
 # ### Luminosity Function Colour Properties
 
-# In[18]:
+# In[20]:
 
 
 # PLOT MAGNITUDE DISTRIBUTION BY COLOUR
 
 
-def analyse_LF_by_colour(dichotomy_slope,
-                         dichotomy_intercept,
-                         rest_mag_list,
-                         higher_band_rest_mag_list,
-                         Vmax_list,
-                         n_mag_bins,
-                         RA_list,
-                         DEC_list,
-                         n_patches,
-                         center_guesses,
-                         survey='kids',
-                         numba_installed=True,
-                         plot_savename='none'):
+def filter_plot_by_colour(dichotomy_slope,
+                          dichotomy_intercept,
+                          rest_mag_list,
+                          higher_band_rest_mag_list,
+                          Vmax_list,
+                          n_mag_bins,
+                          RA_list,
+                          DEC_list,
+                          n_patches,
+                          center_guesses,
+                          survey='kids',
+                          numba_installed=True,
+                          plot_savename='none'):
     """
     Arguments:
     (1) float value of the slope of the colour dichotomy line
@@ -630,18 +630,18 @@ def analyse_LF_by_colour(dichotomy_slope,
     blue_index = np.where(colour_mag_list < dichotomy_line)[0]
 
     # all
-    M_list, M_err_list, phi_list, phi_err_list = plot_LF(
+    M_list, M_err_list, phi_list, phi_err_list = get_plot(
         rest_mag_list, Vmax_list, n_mag_bins, RA_list, DEC_list, n_patches,
         center_guesses, survey, numba_installed)
 
     # red
-    red_M_list, red_M_err_list, red_phi_list, red_phi_err_list = plot_LF(
+    red_M_list, red_M_err_list, red_phi_list, red_phi_err_list = get_plot(
         rest_mag_list[red_index], Vmax_list[red_index], n_mag_bins,
         RA_list[red_index], DEC_list[red_index], n_patches, center_guesses,
         survey, numba_installed)
 
     # blue
-    blue_M_list, blue_M_err_list, blue_phi_list, blue_phi_err_list = plot_LF(
+    blue_M_list, blue_M_err_list, blue_phi_list, blue_phi_err_list = get_plot(
         rest_mag_list[blue_index], Vmax_list[blue_index], n_mag_bins,
         RA_list[blue_index], DEC_list[blue_index], n_patches, center_guesses,
         survey, numba_installed)
@@ -695,24 +695,24 @@ def analyse_LF_by_colour(dichotomy_slope,
     return M_list, M_err_list, phi_list, phi_err_list, red_M_list, red_M_err_list, red_phi_list, red_phi_err_list, blue_M_list, blue_M_err_list, blue_phi_list, blue_phi_err_list
 
 
-# In[19]:
+# In[21]:
 
 
-analyse_LF_by_colour(
-    0.0,
-    0.65,
-    np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19, -21]),
-    np.array([
-        8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08, 6e+08,
-        7e+06, 1e+08
-    ]),
-    4,
-    np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
-    np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
-    4,
-    np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22],
-              [20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22]]),
-    plot_savename='test_LF_colour.png')
+# filter_plot_by_colour(
+#     0.0,
+#     0.65,
+#     np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19, -21]),
+#     np.array([
+#         8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08, 6e+08,
+#         7e+06, 1e+08
+#     ]),
+#     4,
+#     np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
+#     np.array([20, 21, 22, 20, 21, 22, 20, 21, 22, 20, 21, 22]),
+#     4,
+#     np.array([[20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22],
+#               [20, 21], [22, 20], [21, 22], [20, 21], [22, 20], [21, 22]]),
+#     plot_savename='test_LF_colour.png')
 
 
 # ### Model Luminosity Function 
@@ -721,7 +721,7 @@ analyse_LF_by_colour(
 # 
 # $$\phi(M) = \frac{2}{5}\ln(10)e^{-10^{\frac{2}{5}(M_{*}-M)}}\left( \phi^{*}10^{\frac{2}{5}(M_{*}-M)(\alpha+1)}\right)$$
 
-# In[20]:
+# In[22]:
 
 
 # SCHECHTER PHI FROM REST-FRAME MAG AND 3 FREE PARAMETERS OF MODEL
@@ -758,7 +758,7 @@ def SchechterMagModel(M_list, M_star, phi_star, alpha):
     return phi_list
 
 
-# In[21]:
+# In[23]:
 
 
 SchechterMagModel(
@@ -772,7 +772,7 @@ SchechterMagModel(
 # 
 # $$\phi(M) = \frac{2}{5}\ln(10)e^{-10^{\frac{2}{5}(M_{*}-M)}}\left[\left( \phi_{1}^{*}10^{\frac{2}{5}(M_{*}-M)(\alpha_{1}+1)}\right)+\left( \phi_{2}^{*}10^{\frac{2}{5}(M_{*}-M)(\alpha_{2}+1)}\right)\right]$$
 
-# In[22]:
+# In[24]:
 
 
 def DoubleSchechterMagModel(M_list, M_star, phi_star1, alpha1, phi_star2,
@@ -816,7 +816,7 @@ def DoubleSchechterMagModel(M_list, M_star, phi_star1, alpha1, phi_star2,
     return phi_list
 
 
-# In[23]:
+# In[25]:
 
 
 DoubleSchechterMagModel(
@@ -837,7 +837,7 @@ DoubleSchechterMagModel(
 # #### Reduced $\chi^{2}$
 # $$\chi_{\nu}^{2} = \frac{\chi^{2}}{\nu}$$
 
-# In[24]:
+# In[26]:
 
 
 # REDUCED CHI SQUARED GOODNESS OF FIT PARAMETER
@@ -864,7 +864,7 @@ def get_gof(obs, err, exp, m):
     return red_chi_sq
 
 
-# In[25]:
+# In[27]:
 
 
 get_gof(
@@ -884,7 +884,7 @@ get_gof(
 
 # #### Best-fitting and plots
 
-# In[26]:
+# In[28]:
 
 
 # BEST FIT SCHECHTER PHI AND REDUCED CHI SQUARED ESTIMATE
@@ -986,7 +986,7 @@ def get_schechter_phi(M_list,
     return model_phi_list, red_chi_sq, M_star, M_star_err, phi_star, phi_star_err, alpha, alpha_err
 
 
-# In[27]:
+# In[29]:
 
 
 get_schechter_phi(np.array([
@@ -1008,7 +1008,7 @@ get_schechter_phi(np.array([
                   plot_savename='test_Sch.png')
 
 
-# In[28]:
+# In[30]:
 
 
 # BEST FIT SCHECHTER PHI AND REDUCED CHI SQUARED ESTIMATE
@@ -1131,7 +1131,7 @@ def get_double_schechter_phi(M_list,
     return model_phi_list, red_chi_sq, M_star, M_star_err, phi_star_1, phi_star_err_1, alpha_1, alpha_err_1, phi_star_2, phi_star_err_2, alpha_2, alpha_err_2
 
 
-# In[29]:
+# In[31]:
 
 
 get_double_schechter_phi(np.array([
