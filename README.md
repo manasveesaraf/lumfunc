@@ -1,6 +1,6 @@
 # Luminosity Function Constructor and Modeller
 
-This package allows the user to construct and model Galaxian Luminosity Functions using the <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> estimator and Schechter function. 
+This package allows the user to construct and model Galaxian Luminosity Functions using the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) estimator and Schechter function. 
 
 ![PyPI](https://img.shields.io/pypi/v/lumfunc?color=sucess)    ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/lumfunc)    ![PyPI - Downloads](https://img.shields.io/pypi/dm/lumfunc?color=blue&label=downloads%20%E2%AC%87)    [![GitHub issues](https://img.shields.io/github/issues/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/issues)    [![GitHub stars](https://img.shields.io/github/stars/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/stargazers)    [![GitHub forks](https://img.shields.io/github/forks/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/network)    [![GitHub license](https://img.shields.io/github/license/manasveesaraf/lumfunc)](https://github.com/manasveesaraf/lumfunc/blob/master/LICENSE)
 
@@ -40,7 +40,8 @@ r_app_mag_err_list = np.array(data_table['r_mag_err'])
 z_photo_list = np.array(data_table['z_photo'])
 ```
 
-### K-correction and Malmquist bias reduction:
+
+### 1. K-correction and Malmquist bias reduction:
 
 <details><summary><b>get_maggy( )</b>: Convert the measurements of flux in magnitudes to maggies for use with <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a></summary>
 <p>
@@ -115,7 +116,7 @@ lf.get_rest_mag(np.array([0.34, 0.17, 0.61, 0.41]),
 <details><summary><b>get_volume( )</b>: Convert the survey area in square degrees and respective redshift of each data point into comoving volumes. So, estimate <img src="https://render.githubusercontent.com/render/math?math={V_{max}}" alt="Vmax" /> from <img src = "https://render.githubusercontent.com/render/math?math={z_{max}}" alt="Zmax" /> values</summary>
 <p>
 
-Load <img src = "https://render.githubusercontent.com/render/math?math={z_{max}}" alt="Zmax" /> file.
+Load the ![zmax](https://render.githubusercontent.com/render/math?math=z_{max} ) file.
 
 ```python
 zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
@@ -143,7 +144,7 @@ lf.get_volume(2.5, np.array([0.50523681, 0.21884399, 0.57489149, 0.55985663]))
 <details><summary><b>get_binned_phi( )</b>: Bin and weigh galaxy counts per magnitude by <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"></summary>
 <p>
 
-Return M, M errors and phi from the rest-frame magnitudes, <img src="https://render.githubusercontent.com/render/math?math={V_{max}}" alt="Vmax" /> values and number of bins.
+Return M, M errors and phi from the rest-frame magnitudes,  ![Vmax](https://render.githubusercontent.com/render/math?math=V_{max} ) values and number of bins.
     
 ```python
 n_bins = 10
@@ -177,7 +178,8 @@ lf.get_binned_phi(
 </p>
 </details>
 
-### Spatial variances of the phi, <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi">, values:
+
+### 2. Spatial variances of the phi, <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi">, values:
 
 <details><summary><b>get_patch_centers( )</b>: First, divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches</summary>
 <p>
@@ -247,12 +249,13 @@ print(phi_err_list)
 </p>
 </details>
 
-### Visualisation:
+
+### 3. Visualisation:
 
 <details><summary><b>get_plot( )</b>: Perform <code>get_binned_phi()</code> , <code>get_patches()</code> and <code>get_binned_phi_error()</code> functions using only one composite function and visualise the luminsoity function</summary>
 <p>
 
-Plot the <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> weighted luminosity function, binned by magnitude.
+Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
 
 ```python
 M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
@@ -280,7 +283,7 @@ M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
 <details><summary><b>filter_plot_by_colour( )</b>: Study the luminosity function by colour properties by specifying the colour dichotomy</summary>
 <p>
 
-Plot the <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}}" alt=:"1/Vmax"> weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters must be inferred first from a CMD plot.
+Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function from data, binned by magnitude and filtered by galaxy colours. The galaxy colours are filtered by red and blue with the help of the input colour dichotomy line parameters. The colour dichotomy line parameters must be inferred first from a CMD plot.
 
 ```python
 colour_cut_slope = 0.0
@@ -308,7 +311,8 @@ all_M_list, all_M_err_list, all_phi_list, all_phi_err_list, red_M_list, red_M_er
 </p>
 </details>
 
-### Modelling with Schechter functions:
+
+### 4. Modelling with Schechter functions:
 
 <details><summary><b>SchechterMagModel( )</b></summary>
 <p>
