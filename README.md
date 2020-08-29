@@ -184,6 +184,12 @@ lf.get_binned_phi(
 <details><summary><b>get_patch_centers( )</b>: First, divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches</summary>
 <p>
 Load RA and Dec from uniformly distributed catalogue.
+
+```python
+uniform_data_table = pd.read_csv('test_uniform_catalogue.csv')
+uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
+uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
+```
     
 Return patch centers as (RA, Dec) from the uniform RA, Dec and number of patches.
 
