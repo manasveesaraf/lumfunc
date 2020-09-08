@@ -10,10 +10,15 @@ functions:
 
     * get_maggy - converts magnitudes into maggies
     * get_maggy_inv_var - returns inverse variances on maggies
+    * get_obs_maggies_file - saves file of calculated maggies and inverse variances
+    * get_rec_maggies_files - saves file of reconstructed maggies at input redshift
+    * get_rest_maggy_ratio_file - saves file of calculated rest-frame maggy ratios
     * get_rest_mag - converts apparent magnitudes into rest-frame magnitudes
+    * get_maggy_ratio_file - saves file of calculated reconstructed maggy ratios
+    * get_all_maggy_ratios_file - consolidates files of calculated maggy ratios
     * get_volume - returns comoving volume of input survey area and redshift
     * get_binned_phi - bins and weights galaxy counts per magnitude by 1/Vmax
-    * get_patch_centers - returns centers of equal patches over survey area
+    * get_patch_centers - saves file of centers of equal patches over survey area
     * get_patch_labels - divides survey into equal patches
     * get_binned_phi_error - returns spatial variance of the luminosity function 
     * get_plot - plots magnitude-binned and 1/Vmax weighted luminosity function
@@ -28,6 +33,8 @@ functions:
 # -----------------------
 # Package Imports
 # -----------------------
+import kcorrect
+
 import numpy as np
 
 from typing import Tuple
@@ -40,6 +47,8 @@ from scipy.optimize import curve_fit
 
 import kmeans_radec
 from kmeans_radec import KMeans, kmeans_sample
+
+from astropy.io import ascii
 
 from astropy.cosmology import FlatLambdaCDM
 import astropy.units as u
@@ -88,6 +97,265 @@ def get_maggy_inv_var(maggies_list: np.ndarray,
     inv_var_list = (0.4 * np.log(10) * maggies_list * app_mag_err_list)**(-2)
     return inv_var_list
 
+def get_obs_maggies_file(obs_maggies_outfile_name: str,
+                         bands: str,
+                         redshift_list: np.ndarray,
+                         u_app_mag_list: np.ndarray,
+                         g_app_mag_list: np.ndarray,
+                         r_app_mag_list: np.ndarray,
+                         i_app_mag_list: np.ndarray,
+                         Z_app_mag_list: np.ndarray,
+                         Y_app_mag_list=np.empty(0),
+                         J_app_mag_list=np.empty(0),
+                         H_app_mag_list=np.empty(0),
+                         Ks_app_mag_list=np.empty(0),
+                         u_app_mag_err_list=np.empty(0),
+                         g_app_mag_err_list=np.empty(0),
+                         r_app_mag_err_list=np.empty(0),
+                         i_app_mag_err_list=np.empty(0),
+                         Z_app_mag_err_list=np.empty(0),
+                         Y_app_mag_err_list=np.empty(0),
+                         J_app_mag_err_list=np.empty(0),
+                         H_app_mag_err_list=np.empty(0),
+                         Ks_app_mag_err_list=np.empty(0)):
+    '''
+    Calculates maggy and inverse variance values from apparent magnitude and their error values
+    and saves the values in a space delimited csv file with columns (without headers):
+        
+        redshift u_maggy g_maggy r_maggy... u_inv_var g_inv_var r_inv_var...
+    
+    File is required to be used with the get_rec_maggies_files function 
+    or other kcorrect_python functions that best-fit SED coefficients.
+    WARNING: pre-existing file with same name will be over-written.
+    
+    Parameters
+    ----------
+    obs_maggies_outfile_name : str
+        name/path of file with '.csv' extention to save maggies and respective inverse variance values in
+    bands : str
+        'ugriz' or 'ugriZYJHKs' - refer source code if using other bands
+    redshift_list : np.ndarray
+        redshift of each data point (galaxy)
+    u_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in u-band
+    g_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in g-band
+    r_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in r-band
+    i_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in i-band
+    Z_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in Z-band
+    Y_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in Y-band
+    J_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in J-band
+    H_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in H-band
+    Ks_app_mag_list : np.ndarray
+        all corresponding apparent magnitudes in Ks-band
+    u_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in u-band
+    g_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in g-band
+    r_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in r-band
+    i_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in i-band
+    Z_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in Z-band
+    Y_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in Y-band
+    J_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in J-band
+    H_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in H-band
+    Ks_app_mag_err_list : np.ndarray
+        all corresponding errors on apparent magnitudes in Ks-band
+    '''
+
+    if bands == 'ugriz':
+        maggy_inv_var_table = np.column_stack(
+            (redshift_list, get_maggy(u_app_mag_list),
+             get_maggy(g_app_mag_list), get_maggy(r_app_mag_list),
+             get_maggy(i_app_mag_list), get_maggy(Z_app_mag_list),
+             get_maggy_inv_var(get_maggy(u_app_mag_list), u_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(g_app_mag_list), g_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(r_app_mag_list), r_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(i_app_mag_list), i_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(Z_app_mag_list), Z_app_mag_err_list)))
+        ascii.write(maggy_inv_var_table,
+                    obs_maggies_outfile_name,
+                    overwrite=True,
+                    format='no_header',
+                    names=[
+                        'redshift', 'u_maggy', 'g_maggy', 'r_maggy', 'i_maggy',
+                        'z_maggy', 'u_inv_var', 'g_inv_var', 'r_inv_var',
+                        'i_inv_var', 'z_inv_var'
+                    ])
+        print(
+            '\tRedshifts, and ' + bands +
+            ' maggies and their inverse variances calculated, stacked and saved in '
+            + obs_maggies_outfile_name + '.')
+
+    elif bands == 'ugriZYJHKs':
+        maggy_inv_var_table = np.column_stack(
+            (redshift_list, get_maggy(u_app_mag_list),
+             get_maggy(g_app_mag_list), get_maggy(r_app_mag_list),
+             get_maggy(i_app_mag_list), get_maggy(Z_app_mag_list),
+             get_maggy(Y_app_mag_list), get_maggy(J_app_mag_list),
+             get_maggy(H_app_mag_list), get_maggy(Ks_app_mag_list),
+             get_maggy_inv_var(get_maggy(u_app_mag_list), u_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(g_app_mag_list), g_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(r_app_mag_list), r_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(i_app_mag_list), i_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(Z_app_mag_list), Z_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(Y_app_mag_list), Y_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(J_app_mag_list), J_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(H_app_mag_list), H_app_mag_err_list),
+             get_maggy_inv_var(get_maggy(Ks_app_mag_list), Ks_app_mag_err_list)))
+        ascii.write(maggy_inv_var_table,
+                    obs_maggies_outfile_name,
+                    overwrite=True,
+                    format='no_header',
+                    names=[
+                        'redshift', 'u_maggy', 'g_maggy', 'r_maggy', 'i_maggy',
+                        'Z_maggy', 'Y_maggy', 'J_maggy', 'H_maggy', 'Ks_maggy',
+                        'u_inv_var', 'g_inv_var', 'r_inv_var', 'i_inv_var',
+                        'Z_inv_var', 'Y_inv_var', 'J_inv_var', 'H_inv_var',
+                        'Ks_inv_var'
+                    ])
+        print(
+            '\tRedshifts, and ' + bands +
+            ' maggies and their inverse variances calculated, stacked and saved in '
+            + obs_maggies_outfile_name + '.')
+
+    else:
+        print('\tOnly valid for bands ugriz or ugriZYJHKs.')
+        print(
+            '\tCheck the source code for basic structure of this function that creates the required file if using other bands.'
+        )
+
+def get_rec_maggies_files(obs_maggies_file_path: str,
+                          n_bands: int,
+                          rec_z_list: np.ndarray,
+                          rec_maggies_outfile_affix='',
+                          survey='sdss',
+                          band_z_shift=0.0,
+                          template_vmatrix_file_path='vmatrix.default.dat',
+                          template_lambda_file_path='lambda.default.dat',
+                          filters_list_file_path='sdss_filters.dat'):
+    '''
+    Reconstructs the observed maggy values at required redshift values
+    by best-fitting galaxy SEDs on data using templates and filter transmission curves,
+    and saves the reconstructed maggy values in a space delimited csv file with columns (without headers):
+        
+        redshift rec_u_maggy rec_g_maggy rec_r_maggy...
+    
+    File is required to be used with the get_maggy_ratio_file or get_rest_maggy_ratio_file functions.
+    WARNING: pre-existing file with same name will be over-written.
+    
+    Parameters
+    ----------
+    obs_maggies_file_path : str
+        path of '.csv' file with the observed maggies and respective inverse variance values. File can be obtained from the get_obs_maggies_file function
+    n_bands : int
+        number of bands used in the survey (and present in the obs_maggies_file)
+    rec_z_list : np.ndarray
+        redshift values required to reconstruct maggies at
+    rec_maggies_outfile_affix : str
+        output file identifier - reconstructed maggies will be saved in 'maggies_at_z[redshift-value]_[identifier].csv'
+    survey : str
+        name of survey being used. Set as 'sdss' by default - do not change if sdss-ugriz are being used
+    band_z_shift : float
+        redshift value to shift the bandpasses/filters by, default is set at 0.0 i.e. no shift
+    template_vmatrix_file_path : str
+        path of '.dat' file with vmatrix of SED templates - must change if survey parameter is not 'sdss'
+    template_lambda_file_path : str
+        path of '.dat' file with lambda of SED templates - must change if survey parameter is not 'sdss'
+    filters_list_file_path : str
+        path of '.dat' file with the list of '.dat' files corresponding to each band and containing its filter transmission curve - must change if survey parameter is not 'sdss'
+    '''
+
+    if survey == 'sdss':
+        kcorrect.load_templates()
+        print('\tTemplates loaded.')
+        kcorrect.load_filters(band_shift=band_z_shift)
+        print('\tFilters loaded.')
+    else:
+        kcorrect.load_templates(v=template_vmatrix_file_path,
+                                l=template_lambda_file_path)
+        print('\tTemplates loaded.')
+        kcorrect.load_filters(filters_list_file_path, band_shift=band_z_shift)
+        print('\tFilters loaded.')
+
+    maggy_inv_var_table = np.genfromtxt(obs_maggies_file_path, delimiter=' ')
+    print('\tRead ' + obs_maggies_file_path + '.')
+
+    for rec_z in rec_z_list:
+        rec_maggies_outfile_name = 'maggies_at_z' + str(rec_z) + '_' + rec_maggies_outfile_affix + '.csv'
+        rec_maggies_stack = []
+        for i in range(len(maggy_inv_var_table[:, 0])):
+            redshift = maggy_inv_var_table[i, 0]
+            maggies = maggy_inv_var_table[i, 1:(n_bands + 1)]
+            maggies_inv_var = maggy_inv_var_table[i, (n_bands + 1):((2 * n_bands) + 1)]
+            coeffs = kcorrect.fit_nonneg(redshift, maggies, maggies_inv_var)
+            rec_maggies_row = kcorrect.reconstruct_maggies(coeffs, redshift=rec_z)
+            rec_maggies_stack.append(rec_maggies_row)
+        rec_maggies_table = np.array(rec_maggies_stack)
+        ascii.write(rec_maggies_table,
+                    rec_maggies_outfile_name,
+                    overwrite=True,
+                    format='no_header')
+        print('\t' + rec_maggies_outfile_name + ' saved.')
+    print('\tMaggies reconstructed at all redshifts in input array rec_z_list.')
+
+def get_rest_maggy_ratio_file(ID_list: np.ndarray,
+                              obs_maggies_file_path: str,
+                              rest_maggies_file_path: str,
+                              band_index: int,
+                              rest_maggy_ratio_outfile_affix=''):
+    '''
+    Calculates rest-frame maggy ratios i.e. (obs_maggy/rest_maggy),
+    and saves the maggy ratio values in a csv file with 3 space delimited columns, of headers:
+        
+        ID rest_z maggy_ratio
+    
+    File can be unpacked and used with get_rest_mag function to calculate rest-frame magnitudes.
+    WARNING: pre-existing file with same name will be over-written.
+    
+    Parameters
+    ----------
+    ID_list: np.ndarray
+        ID of each data point (galaxy)
+    obs_maggies_file_path : str
+        path of '.csv' file with the observed maggies and respective inverse variance values. File can be obtained from the get_obs_maggies_file function
+    rest_maggies_file_path : str
+        path of '.csv' file with the reconstructed maggies at redshift zero. File can be obtained from the get_rec_maggies_files function by setting rec_z_list to np.array([0.0])
+    band_index : int
+        band number of required maggy ratio (e.g. 3 for r maggy in ugriz bands)
+    rest_maggy_ratio_outfile_affix : str
+        output file identifier - rest-frame maggy ratios will be saved in 'rest_maggy_ratios_[identifier].csv'
+    '''
+
+    obs_maggies_table = np.genfromtxt(obs_maggies_file_path, delimiter=' ')
+    rest_maggies_table = np.genfromtxt(rest_maggies_file_path, delimiter=' ')
+
+    rest_z_list = rest_maggies_table[:, 0]
+
+    obs_maggies_list = obs_maggies_table[:, band_index]
+    rest_maggies_list = rest_maggies_table[:, band_index]
+    rest_maggy_ratios_list = obs_maggies_list / rest_maggies_list
+
+    rest_maggy_ratio_outfile_name = 'rest_maggy_ratios_' + rest_maggy_ratio_outfile_affix + '.csv'
+    rest_maggy_ratios_table = np.column_stack(
+        (ID_list, rest_z_list, rest_maggy_ratios_list))
+    ascii.write(rest_maggy_ratios_table,
+                rest_maggy_ratio_outfile_name,
+                overwrite=True,
+                names=['ID', 'rest_z', 'maggy_ratio'])
+    print('\t' + rest_maggy_ratio_outfile_name + ' created.')
+
 def get_rest_mag(redshift_list: np.ndarray, 
                  app_mag_list: np.ndarray, 
                  maggy_ratio_list: np.ndarray) -> np.ndarray:
@@ -129,6 +397,117 @@ def get_rest_mag(redshift_list: np.ndarray,
 
     return rest_mag_list
 
+def get_maggy_ratio_file(ID_list: np.ndarray,
+                         rest_maggies_file_path: str,
+                         rec_maggies_file_path: str,
+                         rec_z: float,
+                         band_index: int,
+                         maggy_ratio_outfile_affix=''):
+    '''
+    Calculates reconstructed maggy ratios i.e. (rec_maggy/rest_maggy),
+    and saves the maggy ratio values in a csv file with 3 space delimited columns, of headers:
+        
+        ID rec_z maggy_ratio
+    
+    WARNING: pre-existing file with same name will be over-written.
+    
+    Parameters
+    ----------
+    ID_list: np.ndarray
+        ID of each data point (galaxy)
+    rest_maggies_file_path : str
+        path of '.csv' file with the reconstructed maggies at redshift zero. File can be obtained from the get_rec_maggies_files function by setting rec_z_list to np.array([0.0])
+    rec_maggies_file_path : str
+        path of '.csv' file with the reconstructed maggies at required reconstruction redshift (rec_z). File can be obtained from the get_rec_maggies_files function by setting rec_z_list to np.array([rec_z])
+    rec_z : float
+        redshift value where maggies have been reconstruct at
+    band_index : int
+        band number of required maggy ratio (e.g. 3 for r maggy in ugriz bands)
+    rest_maggy_ratio_outfile_affix : str
+        output file identifier - maggy ratios will be saved in 'maggy_ratios_at_z[redshift-value]_[identifier].csv'
+    '''
+
+    rec_maggies_table = np.genfromtxt(rec_maggies_file_path, delimiter=' ')
+    rest_maggies_table = np.genfromtxt(rest_maggies_file_path, delimiter=' ')
+
+    rec_z_list = rec_maggies_table[:, 0]
+
+    rec_maggies_list = rec_maggies_table[:, band_index]
+    rest_maggies_list = rest_maggies_table[:, band_index]
+    maggy_ratios_list = rec_maggies_list / rest_maggies_list
+
+    maggy_ratio_outfile_name = 'maggy_ratios_at_z' + str(rec_z) + '_' + maggy_ratio_outfile_affix + '.csv'
+    maggy_ratios_table = np.column_stack(
+        (ID_list, rec_z_list, maggy_ratios_list))
+    ascii.write(maggy_ratios_table,
+                maggy_ratio_outfile_name,
+                overwrite=True,
+                names=['ID', 'rec_z', 'maggy_ratio'])
+    print('\t' + maggy_ratio_outfile_name + ' saved.')
+
+def get_all_maggy_ratios_file(rec_z_list: np.ndarray, 
+                              ID_list: np.ndarray, 
+                              band_index: int, 
+                              maggies_and_out_files_affix=''):
+    '''
+    Calculates reconstructed maggy ratios i.e. (rec_maggy/rest_maggy)
+    and saves the maggy ratio values at each redshift value in rec_z_list
+    in a separate csv file with 3 space delimited columns, of headers:
+        
+        ID rec_z maggy_ratio
+    
+    Finally, consolidates all maggy ratios by joining the above files in the order of rec_z_list
+    in a single csv file with 3 space delimited columns, of headers:
+        
+        ID rec_z maggy_ratio
+
+    File with all maggy ratios can be used to calculate z-max.
+    WARNING: pre-existing file with same name will be over-written.
+    
+    Parameters
+    ----------
+    rec_z_list : np.ndarray
+        redshift values where maggies have been reconstruct at - array must have 0.0 redshift value at index 0
+    ID_list : np.ndarray
+        ID of each data point (galaxy)
+    band_index : int
+        band number of required maggy ratio (e.g. 3 for r maggy in ugriz bands)
+    maggies_and_out_files_affix : str
+        output file identifier - values will be saved in 'maggy_ratios_at_z[redshift-value]_[identifier].csv' and 'all_maggy_ratios_[identifier].csv' - must be the same string as rec_maggies_outfile_affix parameter used in get_rec_maggies_files function
+    '''
+
+    rest_maggies_file_name = 'maggies_at_z' + str(rec_z_list[0]) + '_' + maggies_and_out_files_affix + '.csv'
+
+    for rec_z in rec_z_list:
+        rec_maggies_file_name = 'maggies_at_z' + str(rec_z) + '_' + maggies_and_out_files_affix + '.csv'
+        get_maggy_ratio_file(ID_list,
+                             rest_maggies_file_name,
+                             rec_maggies_file_name,
+                             rec_z,
+                             band_index,
+                             maggy_ratio_outfile_affix=maggies_and_out_files_affix)
+    print('\tMaggy ratios calculated at all redshifts in input array rec_z_list.')
+
+    all_maggy_ratios_outfile_name = 'all_maggy_ratios_' + maggies_and_out_files_affix + '.csv'
+
+    rest_maggy_ratio_file_name = 'maggy_ratios_at_z' + str(rec_z_list[0]) + '_' + maggies_and_out_files_affix + '.csv'
+
+    all_maggy_ratios_file = open(all_maggy_ratios_outfile_name, 'a')
+    # first file:
+    for line in open(rest_maggy_ratio_file_name):
+        all_maggy_ratios_file.write(line)
+    # now the rest:
+    for i in range(len(rec_z_list) - 1):
+        maggy_ratio_file_name = 'maggy_ratios_at_z' + str(rec_z_list[i + 1]) + '_' + maggies_and_out_files_affix + '.csv'
+        maggy_ratio_file = open(maggy_ratio_file_name)
+        maggy_ratio_file.next()  # skip the header
+        for line in maggy_ratio_file:
+            all_maggy_ratios_file.write(line)
+        maggy_ratio_file.close()
+    all_maggy_ratios_file.close()
+
+    print('\tAll maggy ratios consolidated in file ' + all_maggy_ratios_outfile_name + '.')
+    
 def get_volume(survey_area: float, 
                redshift_list: np.ndarray) -> np.ndarray:
     """
@@ -247,10 +626,17 @@ def get_patch_centers(uniform_random_RA_list: np.ndarray,
                       n_patches: int,
                       survey='kids',
                       max_iterations=int(100),
-                      tolerance=1.0e-5) -> np.ndarray:
+                      tolerance=1.0e-5,
+                      patch_centers_outfile_affix=''):
     """
-    Divides the input uniform random survey into equally distributed and equally sized patches. Returns n_patches centers as [RA,Dec] from RA, Dec and number of patches.
-    
+    Divides the input uniform random survey into equally distributed and equally sized patches. 
+    Calculates n_patches centers [RA,Dec] from RA, Dec and number of patches and saves in a csv file 
+    with 2 space delimited columns (without headers):
+        
+        RA Dec
+
+    Function does not overwrite any existing file with the same name. File need not be updated with every run.
+
     Parameters
     ----------
     uniform_random_RA_list : np.ndarray
@@ -261,16 +647,12 @@ def get_patch_centers(uniform_random_RA_list: np.ndarray,
         number of equal survey area patches required
     survey : str, optional
         survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA 
-    max_iterations: int, optional
+    max_iterations : int, optional
         maximum number of iterations to run
-    tolerance: float, optional
+    tolerance : float, optional
         relative change in the average distance to centers, signifies convergence
-
-    Returns
-    -------
-    np.ndarray
-        (n_patches, 2) array of patch center guesses [RA,Dec]
-        
+    patch_centers_outfile_affix : str
+        output file identifier - values will be saved in 'patch_centers_tol[tolerance]_[identifier].csv'
     """
 
     # MAKE SURE ALL PATCHES ARE SITCHED ON SKY
@@ -296,18 +678,24 @@ def get_patch_centers(uniform_random_RA_list: np.ndarray,
     center_guesses = uniform_random_km.centers
     ra_guesses = center_guesses[:, 0]
     dec_guesses = center_guesses[:, 1]
-    centers_array = np.column_stack((ra_guesses, dec_guesses))
-    return centers_array
+    centers_table = np.column_stack((ra_guesses, dec_guesses))
+
+    patch_centers_outfile_name = 'patch_centers_tol' + str(tolerance) + '_' + patch_centers_outfile_affix + '.csv'
+    ascii.write(centers_table,
+                patch_centers_outfile_name,
+                overwrite=False,
+                format='no_header')
+    print('Patch center guesses saved in '+ patch_centers_outfile_name)
 
 def get_patch_labels(RA_list: np.ndarray,
                      DEC_list: np.ndarray,
                      n_patches: int,
-                     center_guesses: np.ndarray,
+                     patch_centers_file_path: str,
                      survey='kids',
                      numba_installed=True,
                      plot_savename='none') -> np.ndarray:
     """
-    Divides survey into equally distributed and equally sized patches. Returns labels for patches from RA, Dec, number of patches and patch center guesses.
+    Divides survey into equally distributed and equally sized patches. Returns labels for patches from RA, Dec, number of patches and patch center guesses file.
     
     Parameters
     ----------
@@ -317,8 +705,8 @@ def get_patch_labels(RA_list: np.ndarray,
         all corresponding Dec values
     n_patches : int
         number of equal survey area patches required
-    center_guesses : np.ndarray
-        (n_patches, 2) array of patch center guesses [RA, Dec]
+    patch_centers_file_path : str
+        path of '.csv' file with (n_patches x 2) patch center guesses (RA, Dec). File can be obtained from the get_patch_centers function
     survey : str, optional
         survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA 
     numba_installed : bool, optional
@@ -344,6 +732,12 @@ def get_patch_labels(RA_list: np.ndarray,
 
     # STACK RA AND DEC AS X
     X = np.column_stack((corrected_RA_list, DEC_list))
+
+    #UNPACK PATCH CENTER GUESSES
+    centers_table = np.genfromtxt(patch_centers_file_path, delimiter=' ')
+    ra_guesses = centers_table[ : , 0]
+    dec_guesses = centers_table[ : , 1]
+    center_guesses = np.column_stack((ra_guesses, dec_guesses))
 
     # FIND LABELS TO DIVIDE X INTO EQUAL n_patches
     if numba_installed:
@@ -441,7 +835,7 @@ def get_plot(rest_mag_list: np.ndarray,
              RA_list: np.ndarray,
              DEC_list: np.ndarray,
              n_patches: int,
-             center_guesses: np.ndarray,
+             patch_centers_file_path: str,
              survey='kids',
              numba_installed=True, 
              plot_savename='none') -> np.ndarray:
@@ -462,14 +856,14 @@ def get_plot(rest_mag_list: np.ndarray,
         all corresponding Dec values
     n_patches : int
         number of equal survey area patches required
-    center_guesses : np.ndarray
-        (n_patches, 2) equal survey area patch center guesses [RA,Dec]
+    patch_centers_file_path : str
+        path of '.csv' file with (n_patches x 2) patch center guesses (RA, Dec). File can be obtained from the get_patch_centers function
     survey : str, optional
         survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA
     numba_installed : bool, optional
         mark as False if numba is not installed
     plot_savename : str, optional
-        name and extension to save plot as
+        name and extension to save plot as, appears in plot title (should have no spaces)
     
     Returns
     -------
@@ -487,7 +881,7 @@ def get_plot(rest_mag_list: np.ndarray,
     # phi
     M_list, M_err_list, phi_list = get_binned_phi(rest_mag_list, Vmax_list, n_mag_bins)
     # patches
-    labels = get_patch_labels(RA_list, DEC_list, n_patches, center_guesses, survey, numba_installed)
+    labels = get_patch_labels(RA_list, DEC_list, n_patches, patch_centers_file_path, survey, numba_installed)
     # phi errors
     phi_err_list = get_binned_phi_error(rest_mag_list, Vmax_list, labels, n_patches, n_mag_bins)
 
@@ -510,7 +904,7 @@ def get_plot(rest_mag_list: np.ndarray,
         plt.ylabel(
             "number density / $\Phi (M_{r})/ h_{70}^{3}Mpc^{-3}mag^{-1}$",
             fontsize=20)
-        # plt.title(title, fontsize=20)
+        plt.title(plot_savename, fontsize=20)
 
         plt.grid(True)
         plt.legend(loc='upper left')
@@ -530,7 +924,7 @@ def filter_plot_by_colour(dichotomy_slope: float,
                           RA_list: np.ndarray,
                           DEC_list: np.ndarray,
                           n_patches: int,
-                          center_guesses: np.ndarray,
+                          patch_centers_file_path: str,
                           survey='kids',
                           numba_installed=True,
                           plot_savename='none') -> np.ndarray:
@@ -557,14 +951,14 @@ def filter_plot_by_colour(dichotomy_slope: float,
         all corresponding Dec values
     n_patches : int
         number of patches required
-    center_guesses : np.ndarray
-        (n_patches, 2) equal survey area patch center guesses [RA,Dec]
+    patch_centers_file_path : str
+        path of '.csv' file with (n_patches x 2) patch center guesses (RA, Dec). File can be obtained from the get_patch_centers function
     survey : str, optional
         survey name - only change if survey area covers/connects over 320 degrees RA and does not connect over 360 to 0 degrees RA
     numba_installed : bool, optional
         mark as False if numba is not installed
     plot_savename : str, optional
-        name and extension to save plot as
+        name and extension to save plot as, appears in plot title (should have no spaces)
 
     Returns
     -------
@@ -603,18 +997,18 @@ def filter_plot_by_colour(dichotomy_slope: float,
     # all
     M_list, M_err_list, phi_list, phi_err_list = get_plot(
         rest_mag_list, Vmax_list, n_mag_bins, RA_list, DEC_list, n_patches,
-        center_guesses, survey, numba_installed)
+        patch_centers_file_path, survey, numba_installed)
 
     # red
     red_M_list, red_M_err_list, red_phi_list, red_phi_err_list = get_plot(
         rest_mag_list[red_index], Vmax_list[red_index], n_mag_bins,
-        RA_list[red_index], DEC_list[red_index], n_patches, center_guesses,
+        RA_list[red_index], DEC_list[red_index], n_patches, patch_centers_file_path,
         survey, numba_installed)
 
     # blue
     blue_M_list, blue_M_err_list, blue_phi_list, blue_phi_err_list = get_plot(
         rest_mag_list[blue_index], Vmax_list[blue_index], n_mag_bins,
-        RA_list[blue_index], DEC_list[blue_index], n_patches, center_guesses,
+        RA_list[blue_index], DEC_list[blue_index], n_patches, patch_centers_file_path,
         survey, numba_installed)
 
     if plot_savename != 'none':
@@ -654,7 +1048,7 @@ def filter_plot_by_colour(dichotomy_slope: float,
         plt.ylabel(
             "number density / $\Phi (M_{r})/ h_{70}^{3}Mpc^{-3}mag^{-1}$",
             fontsize=20)
-        # plt.title(title, fontsize=20)
+        plt.title(plot_savename, fontsize=20)
 
         plt.grid(True)
         plt.legend(loc='upper left')
@@ -827,7 +1221,7 @@ def get_schechter_phi(M_list: np.ndarray,
     guesses : np.ndarray
         array of Schechter parameter guesses in order [M_star, phi_star, aplha]
     plot_savename : str, optional
-        name and extension to save plot as
+        name and extension to save plot as, appears in plot title (should have no spaces)
 
     Returns
     -------
@@ -910,7 +1304,7 @@ def get_schechter_phi(M_list: np.ndarray,
         plt.xlabel("rest-frame magnitude/ $(M)_{cal}$/ mag", fontsize=20)
         plt.ylabel("number density / $\Phi (M)/ h_{70}^{3}Mpc^{-3}mag^{-1}$",
                    fontsize=20)
-        # plt.title(title, fontsize=20)
+        plt.title(plot_savename, fontsize=20)
         plt.grid(True)
         plt.legend(loc='upper left')
 
@@ -943,7 +1337,7 @@ def get_double_schechter_phi(M_list: np.ndarray,
     guesses : np.ndarray
         array of Schechter parameter guesses in order [M_star, phi_star, aplha]
     plot_savename : str, optional
-        name and extension to save plot as
+        name and extension to save plot as, appears in plot title (should have no spaces)
 
     Returns
     -------
@@ -1050,7 +1444,7 @@ def get_double_schechter_phi(M_list: np.ndarray,
         plt.xlabel("rest-frame magnitude/ $(M)_{cal}$/ mag", fontsize=20)
         plt.ylabel("number density / $\Phi (M)/ h_{70}^{3}Mpc^{-3}mag^{-1}$",
                    fontsize=20)
-        # plt.title(title, fontsize=20)
+        plt.title(plot_savename, fontsize=20)
         plt.grid(True)
         plt.legend(loc='upper left')
 
