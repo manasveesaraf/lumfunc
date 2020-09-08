@@ -24,15 +24,16 @@
 import numpy as np
 import pandas as pd
 # import pytest
-import sys
-sys.path.insert(1, '../lumfunc/')
+# import sys
+# sys.path.insert(1, '../lumfunc/')
 import lumfunc as lf
 
 # -----------------------
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-data_table = pd.read_csv('__tests__/test_catalogue.csv')
+# data_table = pd.read_csv('__tests__/test_catalogue.csv')
+data_table = pd.read_csv('test_catalogue.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -89,7 +90,7 @@ def test_get_maggy_inv_var_rudimentary( ):
 # -----------------------
 
 def test_get_rest_mag( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
     assert list(r_rest_mag_list[0:4]) == [-22.51871096, -20.36706085, -23.67084707, -23.68118244]
@@ -102,7 +103,7 @@ def test_get_rest_mag_rudimentary( ):
 # -----------------------
 
 def test_get_volume( ):
-    zmax_table = pd.read_csv('__tests__/test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
 
     survey_area = 2.5 #sq. degrees
@@ -115,11 +116,11 @@ def test_get_volume_rudimentary( ):
 # -----------------------
 
 def test_get_binned_phi( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('__tests__/test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -146,11 +147,11 @@ def test_get_binned_phi_rudimentary( ):
 # -----------------------
 
 def test_get_binned_phi_error( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('__tests__/test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -187,11 +188,11 @@ def test_get_binned_phi_error_rudimentary( ):
 # -----------------------
 
 def test_SchechterMagModel( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('__tests__/test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -217,11 +218,11 @@ def test_SchechterMagModel_rudimentary( ):
 # -----------------------
 
 def test_DoubleSchechterMagModel( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('__tests__/test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -234,7 +235,7 @@ def test_DoubleSchechterMagModel( ):
     alpha_1_guess = -0.79
     phi_star_2_guess = 6.16e-3
     alpha_2_guess = -0.79
-    sch2_model_phi_list = DoubleSchechterMagModel(M_list, 
+    sch2_model_phi_list = lf.DoubleSchechterMagModel(M_list, 
                                                 M_star_guess,
                                                 phi_star_1_guess,
                                                 alpha_1_guess,
