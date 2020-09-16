@@ -55,9 +55,10 @@ print(r_maggies_list[0:4])
 # [2.17126084e-08 1.88972757e-08 9.39864400e-09 3.74726494e-08]
 
 # rudimentarily:
-lf.get_maggy(np.array([19.15822, 19.309002, 20.067337, 18.565714]))
+r_maggies_result = lf.get_maggy(np.array([19.15822, 19.309002, 20.067337, 18.565714]))
+print(r_maggies_result[0:4])
 # returns
-# array([12.17126084e-08, 1.88972757e-08, 9.39864400e-09, 3.74726494e-08])
+# [2.17126084e-08 1.88972757e-08 9.39864400e-09 3.74726494e-08]
 ```
 
 </p>
@@ -75,11 +76,12 @@ print(r_maggy_inv_var_list[0:4])
 # [2.61353653e+20 2.21539925e+20 2.63295704e+20 1.52030876e+20]
 
 # rudimentarily:
-lf.get_maggy_inv_var(
+r_maggy_inv_var_result = lf.get_maggy_inv_var(
     np.array([2.17126084e-08, 1.88972757e-08, 9.39864400e-09, 3.74726494e-08]),
     np.array([0.00309313, 0.0038601, 0.0071193, 0.00234987]))
+print(r_maggy_inv_var_result[0:4])
 # returns
-# array([2.61353484e+20, 2.21540499e+20, 2.63295631e+20, 1.52031005e+20])
+# [2.61353484e+20 2.21540499e+20 2.63295631e+20 1.52031005e+20]
 ```
 
 </p>
@@ -91,8 +93,8 @@ lf.get_maggy_inv_var(
 Load maggy ratios output file from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a>.
 
 ```python
-maggy_ratios_table = pd.read_csv('test_maggy_ratios.csv', delimiter=' ')
-r_maggy_ratio_list = np.array(maggy_ratios_table['maggy_ratio'])
+r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
 ```    
 Return rest-frame magnitudes from the apparent magnitudes, redshifts and maggy ratios.
 
@@ -100,14 +102,15 @@ Return rest-frame magnitudes from the apparent magnitudes, redshifts and maggy r
 r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 print(r_rest_mag_list[0:4])
 # returns 
-# [-22.50048222 -20.3671756  -23.61190368 -23.75133511]
+# [-22.51871096 -20.36706085 -23.67084707 -23.68118244]
 
 # rudimentarily:
-lf.get_rest_mag(np.array([0.34, 0.17, 0.61, 0.41]),
-                np.array([19.15822, 19.309002, 20.067337, 18.565714]),
-                np.array([0.69938735, 0.90226577, 0.43780755, 0.59193305]))
+r_rest_mag_result = lf.get_rest_mag(np.array([0.34, 0.17, 0.61, 0.41]),
+                                  np.array([19.15822, 19.309002, 20.067337, 18.565714]),
+                                  np.array([0.69938735, 0.90226577, 0.43780755, 0.59193305]))
+print(r_rest_mag_result[0:4])
 # returns
-# array([-22.50048222, -20.3671756 , -23.61190369, -23.75133512])
+# [-22.50048221 -20.3671756  -23.61190369 -23.75133512]
 ```
 
 </p>
@@ -130,12 +133,13 @@ survey_area = 2.5 #sq. degrees
 Vmax_list = lf.get_volume(survey_area, z_max_list)
 print(Vmax_list[:4])
 # returns 
-# [1756716.17902236  178625.22666027 2447025.54638078 2287569.96087901]
+# [1756716.17055371  178625.22629838 2447025.53293128 2287569.94863823]
 
 # rudimentarily:
-lf.get_volume(2.5, np.array([0.50523681, 0.21884399, 0.57489149, 0.55985663]))
+Vmax_result = lf.get_volume(2.5, np.array([0.50523681, 0.21884399, 0.57489149, 0.55985663]))
+print(Vmax_result[:4])
 # returns
-# array([1756716.14859094,  178625.22895137, 2447025.56779186, 2287569.99514156])
+# [1756716.14012229  178625.22858948 2447025.55434235 2287569.98290078]
 ```
 
 </p>
@@ -151,28 +155,34 @@ n_bins = 10
 M_list, M_err_list, phi_list = lf.get_binned_phi(r_rest_mag_list, Vmax_list, n_bins)
 print(M_list)
 # returns
-# [-25.1487769  -23.86987184 -22.59096677 -21.31206171 -20.03315665
-#  -18.75425159 -17.47534652 -16.19644146 -14.9175364  -13.63863134]
+# [-24.62894309 -23.40451281 -22.18008254 -20.95565226 -19.73122199
+#  -18.50679171 -17.28236144 -16.05793116 -14.83350089 -13.60907061]
 print(M_err_list)
 # returns
-# [0.63945253 0.63945253 0.63945253 0.63945253 0.63945253 
-#  0.63945253 0.63945253 0.63945253 0.63945253 0.63945253]
+# [0.61221514 0.61221514 0.61221514 0.61221514 0.61221514 0.61221514
+#  0.61221514 0.61221514 0.61221514 0.61221514]
 print(phi_list)
 # returns 
-# [2.78118218e+02 2.54476157e+02 6.57347457e-05 1.98257155e-04 4.84943102e-04 
-#  1.02149157e-03 1.49165665e-03 4.54012724e-03 5.08195775e-03 6.14432455e-02]
+# [2.90491673e+02 2.65797786e+02 9.55747321e-05 2.54944447e-04
+#  6.24753189e-04 1.07591651e-03 1.91052839e-03 5.62455612e-03
+#  3.86037842e-03 6.41768497e-02]
 
 # OR a rudimentarily example:
-lf.get_binned_phi(
+M_result, M_err_result, phi_result = lf.get_binned_phi(
     np.array([-23, -21, -19, -22, -23, -23, -22, -23, -22, -22, -19, -21]),
     np.array([
         8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08, 6e+08,
         7e+06, 1e+08
     ]), 4)
+print(M_result)
 # returns 
-# (array([-22.5, -21.5, -20.5, -19.5]),
-#  array([0.5, 0.5, 0.5, 0.5]),
-#  array([1.06411667e-08, 1.02900000e-08, 0.00000000e+00, 1.32300000e-07]))
+# [-22.5 -21.5 -20.5 -19.5]
+print(M_err_result)
+# returns 
+# [0.5 0.5 0.5 0.5]
+print(phi_result)
+# returns
+# [1.06411667e-08 1.02900000e-08 0.00000000e+00 1.32300000e-07]
 ```
 
 </p>
@@ -195,24 +205,12 @@ Return patch centers as (RA, Dec) from the uniform RA, Dec and number of patches
 
 ```python
 n_patches = 10
-centers_array = lf.get_patch_centers(uniform_RA_list,
-                                     uniform_Dec_list,
-                                     n_patches,
-                                     survey='kids',
-                                     max_iterations=int(100),
-                                     tolerance=1.0e-1)
-print(centers_array)
-# returns
-# [[ 2.23297633e+02  9.81275815e-01]
-#  [ 2.23193101e+02  2.50219646e+00]
-#  [ 2.23213260e+02  3.28612546e-01]
-#  [ 2.23265647e+02 -1.95982283e-01]
-#  [ 2.23186387e+02  1.42541364e+00]
-#  [ 2.23225546e+02 -7.99113067e-01]
-#  [ 2.23204490e+02 -1.56123960e+00]
-#  [ 2.23300703e+02  2.86857892e+00]
-#  [ 2.23160532e+02  6.87340764e-01]
-#  [ 2.23235093e+02  2.00605106e+00]]
+centers_guesses = lf.get_patch_centers(uniform_RA_list,
+                     uniform_Dec_list,
+                     n_patches,
+                     survey='kids',
+                     max_iterations=int(100),
+                     tolerance=1.0e-2)
 ```
 
 </p>
@@ -221,16 +219,31 @@ print(centers_array)
 <details><summary><b>get_patch_labels( )</b>: Then, use the patch centers to label the survey data points by equally distributed and equally sized patches</summary>
 <p>
 
+Load patch center guesses from file.
+
+```python
+ugriz_test_patch_centers_file_path = 'patch_centers_tol0.01_ugriz_test.csv'
+centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
+ra_guesses = centers_table[ : , 0]
+dec_guesses = centers_table[ : , 1]
+ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
+```
+
 Return patch labels for each data point from RA, Dec, number of patches and patch center guesses.
 
 ```python
 labels = lf.get_patch_labels(RA_list,
                              Dec_list,
                              n_patches,
-                             centers_array,
+                             ugriz_test_patch_centers_guesses,
                              survey='kids',
                              numba_installed=True,
                              plot_savename='test_patches.png')
+
+print(labels[0:4])
+# returns
+# [1 3 5 6]
+
 # displays plot
 ```
 
@@ -245,11 +258,12 @@ labels = lf.get_patch_labels(RA_list,
 Return error on phi from rest-frame magnitude, maximum observed volume, labels, number of patches and number of bins.
 
 ```python
-phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, Vmax_list, labels, 10, 10)
+phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, Vmax_list, labels, n_patches, n_bins)
 print(phi_err_list)
 # returns
-# [6.31512459e+02 5.32152268e+02 4.31666309e-05 2.22841109e-04 4.81148550e-04 
-#  3.16386417e-04 6.52443936e-04 4.68698737e-03 2.05929233e-03 1.60744165e-01]
+# [8.10939765e+02 6.07817000e+02 4.36417469e-05 1.97040124e-04
+#  5.48618065e-04 4.65431861e-04 5.77332857e-04 4.59036072e-03
+#  2.21037277e-03 1.64362438e-01]
 ```
 
 </p>
@@ -264,17 +278,36 @@ print(phi_err_list)
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
 
 ```python
-M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
+plot_M_list, plot_M_err_list, plot_phi_list, plot_phi_err_list = lf.get_plot(
     r_rest_mag_list,
     Vmax_list,
     n_bins,
     RA_list,
     Dec_list,
     n_patches,
-    centers_array,
+    ugriz_test_patch_centers_guesses,
     survey='kids',
     numba_installed=True,
     plot_savename='test_LF.png')
+
+print(plot_M_list)
+# returns
+# [-24.62894309 -23.40451281 -22.18008254 -20.95565226 -19.73122199
+#  -18.50679171 -17.28236144 -16.05793116 -14.83350089 -13.60907061]
+print(plot_M_err_list)
+# returns
+# [0.61221514 0.61221514 0.61221514 0.61221514 0.61221514 0.61221514
+#  0.61221514 0.61221514 0.61221514 0.61221514]
+print(plot_phi_list)
+# returns 
+# [2.90491673e+02 2.65797786e+02 9.55747321e-05 2.54944447e-04
+#  6.24753189e-04 1.07591651e-03 1.91052839e-03 5.62455612e-03
+#  3.86037842e-03 6.41768497e-02]
+print(plot_phi_err_list)
+# returns
+# [8.10939765e+02 6.07817000e+02 4.36417469e-05 1.97040124e-04
+#  5.48618065e-04 4.65431861e-04 5.77332857e-04 4.59036072e-03
+#  2.21037277e-03 1.64362438e-01]
 
 # displays plot
 ```
@@ -292,8 +325,8 @@ M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
 Calculate rest-frame magnitudes in a higher wavelength band.
 
 ```python
-maggy_ratios_table = pd.read_csv('test_g_maggy_ratios.csv', delimiter=' ')
-g_maggy_ratio_list = np.array(maggy_ratios_table['maggy_ratio'])
+g_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_g_ugriz_test.csv', delimiter=' ')
+g_maggy_ratio_list = np.array(g_maggy_ratios_table['maggy_ratio'])
 g_rest_mag_list = lf.get_rest_mag(z_photo_list, g_app_mag_list, g_maggy_ratio_list)
 ```                                  
 
@@ -312,10 +345,65 @@ all_M_list, all_M_err_list, all_phi_list, all_phi_err_list, red_M_list, red_M_er
     RA_list,
     Dec_list,
     n_patches,
-    centers_array,
+    ugriz_test_patch_centers_guesses,
     survey='kids',
     numba_installed=True,
     plot_savename='test_LF_colour.png')
+
+print(all_M_list)
+# returns
+# [-24.62894309 -23.40451281 -22.18008254 -20.95565226 -19.73122199
+#  -18.50679171 -17.28236144 -16.05793116 -14.83350089 -13.60907061]
+print(all_M_err_list)
+# returns
+# [0.61221514 0.61221514 0.61221514 0.61221514 0.61221514 0.61221514
+#  0.61221514 0.61221514 0.61221514 0.61221514]
+print(all_phi_list)
+# returns 
+# [2.90491673e+02 2.65797786e+02 9.55747321e-05 2.54944447e-04
+#  6.24753189e-04 1.07591651e-03 1.91052839e-03 5.62455612e-03
+#  3.86037842e-03 6.41768497e-02]
+print(all_phi_err_list)
+# returns
+# [8.10939765e+02 6.07817000e+02 4.36417469e-05 1.97040124e-04
+#  5.48618065e-04 4.65431861e-04 5.77332857e-04 4.59036072e-03
+#  2.21037277e-03 1.64362438e-01]
+print(red_M_list)
+# returns
+# [-23.74970541 -23.22313054 -22.69655567 -22.1699808  -21.64340593
+#  -21.11683106 -20.59025618 -20.06368131 -19.53710644 -19.01053157]
+print(red_M_err_list)
+# returns
+# [0.26328744 0.26328744 0.26328744 0.26328744 0.26328744 0.26328744
+#  0.26328744 0.26328744 0.26328744 0.26328744]
+print(red_phi_list)
+# returns 
+# [5.26222015e-06 1.14632290e-05 2.28157661e-05 3.06324489e-05
+#  3.78476037e-05 6.95586501e-05 4.60187630e-05 4.22375487e-05
+#  1.62668295e-04 5.19891936e-05]
+print(red_phi_err_list)
+# returns
+# [1.68168015e-05 1.88488251e-05 2.14158070e-05 3.71536660e-05
+#  5.64450184e-05 3.68156206e-05 5.65680558e-05 7.50190249e-05
+#  1.53845192e-04 2.11279153e-04]
+print(blue_M_list)
+# returns
+# [-24.62894309 -23.40451281 -22.18008254 -20.95565226 -19.73122199
+#  -18.50679171 -17.28236144 -16.05793116 -14.83350089 -13.60907061]
+print(blue_M_err_list)
+# returns
+# [0.61221514 0.61221514 0.61221514 0.61221514 0.61221514 0.61221514
+#  0.61221514 0.61221514 0.61221514 0.61221514]
+print(blue_phi_list)
+# returns 
+# [2.90491673e+02 2.65797776e+02 6.60187386e-05 1.98062249e-04
+#  5.36631986e-04 1.05355819e-03 1.91052839e-03 5.62455612e-03
+#  3.86037842e-03 6.41768497e-02]
+print(blue_phi_err_list)
+# returns
+# [8.10939766e+02 6.07817001e+02 3.09642048e-05 1.36828177e-04
+#  5.48267776e-04 4.41552058e-04 5.12621058e-04 4.59003142e-03
+#  2.20983143e-03 1.64360385e-01]
 
 # displays plot
 ```
@@ -340,8 +428,9 @@ alpha_guess = -1.3
 sch1_model_phi_list = lf.SchechterMagModel(M_list, M_star_guess, phi_star_guess, alpha_guess)
 print(sch1_model_phi_list)
 # returns
-# [1.85685848e-29 3.25671139e-11 1.72458831e-05 1.27468679e-03 6.12395219e-03 
-#  1.26803536e-02 2.02617665e-02 2.98927403e-02 4.30310959e-02 6.14770530e-02]
+# [1.88907752e-19 2.36778419e-08 1.16643327e-04 2.29997398e-03
+#  7.59124212e-03 1.40466857e-02 2.15508182e-02 3.11177839e-02
+#  4.40579218e-02 6.19837431e-02]
 ```
 
 </p>
@@ -358,15 +447,17 @@ phi_star_1_guess = 6.16e-3
 alpha_1_guess = -0.79
 phi_star_2_guess = 6.16e-3
 alpha_2_guess = -0.79
-sch2_model_phi_list = lf.DoubleSchechterMagModel(M_list, M_star_guess,
-                                                 phi_star_1_guess,
-                                                 alpha_1_guess,
-                                                 phi_star_2_guess,
-                                                 alpha_2_guess)
+sch2_model_phi_list = lf.DoubleSchechterMagModel(M_list, 
+                                              M_star_guess,
+                                              phi_star_1_guess,
+                                              alpha_1_guess,
+                                              phi_star_2_guess,
+                                              alpha_2_guess)
 print(sch2_model_phi_list)
 # returns
-# [1.94632963e-28 1.87206201e-10 5.43662983e-05 2.20369342e-03 5.80607779e-03 
-#  6.59304119e-03 5.77743541e-03 4.67441094e-03 3.69017477e-03 2.89121864e-03]
+# [1.55110526e-18 1.09383000e-07 3.03168335e-04 3.36328048e-03
+#  6.24552903e-03 6.50199270e-03 5.61245148e-03 4.55946326e-03
+#  3.63199542e-03 2.87485077e-03]
 ```
 
 </p>
@@ -382,7 +473,7 @@ m = 3
 gof = lf.get_gof(phi_list, phi_err_list, sch1_model_phi_list, m)
 print(gof)
 # returns
-# 79.66254082924551
+# 366.43103358282144
 ```
 
 </p>
@@ -394,18 +485,45 @@ print(gof)
 Returns least square fit of phi with single Schechter function, reduced chi squared estimate and the 3 Schechter parameters with their errors.
 
 ```python
-sch1_model_phi_list, chi_sq_1, M_star, M_star_err, phi_star, phi_star_err, alpha_star, alpha_star_err = lf.get_schechter_phi(
-    M_list,
-    M_err_list,
+all_sch1_model_phi_list, all_chi_sq, all_M_star, all_M_star_err, all_phi_star, all_phi_star_err, all_alpha_star, all_alpha_star_err = lf.get_schechter_phi(
+    all_M_list,
+    all_M_err_list,
     all_phi_list,
     all_phi_err_list,
     np.array([M_star_guess, phi_star_guess, alpha_guess]),
-    plot_savename='test_Sch.png')
+    plot_savename='test_all_Sch.png')
+
+print(all_sch1_model_phi_list)
+# returns
+# [2.83258986e-09 5.74389144e-06 9.25939975e-05 3.12011592e-04
+#  6.33385107e-04 1.09120816e-03 1.78269412e-03 2.86270542e-03
+#  4.57149418e-03 7.28713338e-03]
+print(all_chi_sq)
+# returns
+# 0.14910742282850892
+print(all_M_star)
+# returns
+# -22.068531742285295
+print(all_M_star_err)
+# returns
+# 0.35573470148190917
+print(all_phi_star)
+# returns
+# 0.0003176940137059405
+print(all_phi_star_err)
+# returns
+# 0.0001288373384458377
+print(all_alpha_star)
+# returns
+# -1.4126892538229192
+print(all_alpha_star_err)
+# returns
+# 0.06081125190828317
 
 # displays plot
 ```
 
-![get_schechter_phi](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_Sch.png)
+![get_schechter_phi](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_all_Sch.png)
 
 </p>
 </details>
@@ -416,18 +534,57 @@ sch1_model_phi_list, chi_sq_1, M_star, M_star_err, phi_star, phi_star_err, alpha
 Returns least square fit of phi with double Schechter function, reduced chi squared estimate and the 5 Schechter parameters with their errors.    
 
 ```python
-sch2_model_phi_list, chi_sq_1, M_star, M_star_err, phi_star_1, phi_star_err_1, phi_star_2, phi_star_err_2, alpha_star_1, alpha_star_err_1, alpha_star_2, alpha_star_err_2 = lf.get_double_schechter_phi(
-    M_list,
-    M_err_list,
-    all_phi_list,
-    all_phi_err_list,
+red_sch2_model_phi_list, red_chi_sq, red_M_star, red_M_star_err, red_phi_star_1, red_phi_star_err_1, red_phi_star_2, red_phi_star_err_2, red_alpha_star_1, red_alpha_star_err_1, red_alpha_star_2, red_alpha_star_err_2 = lf.get_double_schechter_phi(
+    red_M_list,
+    red_M_err_list,
+    red_phi_list,
+    red_phi_err_list,
     np.array([M_star_guess, phi_star_1_guess, alpha_1_guess, phi_star_2_guess, alpha_2_guess]),
-    plot_savename='test_dSch.png')
+    plot_savename='test_red_dSch.png')
+
+print(list(red_sch2_model_phi_list))
+# returns
+# [0.00000000e+000 0.00000000e+000 0.00000000e+000 0.00000000e+000
+#  0.00000000e+000 0.00000000e+000 0.00000000e+000 2.63752933e-229
+#  2.35253203e-141 2.75200955e-087]
+print(red_chi_sq)
+# returns
+# 1.2084645603920292
+print(red_M_star)
+# returns
+# -13.256557144101373
+print(red_M_star_err)
+# returns
+# inf
+print(red_phi_star_1) 
+# returns
+# -0.005143924152379018
+print(red_phi_star_err_1) 
+# returns
+# inf
+print(red_phi_star_2)
+# returns
+# -1.8735454729853815
+print(red_phi_star_err_2) 
+# returns
+# inf
+print(red_alpha_star_1) 
+# returns
+# 0.012183946742584995
+print(red_alpha_star_err_1) 
+# returns
+# inf
+print(red_alpha_star_2)
+# returns
+# 0.025603076393042268
+print(red_alpha_star_err_2)
+# returns
+# inf
 
 # displays plot
 ```
 
-![get_double_schechter_phi](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_dSch.png)
+![get_double_schechter_phi](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_red_dSch.png)
 
 </p>
 </details>
