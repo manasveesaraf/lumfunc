@@ -198,6 +198,32 @@ def test_get_patch_labels( ):
     assert cv2.countNonZero(b) == 0
     assert cv2.countNonZero(g) == 0
     assert cv2.countNonZero(r) == 0
+
+def test_get_patch_labels_no_numba( ):
+    ugriz_test_patch_centers_file_path = 'patch_centers_tol0.01_ugriz_test.csv'
+    centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
+    ra_guesses = centers_table[ : , 0]
+    dec_guesses = centers_table[ : , 1]
+    ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
+
+    n_patches = 10
+    labels = lf.get_patch_labels(RA_list,
+                                Dec_list,
+                                n_patches,
+                                ugriz_test_patch_centers_guesses,
+                                survey='kids',
+                                numba_installed=False,
+                                plot_savename='pytest_patches_no_numba.png')
+    assert list(labels[0:4]) == [1, 3, 5, 6]
+    
+    test_result = cv2.imread('test_patches.png')
+    pytest_result = cv2.imread('pytest_patches_no_numba.png')
+    difference = cv2.subtract(test_result, pytest_result)
+    b, g, r = cv2.split(difference)
+    assert test_result.shape == pytest_result.shape
+    assert cv2.countNonZero(b) == 0
+    assert cv2.countNonZero(g) == 0
+    assert cv2.countNonZero(r) == 0
 # -----------------------
 
 def test_get_binned_phi_error( ):
