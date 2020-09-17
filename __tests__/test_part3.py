@@ -21,8 +21,8 @@ import lumfunc as lf
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-# data_table = pd.read_csv('__tests__/test_catalogue.csv')
-data_table = pd.read_csv('test_catalogue.csv')
+# data_table = pd.read_csv('__tests__/catalogue_test.csv')
+data_table = pd.read_csv('catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -61,7 +61,7 @@ def test_get_plot( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -111,7 +111,7 @@ def test_filter_plot_by_colour( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)

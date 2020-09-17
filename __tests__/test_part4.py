@@ -24,8 +24,8 @@ import lumfunc as lf
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-# data_table = pd.read_csv('__tests__/test_catalogue.csv')
-data_table = pd.read_csv('test_catalogue.csv')
+# data_table = pd.read_csv('__tests__/catalogue_test.csv')
+data_table = pd.read_csv('catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -64,7 +64,7 @@ def test_SchechterMagModel( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -96,7 +96,7 @@ def test_DoubleSchechterMagModel( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -135,7 +135,7 @@ def test_get_gof( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -192,7 +192,7 @@ def test_get_schechter_phi_all( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -262,7 +262,7 @@ def test_get_schechter_phi_blue( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -344,7 +344,7 @@ def test_get_schechter_phi_rudimentarily( ):
             1.4e-03, 2.2e-03
         ]),
         np.array([-20.71, 9.5e-3, -1.3]),
-        plot_savename='rud_pytest_Sch.png')
+        plot_savename='pytest_rud_Sch.png')
     # displays plot
     assert list(all_sch1_model_phi_result) == [1.7105353558263635e-07, 5.1640448032129975e-06, 4.053707109679924e-05, 0.0001465834405778961, 
         0.00033931824553655666, 0.0006076603569602913, 0.0009387957310397152, 0.001332203535517021, 0.0018002389419955371, 0.002365197612525618, 
@@ -357,8 +357,8 @@ def test_get_schechter_phi_rudimentarily( ):
     assert alpha_star_result == -1.4248810024852225
     assert alpha_star_err_result == 0.06007607488402875
 
-    test_result = cv2.imread('rud_test_Sch.png')
-    pytest_result = cv2.imread('rud_pytest_Sch.png')
+    test_result = cv2.imread('test_rud_Sch.png')
+    pytest_result = cv2.imread('pytest_rud_Sch.png')
     difference = cv2.subtract(test_result, pytest_result)
     b, g, r = cv2.split(difference)
     assert test_result.shape == pytest_result.shape
@@ -372,7 +372,7 @@ def test_get_double_schechter_phi_red( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -462,7 +462,7 @@ def test_get_double_schechter_phi_rudimentarily( ):
             1.39e-03, 2.17e-03
         ]),
         np.array([-20.7, 6.16e-3, -0.79, 6.16e-3, -0.79]),
-        plot_savename='rud_pytest_dSch.png')
+        plot_savename='pytest_rud_dSch.png')
     # displays plot
     assert list(all_sch2_model_phi_result) == [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 0.00016513644802319284, 
         0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 0.0016250833276945204, 0.0021183671618024385, 
@@ -479,8 +479,8 @@ def test_get_double_schechter_phi_rudimentarily( ):
     assert alpha_star_2_result == -1.774506451062984
     assert alpha_star_err_2_result == 0.9946532141625982
 
-    test_result = cv2.imread('rud_test_dSch.png')
-    pytest_result = cv2.imread('rud_pytest_dSch.png')
+    test_result = cv2.imread('test_rud_dSch.png')
+    pytest_result = cv2.imread('pytest_rud_dSch.png')
     difference = cv2.subtract(test_result, pytest_result)
     b, g, r = cv2.split(difference)
     assert test_result.shape == pytest_result.shape

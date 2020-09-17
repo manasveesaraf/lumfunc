@@ -9,7 +9,7 @@ import pandas as pd
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-data_table = pd.read_csv('test_catalogue.csv')
+data_table = pd.read_csv('catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -88,7 +88,7 @@ print(list(r_rest_mag_result[0:4]))
 # -----------------------
 
 
-zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
 z_max_list = np.array(zmax_table['zmax'])
 
 survey_area = 2.5 #sq. degrees
@@ -140,7 +140,7 @@ print(list(phi_result))
 # -----------------------
 
 
-uniform_data_table = pd.read_csv('test_uniform_catalogue.csv')
+uniform_data_table = pd.read_csv('uniform_catalogue_test.csv')
 uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
 uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
 
@@ -489,7 +489,7 @@ all_sch1_model_phi_result, chi_sq_sch1_result, M_star_result, M_star_err_result,
         1.4e-03, 2.2e-03
     ]),
     np.array([-20.71, 9.5e-3, -1.3]),
-    plot_savename='rud_test_Sch.png')
+    plot_savename='test_rud_Sch.png')
 # displays plot
 print(list(all_sch1_model_phi_result))
 # returns
@@ -587,7 +587,7 @@ all_sch2_model_phi_result, chi_sq_sch2_result, M_star_result, M_star_err_result,
         1.39e-03, 2.17e-03
     ]),
     np.array([-20.7, 6.16e-3, -0.79, 6.16e-3, -0.79]),
-    plot_savename='rud_test_dSch.png')
+    plot_savename='test_rud_dSch.png')
 # displays plot
 print(list(all_sch2_model_phi_result))
 # returns

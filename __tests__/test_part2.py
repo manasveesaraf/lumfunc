@@ -22,8 +22,8 @@ import lumfunc as lf
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-# data_table = pd.read_csv('__tests__/test_catalogue.csv')
-data_table = pd.read_csv('test_catalogue.csv')
+# data_table = pd.read_csv('__tests__/catalogue_test.csv')
+data_table = pd.read_csv('catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -58,7 +58,7 @@ z_spec_list = np.array(data_table['z_spec'])
 # -----------------------
 
 def test_get_patch_centers( ):
-    uniform_data_table = pd.read_csv('test_uniform_catalogue.csv')
+    uniform_data_table = pd.read_csv('uniform_catalogue_test.csv')
     uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
     uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
 
@@ -98,7 +98,7 @@ def test_get_patch_labels( ):
     assert cv2.countNonZero(b) == 0
     assert cv2.countNonZero(g) == 0
     assert cv2.countNonZero(r) == 0
-    
+
 def test_get_patch_labels_no_numba( ):
     ugriz_test_patch_centers_file_path = 'patch_centers_tol0.01_ugriz_test.csv'
     centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
@@ -131,7 +131,7 @@ def test_get_binned_phi_error( ):
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+    zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
