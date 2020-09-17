@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 
 # test data (photometric galaxian survey)
-data_table = pd.read_csv('test_catalogue.csv')
+data_table = pd.read_csv('catalogue_test.csv')
 RA_list = np.array(data_table['RA'])
 Dec_list = np.array(data_table['Dec'])
 g_app_mag_list = np.array(data_table['g_mag'])
@@ -122,7 +122,7 @@ print(r_rest_mag_result[0:4])
 Load the ![zmax](https://render.githubusercontent.com/render/math?math=z_{max} ) file.
 
 ```python
-zmax_table = pd.read_csv('test_zmax.csv', delimiter=' ')
+zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
 z_max_list = np.array(zmax_table['zmax'])
 ```
 
@@ -196,7 +196,7 @@ print(phi_result)
 Load RA and Dec from uniformly distributed catalogue.
 
 ```python
-uniform_data_table = pd.read_csv('test_uniform_catalogue.csv')
+uniform_data_table = pd.read_csv('uniform_catalogue_test.csv')
 uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
 uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
 ```
