@@ -15,7 +15,7 @@ import math
 import numpy as np
 import pandas as pd
 # import cv2
-# import pytest
+from pytest import approx
 import sys
 sys.path.insert(1, 'lumfunc/')
 import lumfunc as lf
@@ -436,15 +436,15 @@ def test_get_schechter_phi_blue_no_plot( ):
         blue_phi_err_list,
         np.array([M_star_guess, phi_star_guess, alpha_guess]))
     
-    assert list(blue_sch1_model_phi_list) == [1.9842034834819953e-10, 2.1809348172275195e-06, 6.210185218825129e-05, 0.00025711149229255473, 
-        0.0005701699443248206, 0.0010330083316408773, 0.0017530015118458727, 0.0029124539166523883, 0.004805700054962961, 0.007912062557208274]
-    assert blue_chi_sq == 0.18163420708695324
-    assert blue_M_star == -21.842075975175316
-    assert blue_M_star_err == 0.31845816378631797
-    assert blue_phi_star == 0.0003029586014597913
-    assert blue_phi_star_err == 0.00012126827264875354
-    assert blue_alpha_star == -1.4411669183679228
-    assert blue_alpha_star_err == 0.06358938020533868
+    assert list(blue_sch1_model_phi_list) == approx([1.9842034834819953e-10, 2.1809348172275195e-06, 6.210185218825129e-05, 0.00025711149229255473, 
+        0.0005701699443248206, 0.0010330083316408773, 0.0017530015118458727, 0.0029124539166523883, 0.004805700054962961, 0.007912062557208274])
+    assert blue_chi_sq == approx(0.18163420708695324)
+    assert blue_M_star == approx(-21.842075975175316)
+    assert blue_M_star_err == approx(0.31845816378631797)
+    assert blue_phi_star == approx(0.0003029586014597913)
+    assert blue_phi_star_err == approx(0.00012126827264875354)
+    assert blue_alpha_star == approx(-1.4411669183679228)
+    assert blue_alpha_star_err == approx(0.06358938020533868)
 
 # def test_get_schechter_phi_rudimentarily( ):
 #     all_sch1_model_phi_result, chi_sq_sch1_result, M_star_result, M_star_err_result, phi_star_result, phi_star_err_result, alpha_star_result, alpha_star_err_result = lf.get_schechter_phi(np.array([
@@ -643,18 +643,18 @@ def test_get_double_schechter_phi_red_no_plot( ):
         red_phi_err_list,
         np.array([M_star_guess, phi_star_1_guess, alpha_1_guess, phi_star_2_guess, alpha_2_guess]))
     # displays plot
-    assert list(red_sch2_model_phi_list) == [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
-        2.752009553823618e-87]
-    assert red_chi_sq == 1.2084645603920292
-    assert red_M_star == -13.256557144101373
+    assert list(red_sch2_model_phi_list) == approx([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
+        2.752009553823618e-87])
+    assert red_chi_sq == approx(1.2084645603920292)
+    assert red_M_star == approx(-13.256557144101373)
     assert red_M_star_err == math.inf
-    assert red_phi_star_1 == -0.005143924152379018
+    assert red_phi_star_1 == approx(-0.005143924152379018)
     assert red_phi_star_err_1 == math.inf
-    assert red_phi_star_2 == -1.8735454729853815
+    assert red_phi_star_2 == approx(-1.8735454729853815)
     assert red_phi_star_err_2 == math.inf
-    assert red_alpha_star_1 == 0.012183946742584995
+    assert red_alpha_star_1 == approx(0.012183946742584995)
     assert red_alpha_star_err_1 == math.inf
-    assert red_alpha_star_2 == 0.025603076393042268
+    assert red_alpha_star_2 == approx(0.025603076393042268)
     assert red_alpha_star_err_2 == math.inf
 
 # def test_get_double_schechter_phi_rudimentarily( ):
@@ -725,15 +725,15 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
     assert list(all_sch2_model_phi_result) == [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 0.00016513644802319284, 
         0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 0.0016250833276945204, 0.0021183671618024385, 
         0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 0.007510562710100609]
-    assert round(chi_sq_sch2_result,5) == round(0.8888283543610924,5)
-    assert round(M_star_result,5) == round(-22.303878380116704,5)
-    assert round(M_star_err_result,5) == round(0.26464127945271887,5)
-    assert round(phi_star_1_result,5) == round(0.0009668887609189701,5)
-    assert round(phi_star_err_1_result,5) == round(0.000640187578339006,5)
-    assert round(phi_star_2_result,5) == round(-1.0900241221219484,5)
-    assert round(phi_star_err_2_result,5) == round(0.7987986322969173,5)
-    assert round(alpha_star_1_result,5) == round(0.0001418318772494868,5)
-    assert round(alpha_star_err_1_result,5) == round(0.0008399596540331241,5)
-    assert round(alpha_star_2_result,5) == round(-1.774506451062984,5)
-    assert round(alpha_star_err_2_result,5) == round(0.9946532141625982,5)
+    assert chi_sq_sch2_result == approx(0.8888283543610924)
+    assert M_star_result == approx(-22.303878380116704)
+    assert M_star_err_result == approx(0.26464127945271887)
+    assert phi_star_1_result == approx(0.0009668887609189701)
+    assert phi_star_err_1_result == approx(0.000640187578339006)
+    assert phi_star_2_result == approx(-1.0900241221219484)
+    assert phi_star_err_2_result == approx(0.7987986322969173)
+    assert alpha_star_1_result == approx(0.0001418318772494868)
+    assert alpha_star_err_1_result == approx(0.0008399596540331241)
+    assert alpha_star_2_result == approx(-1.774506451062984)
+    assert alpha_star_err_2_result == approx(0.9946532141625982)
 # -----------------------
