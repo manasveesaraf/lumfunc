@@ -1,0 +1,6 @@
+scipy
+matplotlib
+numpy
+astropy
+pandas
+pytest
