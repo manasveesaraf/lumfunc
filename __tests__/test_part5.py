@@ -308,13 +308,13 @@ def test_get_schechter_phi_all_no_plot( ):
     
     assert list(all_sch1_model_phi_list) == [2.8325898598722236e-09, 5.743891439174078e-06, 9.259399753521627e-05, 0.00031201159158978584, 
         0.000633385107084906, 0.0010912081614801337, 0.0017826941154962066, 0.0028627054171209425, 0.0045714941754318224, 0.007287133378452643]
-    assert all_chi_sq == 0.14910742282850892
-    assert all_M_star == -22.068531742285295
-    assert all_M_star_err == 0.3557347014819093
-    assert all_phi_star == 0.0003176940137059405
-    assert all_phi_star_err == 0.0001288373384458377
-    assert all_alpha_star == -1.4126892538229192
-    assert all_alpha_star_err == 0.06081125190828317
+    assert round(all_chi_sq,5) == round(0.14910742282850892,5)
+    assert round(all_M_star,5) == round(-22.068531742285295,5)
+    assert round(all_M_star_err,5) == round(0.3557347014819093,5)
+    assert round(all_phi_star,5) == round(0.0003176940137059405,5)
+    assert round(all_phi_star_err,5) == round(0.0001288373384458377,5)
+    assert round(all_alpha_star,5) == round(-1.4126892538229192,5)
+    assert round(all_alpha_star_err,5) == round(0.06081125190828317,5)
 
 # def test_get_schechter_phi_blue( ):
 #     r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
@@ -506,13 +506,13 @@ def test_get_schechter_phi_rudimentarily_no_plot( ):
     assert list(all_sch1_model_phi_result) == [1.7105353558263635e-07, 5.1640448032129975e-06, 4.053707109679924e-05, 0.0001465834405778961, 
         0.00033931824553655666, 0.0006076603569602913, 0.0009387957310397152, 0.001332203535517021, 0.0018002389419955371, 0.002365197612525618, 
         0.003057535570029159, 0.003915871425980178, 0.004988344284986229, 0.006334965713301948]
-    assert chi_sq_sch1_result == 1.0209802688993401
-    assert M_star_result == -22.51627500778435
-    assert M_star_err_result == 0.0964342301982251
-    assert phi_star_result == 0.0007681235644217974
-    assert phi_star_err_result == 0.00015735301981608952
-    assert alpha_star_result == -1.4248810024852225
-    assert alpha_star_err_result == 0.06007607488402875
+    assert round(chi_sq_sch1_result,5) == round(1.0209802688993401,5)
+    assert round(M_star_result,5) == round(-22.51627500778435,5)
+    assert round(M_star_err_result,5) == round(0.0964342301982251,5)
+    assert round(phi_star_result,5) == round(0.0007681235644217974,5)
+    assert round(phi_star_err_result,5) == round(0.00015735301981608952,5)
+    assert round(alpha_star_result,5) == round(-1.4248810024852225,5)
+    assert round(alpha_star_err_result,5) == round(0.06007607488402875,5)
 # -----------------------
 
 # def test_get_double_schechter_phi_red( ):
@@ -725,15 +725,15 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
     assert list(all_sch2_model_phi_result) == [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 0.00016513644802319284, 
         0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 0.0016250833276945204, 0.0021183671618024385, 
         0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 0.007510562710100609]
-    assert chi_sq_sch2_result == 0.8888283543610924
-    assert M_star_result == -22.303878380116704
-    assert M_star_err_result == 0.26464127945271887
-    assert phi_star_1_result == 0.0009668887609189701
-    assert phi_star_err_1_result == 0.000640187578339006
-    assert phi_star_2_result == -1.0900241221219484
-    assert phi_star_err_2_result == 0.7987986322969173
-    assert alpha_star_1_result == 0.0001418318772494868
-    assert alpha_star_err_1_result == 0.0008399596540331241
-    assert alpha_star_2_result == -1.774506451062984
-    assert alpha_star_err_2_result == 0.9946532141625982
+    assert round(chi_sq_sch2_result,5) == round(0.8888283543610924,5)
+    assert round(M_star_result,5) == round(-22.303878380116704,5)
+    assert round(M_star_err_result,5) == round(0.26464127945271887,5)
+    assert round(phi_star_1_result,5) == round(0.0009668887609189701,5)
+    assert round(phi_star_err_1_result,5) == round(0.000640187578339006,5)
+    assert round(phi_star_2_result,5) == round(-1.0900241221219484,5)
+    assert round(phi_star_err_2_result,5) == round(0.7987986322969173,5)
+    assert round(alpha_star_1_result,5) == round(0.0001418318772494868,5)
+    assert round(alpha_star_err_1_result,5) == round(0.0008399596540331241,5)
+    assert round(alpha_star_2_result,5) == round(-1.774506451062984,5)
+    assert round(alpha_star_err_2_result,5) == round(0.9946532141625982,5)
 # -----------------------
