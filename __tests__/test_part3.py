@@ -15,7 +15,7 @@ import pandas as pd
 # import cv2
 # import pytest
 import sys
-sys.path.insert(1, '../lumfunc/')
+sys.path.insert(1, 'lumfunc/')
 import lumfunc as lf
 
 # -----------------------
