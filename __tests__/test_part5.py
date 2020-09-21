@@ -310,7 +310,7 @@ def test_get_schechter_phi_all_no_plot( ):
         0.000633385107084906, 0.0010912081614801337, 0.0017826941154962066, 0.0028627054171209425, 0.0045714941754318224, 0.007287133378452643]
     assert all_chi_sq == 0.14910742282850892
     assert all_M_star == -22.068531742285295
-    assert all_M_star_err == 0.35573470148190917
+    assert all_M_star_err == 0.3557347014819093
     assert all_phi_star == 0.0003176940137059405
     assert all_phi_star_err == 0.0001288373384458377
     assert all_alpha_star == -1.4126892538229192
@@ -508,7 +508,7 @@ def test_get_schechter_phi_rudimentarily_no_plot( ):
         0.003057535570029159, 0.003915871425980178, 0.004988344284986229, 0.006334965713301948]
     assert chi_sq_sch1_result == 1.0209802688993401
     assert M_star_result == -22.51627500778435
-    assert M_star_err_result == 0.09643423019822513
+    assert M_star_err_result == 0.0964342301982251
     assert phi_star_result == 0.0007681235644217974
     assert phi_star_err_result == 0.00015735301981608952
     assert alpha_star_result == -1.4248810024852225
@@ -727,7 +727,7 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 0.007510562710100609]
     assert chi_sq_sch2_result == 0.8888283543610924
     assert M_star_result == -22.303878380116704
-    assert M_star_err_result == 0.2646412794527086
+    assert M_star_err_result == 0.26464127945271887
     assert phi_star_1_result == 0.0009668887609189701
     assert phi_star_err_1_result == 0.000640187578339006
     assert phi_star_2_result == -1.0900241221219484
