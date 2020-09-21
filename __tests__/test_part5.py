@@ -645,16 +645,16 @@ def test_get_double_schechter_phi_red_no_plot( ):
     # displays plot
     assert list(red_sch2_model_phi_list) == approx([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
         2.752009553823618e-87])
-    assert red_chi_sq == approx(1.2084645603920292)
-    assert red_M_star == approx(-13.256375067114597)
+    assert round(red_chi_sq,5) == round(1.2084645603920292,5)
+    assert round(red_M_star,5) == round(-13.256375067114597,5)
     assert red_M_star_err == math.inf
     assert round(red_phi_star_1,5) == round(-0.005143924152379018,5)
     assert red_phi_star_err_1 == math.inf
-    assert red_phi_star_2 == approx(-1.8735454729853815)
+    assert round(red_phi_star_2,5) == round(-1.8735454729853815,5)
     assert red_phi_star_err_2 == math.inf
-    assert red_alpha_star_1 == approx(0.012183946742584995)
+    assert round(red_alpha_star_1,5) == round(0.012183946742584995,5)
     assert red_alpha_star_err_1 == math.inf
-    assert red_alpha_star_2 == approx(0.025603076393042268)
+    assert round(red_alpha_star_2,5) == round(0.025603076393042268,5)
     assert red_alpha_star_err_2 == math.inf
 
 
