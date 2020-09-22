@@ -650,7 +650,7 @@ def test_get_double_schechter_phi_red_no_plot( ):
     assert red_M_star_err == math.inf
     assert round(red_phi_star_1,5) == round(-0.005143924152379018,5)
     assert red_phi_star_err_1 == math.inf
-    assert round(red_phi_star_2,5) == round(-1.8735454729853815,5)
+    assert round(red_phi_star_2,5) == round(-1.872910729853815,5)
     assert red_phi_star_err_2 == math.inf
     assert round(red_alpha_star_1,5) == round(0.012183946742584995,5)
     assert red_alpha_star_err_1 == math.inf
@@ -728,7 +728,7 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         0.0016251042008930167, 0.002118408776059507, 0.0028055841560100034, 0.003802706406722979, 0.005283328392784677, 
         0.007510397969756666])
     assert chi_sq_sch2_result == approx(0.8888283543610924)
-    assert round(M_star_result,5) == round(-22.303878380116704,5)
+    assert round(M_star_result,5) == round(-22.303908380116704,5)
     assert M_star_err_result == approx(0.26464127945271887)
     assert phi_star_1_result == approx(0.0009668887609189701)
     assert phi_star_err_1_result == approx(0.000640187578339006)
