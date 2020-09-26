@@ -738,15 +738,15 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         0.007510562710100609]
     phi_test = [ round(x,2) for x in phi_test ]
     assert phi_result == phi_test
-    assert round(chi_sq_sch2_result,3) == round(0.8888283543610924,3)
-    assert round(M_star_result,3) == round(-22.303908380116704,3)
-    assert round(M_star_err_result,3) == round(0.26464127945271887,3)
-    assert round(phi_star_1_result,3) == round(0.0009668887609189701,3)
-    assert round(phi_star_err_1_result,3) == round(0.000640187578339006,3)
-    assert round(phi_star_2_result,3) == round(-1.0900241221219484,3)
-    assert round(phi_star_err_2_result,3) == round(0.7987986322969173,3)
-    assert round(alpha_star_1_result,3) == round(0.0001418318772494868,3)
-    assert round(alpha_star_err_1_result,3) == round(0.0008399596540331241,3)
-    assert round(alpha_star_2_result,3) == round(-1.774506451062984,3)
+    assert round(chi_sq_sch2_result,2) == round(0.8888283543610924,2)
+    assert round(M_star_result,2) == round(-22.303908380116704,2)
+    assert round(M_star_err_result,2) == round(0.26464127945271887,2)
+    assert round(phi_star_1_result,2) == round(0.0009668887609189701,2)
+    assert round(phi_star_err_1_result,2) == round(0.000640187578339006,2)
+    assert round(phi_star_2_result,2) == round(-1.0900241221219484,2)
+    assert round(phi_star_err_2_result,2) == round(0.7987986322969173,2)
+    assert round(alpha_star_1_result,2) == round(0.0001418318772494868,2)
+    assert round(alpha_star_err_1_result,2) == round(0.0008399596540331241,2)
+    assert round(alpha_star_2_result,2) == round(-1.774506451062984,2)
     assert round(alpha_star_err_2_result,3) == round(0.9946532141625982,3)
 # -----------------------
