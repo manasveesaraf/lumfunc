@@ -13,7 +13,7 @@ import math
 import numpy as np
 import pandas as pd
 # import cv2
-# import pytest
+from pytest import approx
 import sys
 sys.path.insert(1, 'lumfunc/')
 import lumfunc as lf
@@ -58,39 +58,39 @@ z_spec_list = np.array(data_table['z_spec'])
 
 def test_get_maggy( ):    
     r_maggies_list = lf.get_maggy(r_app_mag_list)
-    assert list(r_maggies_list[0:4]) == [2.1712608416407457e-08, 
-        1.8897275734216393e-08, 9.398644004513803e-09, 3.747264941992267e-08]
+    assert list(r_maggies_list[0:4]) == approx([2.1712608416407457e-08, 1.8897275734216393e-08, 9.398644004513803e-09, 
+        3.747264941992267e-08], rel=1e-6, abs=9e-4)
 
 def test_get_maggy_rudimentary( ):
-    assert list(lf.get_maggy(np.array([19.15822, 19.309002, 20.067337, 18.565714]))) == [2.1712608416407457e-08, 
-        1.8897275734216393e-08, 9.398644004513803e-09, 3.747264941992267e-08]
+    assert list(lf.get_maggy(np.array([19.15822, 19.309002, 20.067337, 18.565714]))) == approx([2.1712608416407457e-08, 
+        1.8897275734216393e-08, 9.398644004513803e-09, 3.747264941992267e-08], rel=1e-6, abs=9e-4)
 # -----------------------
 
 def test_get_maggy_inv_var( ):
     r_maggies_list = lf.get_maggy(r_app_mag_list)
     r_maggy_inv_var_list = lf.get_maggy_inv_var(r_maggies_list, r_app_mag_err_list)
-    assert list(r_maggy_inv_var_list[0:4]) == [2.613536528041307e+20, 
-        2.2153992456790612e+20, 2.6329570445628214e+20, 1.520308755766036e+20]
+    assert list(r_maggy_inv_var_list[0:4]) == approx([2.613536528041307e+20, 2.2153992456790612e+20, 2.6329570445628214e+20, 
+        1.520308755766036e+20], rel=1e-6, abs=9e-4)
 
 def test_get_maggy_inv_var_rudimentary( ):
     result = lf.get_maggy_inv_var(
         np.array([2.17126084e-08, 1.88972757e-08, 9.39864400e-09, 3.74726494e-08]), 
         np.array([0.00309313, 0.0038601, 0.0071193, 0.00234987]))
-    assert list(result) == [2.613534842093864e+20, 
-        2.2154049929330334e+20, 2.632956307424491e+20, 1.520310051334256e+20]
+    assert list(result) == approx([2.613534842093864e+20, 2.2154049929330334e+20, 2.632956307424491e+20, 
+        1.520310051334256e+20], rel=1e-6, abs=9e-4)
 # -----------------------
 
 def test_get_rest_mag( ):
     r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
-    assert list(r_rest_mag_list[0:4]) == [-22.518710955165023, 
-        -20.36706085176511, -23.670847071363468, -23.681182442586575]
+    assert list(r_rest_mag_list[0:4]) == approx([-22.518710955165023, -20.36706085176511, -23.670847071363468, 
+        -23.681182442586575], rel=1e-6, abs=9e-4)
 
 def test_get_rest_mag_rudimentary( ):
     result = lf.get_rest_mag(np.array([0.34, 0.17, 0.61, 0.41]),
                 np.array([19.15822, 19.309002, 20.067337, 18.565714]),
                 np.array([0.69938735, 0.90226577, 0.43780755, 0.59193305]))
-    assert list(result) == [-22.50048221280549, 
-        -20.367175595236922, -23.611903685248716, -23.751335116325944]
+    assert list(result) == approx([-22.50048221280549, -20.367175595236922, -23.611903685248716, 
+        -23.751335116325944], rel=1e-6, abs=9e-4)
 # -----------------------

@@ -644,17 +644,17 @@ def test_get_double_schechter_phi_red_no_plot( ):
         np.array([M_star_guess, phi_star_1_guess, alpha_1_guess, phi_star_2_guess, alpha_2_guess]))
     # displays plot
     assert list(red_sch2_model_phi_list) == approx([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
-        2.752009553823618e-87])
-    assert round(red_chi_sq,2) == round(1.2084645603920292,2)
-    assert round(red_M_star,2) == round(-13.256375067114597,2)
+        2.752009553823618e-87], rel=1e-6, abs=9e-4)
+    assert red_chi_sq == approx(1.2084645603920292, rel=1e-6, abs=9e-4)
+    assert red_M_star == approx(-13.256375067114597, rel=1e-6, abs=9e-4)
     assert red_M_star_err == math.inf
-    assert round(red_phi_star_1,2) == round(-0.005143924152379018,2)
+    assert red_phi_star_1 == approx(-0.005143924152379018, rel=1e-6, abs=9e-4)
     assert red_phi_star_err_1 == math.inf
-    assert round(red_phi_star_2,2) == round(-1.872910729853815,2)
+    assert red_phi_star_2 == approx(-1.872910729853815, rel=1e-6, abs=9e-4)
     assert red_phi_star_err_2 == math.inf
-    assert round(red_alpha_star_1,2) == round(0.012183946742584995,2)
+    assert red_alpha_star_1 == approx(0.012183946742584995, rel=1e-6, abs=9e-4)
     assert red_alpha_star_err_1 == math.inf
-    assert round(red_alpha_star_2,2) == round(0.025603076393042268,2)
+    assert red_alpha_star_2 == approx(0.025603076393042268, rel=1e-6, abs=9e-4)
     assert red_alpha_star_err_2 == math.inf
 
 
@@ -729,15 +729,10 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         ]),
         np.array([-20.7, 6.16e-3, -0.79, 6.16e-3, -0.79]))
     
-    # round all assertions to 2 decimal places
-    phi_result = list(all_sch2_model_phi_result)
-    # phi_result = [ round(x,2) for x in phi_result ]
-    phi_test = [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 
+    assert list(all_sch2_model_phi_result) == approx([8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 
         0.00016513644802319284, 0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 
         0.0016250833276945204, 0.0021183671618024385, 0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 
-        0.007510562710100609]
-    # phi_test = [ round(x,2) for x in phi_test ]
-    assert phi_result == approx(phi_test, rel=1e-6, abs=9e-4)
+        0.007510562710100609], rel=1e-6, abs=9e-4)
     assert chi_sq_sch2_result == approx(0.8888283543610924, rel=1e-6, abs=9e-4)
     assert M_star_result == approx(-22.303908380116704, rel=1e-6, abs=9e-4)
     assert M_star_err_result == approx(0.26464127945271887, rel=1e-6, abs=9e-4)
