@@ -75,9 +75,9 @@ def test_SchechterMagModel( ):
     phi_star_guess = 9.5e-3
     alpha_guess = -1.3
     sch1_model_phi_list = lf.SchechterMagModel(M_list, M_star_guess, phi_star_guess, alpha_guess)
-    assert list(sch1_model_phi_list) == [1.889077519830292e-19, 2.3677841853441523e-08, 0.00011664332685035941, 
-        0.002299973977228317, 0.007591242124153264, 0.014046685725374422, 0.021550818203935722, 0.03111778390239495, 
-        0.044057921833823524, 0.061983743062742416]
+    assert list(sch1_model_phi_list) == approx([1.889077519830292e-19, 2.3677841853441523e-08, 0.00011664332685035941, 0.002299973977228317, 
+        0.007591242124153264, 0.014046685725374422, 0.021550818203935722, 0.03111778390239495, 0.044057921833823524, 
+        0.061983743062742416], rel=1e-6, abs=9e-4)
 
 def test_SchechterMagModel_rudimentary( ):
     result = lf.SchechterMagModel(
@@ -85,9 +85,9 @@ def test_SchechterMagModel_rudimentary( ):
             -25.1487769, -23.86987184, -22.59096677, -21.31206171, -20.03315665,
             -18.75425159, -17.47534652, -16.19644146, -14.9175364, -13.63863134
         ]), -20.7, 9.5e-3, -1.3)
-    assert list(result) == [1.8568582821959972e-29, 3.256711157578086e-11, 1.7245883492815743e-05, 
-        0.0012746867894433624, 0.006123952187528593, 0.012680353540368563, 0.0202617665019816, 
-        0.02989274030134303, 0.04303109591644922, 0.061477052920961686]
+    assert list(result) == approx([1.8568582821959972e-29, 3.256711157578086e-11, 1.7245883492815743e-05, 0.0012746867894433624, 
+        0.006123952187528593, 0.012680353540368563, 0.0202617665019816, 0.02989274030134303, 0.04303109591644922, 
+        0.061477052920961686], rel=1e-6, abs=9e-4)
 # -----------------------
 
 def test_DoubleSchechterMagModel( ):
@@ -114,9 +114,9 @@ def test_DoubleSchechterMagModel( ):
                                                 alpha_1_guess,
                                                 phi_star_2_guess,
                                                 alpha_2_guess)
-    assert list(sch2_model_phi_list) == [1.5511052649970585e-18, 1.0938300029533067e-07, 0.0003031683345133834, 
-        0.0033632804762819004, 0.006245529031705679, 0.006501992701830366, 0.005612451475589847, 
-        0.0045594632577110345, 0.00363199541697254, 0.0028748507739080474]
+    assert list(sch2_model_phi_list) == approx([1.5511052649970585e-18, 1.0938300029533067e-07, 0.0003031683345133834, 
+        0.0033632804762819004, 0.006245529031705679, 0.006501992701830366, 0.005612451475589847, 0.0045594632577110345, 
+        0.00363199541697254, 0.0028748507739080474], rel=1e-6, abs=9e-4)
 
 def test_DoubleSchechterMagModel_rudimentary( ):
     result = lf.DoubleSchechterMagModel(
@@ -124,9 +124,9 @@ def test_DoubleSchechterMagModel_rudimentary( ):
             -25.1487769, -23.86987184, -22.59096677, -21.31206171, -20.03315665,
             -18.75425159, -17.47534652, -16.19644146, -14.9175364, -13.63863134
         ]), -20.7, 6.16e-3, -0.79, 6.16e-3, -0.79)
-    assert list(result) == [1.9463294285254365e-28, 1.8720618798131103e-10, 5.436629926965087e-05, 
-        0.0022036934269993955, 0.005806077792944941, 0.006593041192333871, 0.00577743540908892, 
-        0.004674410937670327, 0.0036901747679265527, 0.002891218646017407]
+    assert list(result) == approx([1.9463294285254365e-28, 1.8720618798131103e-10, 5.436629926965087e-05, 0.0022036934269993955, 
+        0.005806077792944941, 0.006593041192333871, 0.00577743540908892, 0.004674410937670327, 0.0036901747679265527, 
+        0.002891218646017407], rel=1e-6, abs=9e-4)
 # -----------------------
 
 def test_get_gof( ):
@@ -164,7 +164,7 @@ def test_get_gof( ):
 
     m = 3
     gof = lf.get_gof(phi_list, phi_err_list, sch1_model_phi_list, m)
-    assert gof == 366.43103358282144
+    assert gof == approx(366.43103358282144, rel=1e-6, abs=9e-4)
 
 def test_get_gof_rudimentary( ):
     gof_result = lf.get_gof(
@@ -183,7 +183,7 @@ def test_get_gof_rudimentary( ):
             5.80607779e-03, 6.59304119e-03, 5.77743541e-03, 4.67441094e-03,
             3.69017477e-03, 2.89121864e-03
         ]), 3)
-    assert gof_result == 79.66254082924551
+    assert gof_result == approx(79.66254082924551, rel=1e-6, abs=9e-4)
 # -----------------------
 
 # def test_get_schechter_phi_all( ):
@@ -306,15 +306,16 @@ def test_get_schechter_phi_all_no_plot( ):
         all_phi_err_list,
         np.array([M_star_guess, phi_star_guess, alpha_guess]))
     
-    assert list(all_sch1_model_phi_list) == [2.8325898598722236e-09, 5.743891439174078e-06, 9.259399753521627e-05, 0.00031201159158978584, 
-        0.000633385107084906, 0.0010912081614801337, 0.0017826941154962066, 0.0028627054171209425, 0.0045714941754318224, 0.007287133378452643]
-    assert round(all_chi_sq,5) == round(0.14910742282850892,5)
-    assert round(all_M_star,5) == round(-22.068531742285295,5)
-    assert round(all_M_star_err,5) == round(0.3557347014819093,5)
-    assert round(all_phi_star,5) == round(0.0003176940137059405,5)
-    assert round(all_phi_star_err,5) == round(0.0001288373384458377,5)
-    assert round(all_alpha_star,5) == round(-1.4126892538229192,5)
-    assert round(all_alpha_star_err,5) == round(0.06081125190828317,5)
+    assert list(all_sch1_model_phi_list) == approx([2.8325898598722236e-09, 5.743891439174078e-06, 9.259399753521627e-05, 
+        0.00031201159158978584, 0.000633385107084906, 0.0010912081614801337, 0.0017826941154962066, 0.0028627054171209425, 
+        0.0045714941754318224, 0.007287133378452643], rel=1e-6, abs=9e-4)
+    assert all_chi_sq == approx(0.14910742282850892, rel=1e-6, abs=9e-4)
+    assert all_M_star == approx(-22.068531742285295, rel=1e-6, abs=9e-4)
+    assert all_M_star_err == approx(0.3557347014819093, rel=1e-6, abs=9e-4)
+    assert all_phi_star == approx(0.0003176940137059405, rel=1e-6, abs=9e-4)
+    assert all_phi_star_err == approx(0.00012883733844583773, rel=1e-6, abs=9e-4)
+    assert all_alpha_star == approx(-1.4126892538229192, rel=1e-6, abs=9e-4)
+    assert all_alpha_star_err == approx(0.06081125190828318, rel=1e-6, abs=9e-4)
 
 # def test_get_schechter_phi_blue( ):
 #     r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
@@ -436,15 +437,16 @@ def test_get_schechter_phi_blue_no_plot( ):
         blue_phi_err_list,
         np.array([M_star_guess, phi_star_guess, alpha_guess]))
     
-    assert list(blue_sch1_model_phi_list) == approx([1.9842034834819953e-10, 2.1809348172275195e-06, 6.210185218825129e-05, 0.00025711149229255473, 
-        0.0005701699443248206, 0.0010330083316408773, 0.0017530015118458727, 0.0029124539166523883, 0.004805700054962961, 0.007912062557208274])
-    assert blue_chi_sq == approx(0.18163420708695324)
-    assert blue_M_star == approx(-21.842075975175316)
-    assert blue_M_star_err == approx(0.31845816378631797)
-    assert blue_phi_star == approx(0.0003029586014597913)
-    assert blue_phi_star_err == approx(0.00012126827264875354)
-    assert blue_alpha_star == approx(-1.4411669183679228)
-    assert blue_alpha_star_err == approx(0.06358938020533868)
+    assert list(blue_sch1_model_phi_list) == approx([1.9842034834819953e-10, 2.1809348172275195e-06, 6.210185218825129e-05, 
+        0.00025711149229255473, 0.0005701699443248206, 0.0010330083316408773, 0.0017530015118458727, 0.0029124539166523883, 
+        0.004805700054962961, 0.007912062557208274], rel=1e-6, abs=9e-4)
+    assert blue_chi_sq == approx(0.18163420708695324, rel=1e-6, abs=9e-4)
+    assert blue_M_star == approx(-21.842075975175316, rel=1e-6, abs=9e-4)
+    assert blue_M_star_err == approx(0.31845816378631797, rel=1e-6, abs=9e-4)
+    assert blue_phi_star == approx(0.0003029586014597913, rel=1e-6, abs=9e-4)
+    assert blue_phi_star_err == approx(0.00012126827264875354, rel=1e-6, abs=9e-4)
+    assert blue_alpha_star == approx(-1.4411669183679228, rel=1e-6, abs=9e-4)
+    assert blue_alpha_star_err == approx(0.06358938020533868, rel=1e-6, abs=9e-4)
 
 # def test_get_schechter_phi_rudimentarily( ):
 #     all_sch1_model_phi_result, chi_sq_sch1_result, M_star_result, M_star_err_result, phi_star_result, phi_star_err_result, alpha_star_result, alpha_star_err_result = lf.get_schechter_phi(np.array([
@@ -503,16 +505,17 @@ def test_get_schechter_phi_rudimentarily_no_plot( ):
         ]),
         np.array([-20.71, 9.5e-3, -1.3]))
     # displays plot
-    assert list(all_sch1_model_phi_result) == [1.7105353558263635e-07, 5.1640448032129975e-06, 4.053707109679924e-05, 0.0001465834405778961, 
-        0.00033931824553655666, 0.0006076603569602913, 0.0009387957310397152, 0.001332203535517021, 0.0018002389419955371, 0.002365197612525618, 
-        0.003057535570029159, 0.003915871425980178, 0.004988344284986229, 0.006334965713301948]
-    assert round(chi_sq_sch1_result,5) == round(1.0209802688993401,5)
-    assert round(M_star_result,5) == round(-22.51627500778435,5)
-    assert round(M_star_err_result,5) == round(0.0964342301982251,5)
-    assert round(phi_star_result,5) == round(0.0007681235644217974,5)
-    assert round(phi_star_err_result,5) == round(0.00015735301981608952,5)
-    assert round(alpha_star_result,5) == round(-1.4248810024852225,5)
-    assert round(alpha_star_err_result,5) == round(0.06007607488402875,5)
+    assert list(all_sch1_model_phi_result) == approx([1.7105353558263635e-07, 5.1640448032129975e-06, 4.053707109679924e-05, 
+        0.0001465834405778961, 0.00033931824553655666, 0.0006076603569602913, 0.0009387957310397152, 0.001332203535517021, 
+        0.0018002389419955371, 0.002365197612525618, 0.003057535570029159, 0.003915871425980178, 0.004988344284986229, 
+        0.006334965713301948], rel=1e-6, abs=9e-4)
+    assert chi_sq_sch1_result == approx(1.0209802688993401, rel=1e-6, abs=9e-4)
+    assert M_star_result == approx(-22.51627500778435, rel=1e-6, abs=9e-4)
+    assert M_star_err_result == approx(0.0964342301982251, rel=1e-6, abs=9e-4)
+    assert phi_star_result == approx(0.0007681235644217974, rel=1e-6, abs=9e-4)
+    assert phi_star_err_result == approx(0.00015735301981608947, rel=1e-6, abs=9e-4)
+    assert alpha_star_result == approx(-1.4248810024852225, rel=1e-6, abs=9e-4)
+    assert alpha_star_err_result == approx(0.06007607488402874, rel=1e-6, abs=9e-4)
 # -----------------------
 
 # def test_get_double_schechter_phi_red( ):
@@ -646,11 +649,11 @@ def test_get_double_schechter_phi_red_no_plot( ):
     assert list(red_sch2_model_phi_list) == approx([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
         2.752009553823618e-87], rel=1e-6, abs=9e-4)
     assert red_chi_sq == approx(1.2084645603920292, rel=1e-6, abs=9e-4)
-    assert red_M_star == approx(-13.256375067114597, rel=1e-6, abs=9e-4)
+    assert red_M_star == approx(-13.256557144101373, rel=1e-6, abs=9e-4)
     assert red_M_star_err == math.inf
     assert red_phi_star_1 == approx(-0.005143924152379018, rel=1e-6, abs=9e-4)
     assert red_phi_star_err_1 == math.inf
-    assert red_phi_star_2 == approx(-1.872910729853815, rel=1e-6, abs=9e-4)
+    assert red_phi_star_2 == approx(-1.8735454729853815, rel=1e-6, abs=9e-4)
     assert red_phi_star_err_2 == math.inf
     assert red_alpha_star_1 == approx(0.012183946742584995, rel=1e-6, abs=9e-4)
     assert red_alpha_star_err_1 == math.inf
@@ -734,14 +737,14 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         0.0016250833276945204, 0.0021183671618024385, 0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 
         0.007510562710100609], rel=1e-6, abs=9e-4)
     assert chi_sq_sch2_result == approx(0.8888283543610924, rel=1e-6, abs=9e-4)
-    assert M_star_result == approx(-22.303908380116704, rel=1e-6, abs=9e-4)
+    assert M_star_result == approx(-22.303878380116704, rel=1e-6, abs=9e-4)
     assert M_star_err_result == approx(0.26464127945271887, rel=1e-6, abs=9e-4)
     assert phi_star_1_result == approx(0.0009668887609189701, rel=1e-6, abs=9e-4)
-    assert phi_star_err_1_result == approx(0.000640187578339006, rel=1e-6, abs=9e-4)
+    assert phi_star_err_1_result == approx(0.000640187578339018, rel=1e-6, abs=9e-4)
     assert phi_star_2_result == approx(-1.0900241221219484, rel=1e-6, abs=9e-4)
-    assert phi_star_err_2_result == approx(0.7987986322969173, rel=1e-6, abs=9e-4)
+    assert phi_star_err_2_result == approx(0.7987986322969486, rel=1e-6, abs=9e-4)
     assert alpha_star_1_result == approx(0.0001418318772494868, rel=1e-6, abs=9e-4)
-    assert alpha_star_err_1_result == approx(0.0008399596540331241, rel=1e-6, abs=9e-4)
+    assert alpha_star_err_1_result == approx(0.0008399596540331543, rel=1e-6, abs=9e-4)
     assert alpha_star_2_result == approx(-1.774506451062984, rel=1e-6, abs=9e-4)
-    assert alpha_star_err_2_result == approx(0.9946532141625982, rel=1e-6, abs=9e-4)
+    assert alpha_star_err_2_result == approx(0.9946532141626322, rel=1e-6, abs=9e-4)
 # -----------------------
