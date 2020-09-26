@@ -748,5 +748,5 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
     assert round(alpha_star_1_result,2) == round(0.0001418318772494868,2)
     assert round(alpha_star_err_1_result,2) == round(0.0008399596540331241,2)
     assert round(alpha_star_2_result,2) == round(-1.774506451062984,2)
-    assert alpha_star_err_2_result == 0.9946532141625982
+    assert alpha_star_err_2_result == approx(0.9946532141625982, rel=1e-6, abs=9e-4)
 # -----------------------
