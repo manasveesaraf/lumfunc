@@ -13,7 +13,7 @@ import math
 import numpy as np
 import pandas as pd
 # import cv2
-# import pytest
+from pytest import approx
 import sys
 sys.path.insert(1, 'lumfunc/')
 import lumfunc as lf
@@ -183,9 +183,9 @@ def test_get_binned_phi_error( ):
                                 survey='kids')
 
     phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, Vmax_list, labels, n_patches, n_bins)
-    assert list(phi_err_list) == [810.9397645708841, 607.8170004077618, 4.36417468536423e-05, 
-        0.00019704012356457505, 0.0005486180652616492, 0.0004654318611417406, 0.0005773328573042754, 
-        0.00459036071996224, 0.00221037276729238, 0.164362438153455]
+    assert list(phi_err_list) == approx([810.9397645708841, 607.8170004077618, 4.36417468536423e-05, 0.00019704012356457505, 
+        0.0005486180652616492, 0.0004654318611417406, 0.0005773328573042754, 0.00459036071996224, 0.00221037276729238, 
+        0.164362438153455], rel=1e-6, abs=9e-4)
 
 def test_get_binned_phi_error_rudimentary( ):
     result = lf.get_binned_phi_error(
@@ -194,5 +194,5 @@ def test_get_binned_phi_error_rudimentary( ):
         8e+08, 2e+08, 2e+07, 3e+08, 6e+08, 6e+08, 4e+08, 7e+08, 5e+08, 6e+08,
         7e+06, 1e+08
     ]), np.array([1, 1, 2, 2, 3, 0, 1, 1, 2, 2, 3, 3]), 4, 4)
-    assert list(result) == [9.864941217372873e-09, 9.901557116602078e-09, 0.0, 1.5585903075108177e-07]
+    assert list(result) == approx([9.864941217372873e-09, 9.901557116602078e-09, 0.0, 1.5585903075108177e-07], rel=1e-6, abs=9e-4)
 # -----------------------
