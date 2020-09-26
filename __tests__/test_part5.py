@@ -730,14 +730,14 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         np.array([-20.7, 6.16e-3, -0.79, 6.16e-3, -0.79]))
     
     # round all assertions to 2 decimal places
-    all_result = list(all_sch2_model_phi_result)
-    all_result = [ round(x,2) for x in all_result ]
-    all_test = [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 
+    phi_result = list(all_sch2_model_phi_result)
+    phi_result = [ round(x,2) for x in phi_result ]
+    phi_test = [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 
         0.00016513644802319284, 0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 
         0.0016250833276945204, 0.0021183671618024385, 0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 
         0.007510562710100609]
-    all_test = [ round(x,2) for x in all_test ]
-    assert all_real == all_test
+    phi_test = [ round(x,2) for x in phi_test ]
+    assert phi_result == phi_test
     assert round(chi_sq_sch2_result,2) == round(0.8888283543610924,2)
     assert round(M_star_result,2) == round(-22.303908380116704,2)
     assert round(M_star_err_result,2) == round(0.26464127945271887,2)
