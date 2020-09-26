@@ -237,15 +237,15 @@ def test_get_gof_rudimentary( ):
 #         np.array([M_star_guess, phi_star_guess, alpha_guess]),
 #         plot_savename='pytest_all_Sch.png')
     
-#     assert list(all_sch1_model_phi_list) == [2.8325898598722236e-09, 5.743891439174078e-06, 9.259399753521627e-05, 0.00031201159158978584, 
-#         0.000633385107084906, 0.0010912081614801337, 0.0017826941154962066, 0.0028627054171209425, 0.0045714941754318224, 0.007287133378452643]
-#     assert all_chi_sq == 0.14910742282850892
-#     assert all_M_star == -22.068531742285295
-#     assert all_M_star_err == 0.35573470148190917
-#     assert all_phi_star == 0.0003176940137059405
-#     assert all_phi_star_err == 0.0001288373384458377
-#     assert all_alpha_star == -1.4126892538229192
-#     assert all_alpha_star_err == 0.06081125190828317
+    # assert list(all_sch1_model_phi_list) == [2.8325898598722236e-09, 5.743891439174078e-06, 9.259399753521627e-05, 0.00031201159158978584, 
+    #     0.000633385107084906, 0.0010912081614801337, 0.0017826941154962066, 0.0028627054171209425, 0.0045714941754318224, 0.007287133378452643]
+    # assert round(all_chi_sq,5) == round(0.14910742282850892,5)
+    # assert round(all_M_star,5) == round(-22.068531742285295,5)
+    # assert round(all_M_star_err,5) == round(0.3557347014819093,5)
+    # assert round(all_phi_star,5) == round(0.0003176940137059405,5)
+    # assert round(all_phi_star_err,5) == round(0.0001288373384458377,5)
+    # assert round(all_alpha_star,5) == round(-1.4126892538229192,5)
+    # assert round(all_alpha_star_err,5) == round(0.06081125190828317,5)
 
 #     # test_result = cv2.imread('__tests__/test_all_Sch.png')
 #     # pytest_result = cv2.imread('__tests__/pytest_all_Sch.png')
@@ -367,15 +367,15 @@ def test_get_schechter_phi_all_no_plot( ):
 #         np.array([M_star_guess, phi_star_guess, alpha_guess]),
 #         plot_savename='pytest_blue_Sch.png')
     
-#     assert list(blue_sch1_model_phi_list) == [1.9842034834819953e-10, 2.1809348172275195e-06, 6.210185218825129e-05, 0.00025711149229255473, 
-#         0.0005701699443248206, 0.0010330083316408773, 0.0017530015118458727, 0.0029124539166523883, 0.004805700054962961, 0.007912062557208274]
-#     assert blue_chi_sq == 0.18163420708695324
-#     assert blue_M_star == -21.842075975175316
-#     assert blue_M_star_err == 0.31845816378631797
-#     assert blue_phi_star == 0.0003029586014597913
-#     assert blue_phi_star_err == 0.00012126827264875354
-#     assert blue_alpha_star == -1.4411669183679228
-#     assert blue_alpha_star_err == 0.06358938020533868
+    # assert list(blue_sch1_model_phi_list) == approx([1.9842034834819953e-10, 2.1809348172275195e-06, 6.210185218825129e-05, 0.00025711149229255473, 
+    #     0.0005701699443248206, 0.0010330083316408773, 0.0017530015118458727, 0.0029124539166523883, 0.004805700054962961, 0.007912062557208274])
+    # assert blue_chi_sq == approx(0.18163420708695324)
+    # assert blue_M_star == approx(-21.842075975175316)
+    # assert blue_M_star_err == approx(0.31845816378631797)
+    # assert blue_phi_star == approx(0.0003029586014597913)
+    # assert blue_phi_star_err == approx(0.00012126827264875354)
+    # assert blue_alpha_star == approx(-1.4411669183679228)
+    # assert blue_alpha_star_err == approx(0.06358938020533868)
 
 #     # test_result = cv2.imread('__tests__/test_blue_Sch.png')
 #     # pytest_result = cv2.imread('__tests__/pytest_blue_Sch.png')
@@ -465,16 +465,16 @@ def test_get_schechter_phi_blue_no_plot( ):
 #         np.array([-20.71, 9.5e-3, -1.3]),
 #         plot_savename='pytest_rud_Sch.png')
 #     # displays plot
-#     assert list(all_sch1_model_phi_result) == [1.7105353558263635e-07, 5.1640448032129975e-06, 4.053707109679924e-05, 0.0001465834405778961, 
-#         0.00033931824553655666, 0.0006076603569602913, 0.0009387957310397152, 0.001332203535517021, 0.0018002389419955371, 0.002365197612525618, 
-#         0.003057535570029159, 0.003915871425980178, 0.004988344284986229, 0.006334965713301948]
-#     assert chi_sq_sch1_result == 1.0209802688993401
-#     assert M_star_result == -22.51627500778435
-#     assert M_star_err_result == 0.09643423019822513
-#     assert phi_star_result == 0.0007681235644217974
-#     assert phi_star_err_result == 0.00015735301981608952
-#     assert alpha_star_result == -1.4248810024852225
-#     assert alpha_star_err_result == 0.06007607488402875
+    # assert list(all_sch1_model_phi_result) == [1.7105353558263635e-07, 5.1640448032129975e-06, 4.053707109679924e-05, 0.0001465834405778961, 
+    #     0.00033931824553655666, 0.0006076603569602913, 0.0009387957310397152, 0.001332203535517021, 0.0018002389419955371, 0.002365197612525618, 
+    #     0.003057535570029159, 0.003915871425980178, 0.004988344284986229, 0.006334965713301948]
+    # assert round(chi_sq_sch1_result,5) == round(1.0209802688993401,5)
+    # assert round(M_star_result,5) == round(-22.51627500778435,5)
+    # assert round(M_star_err_result,5) == round(0.0964342301982251,5)
+    # assert round(phi_star_result,5) == round(0.0007681235644217974,5)
+    # assert round(phi_star_err_result,5) == round(0.00015735301981608952,5)
+    # assert round(alpha_star_result,5) == round(-1.4248810024852225,5)
+    # assert round(alpha_star_err_result,5) == round(0.06007607488402875,5)
 
 #     # test_result = cv2.imread('__tests__/test_rud_Sch.png')
 #     # pytest_result = cv2.imread('__tests__/pytest_rud_Sch.png')
@@ -568,19 +568,19 @@ def test_get_schechter_phi_rudimentarily_no_plot( ):
 #         np.array([M_star_guess, phi_star_1_guess, alpha_1_guess, phi_star_2_guess, alpha_2_guess]),
 #         plot_savename='pytest_red_dSch.png')
 #     # displays plot
-#     assert list(red_sch2_model_phi_list) == [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
-#         2.752009553823618e-87]
-#     assert red_chi_sq == 1.2084645603920292
-#     assert red_M_star == -13.256557144101373
-#     assert red_M_star_err == math.inf
-#     assert red_phi_star_1 == -0.005143924152379018
-#     assert red_phi_star_err_1 == math.inf
-#     assert red_phi_star_2 == -1.8735454729853815
-#     assert red_phi_star_err_2 == math.inf
-#     assert red_alpha_star_1 == 0.012183946742584995
-#     assert red_alpha_star_err_1 == math.inf
-#     assert red_alpha_star_2 == 0.025603076393042268
-#     assert red_alpha_star_err_2 == math.inf
+    # assert list(red_sch2_model_phi_list) == approx([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.6375293296239083e-229, 2.3525320265182555e-141, 
+    #     2.752009553823618e-87])
+    # assert round(red_chi_sq,2) == round(1.2084645603920292,2)
+    # assert round(red_M_star,2) == round(-13.256375067114597,2)
+    # assert red_M_star_err == math.inf
+    # assert round(red_phi_star_1,2) == round(-0.005143924152379018,2)
+    # assert red_phi_star_err_1 == math.inf
+    # assert round(red_phi_star_2,2) == round(-1.872910729853815,2)
+    # assert red_phi_star_err_2 == math.inf
+    # assert round(red_alpha_star_1,2) == round(0.012183946742584995,2)
+    # assert red_alpha_star_err_1 == math.inf
+    # assert round(red_alpha_star_2,2) == round(0.025603076393042268,2)
+    # assert red_alpha_star_err_2 == math.inf
 
 #     # test_result = cv2.imread('__tests__/test_red_dSch.png')
 #     # pytest_result = cv2.imread('__tests__/pytest_red_dSch.png')
@@ -679,20 +679,26 @@ def test_get_double_schechter_phi_red_no_plot( ):
 #         np.array([-20.7, 6.16e-3, -0.79, 6.16e-3, -0.79]),
 #         plot_savename='pytest_rud_dSch.png')
 #     # displays plot
-#     assert list(all_sch2_model_phi_result) == [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 0.00016513644802319284, 
-#         0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 0.0016250833276945204, 0.0021183671618024385, 
-#         0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 0.007510562710100609]
-#     assert chi_sq_sch2_result == 0.8888283543610924
-#     assert M_star_result == -22.303878380116704
-#     assert M_star_err_result == 0.2646412794527086
-#     assert phi_star_1_result == 0.0009668887609189701
-#     assert phi_star_err_1_result == 0.000640187578339006
-#     assert phi_star_2_result == -1.0900241221219484
-#     assert phi_star_err_2_result == 0.7987986322969173
-#     assert alpha_star_1_result == 0.0001418318772494868
-#     assert alpha_star_err_1_result == 0.0008399596540331241
-#     assert alpha_star_2_result == -1.774506451062984
-#     assert alpha_star_err_2_result == 0.9946532141625982
+    # # round all assertions to 2 decimal places
+    # all_result = list(all_sch2_model_phi_result)
+    # all_result = [ round(x,2) for x in all_result ]
+    # all_test = [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 
+    #     0.00016513644802319284, 0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 
+    #     0.0016250833276945204, 0.0021183671618024385, 0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 
+    #     0.007510562710100609]
+    # all_test = [ round(x,2) for x in all_test ]
+    # assert all_real == all_test
+    # assert round(chi_sq_sch2_result,2) == round(0.8888283543610924,2)
+    # assert round(M_star_result,2) == round(-22.303908380116704,2)
+    # assert round(M_star_err_result,2) == round(0.26464127945271887,2)
+    # assert round(phi_star_1_result,2) == round(0.0009668887609189701,2)
+    # assert round(phi_star_err_1_result,2) == round(0.000640187578339006,2)
+    # assert round(phi_star_2_result,2) == round(-1.0900241221219484,2)
+    # assert round(phi_star_err_2_result,2) == round(0.7987986322969173,2)
+    # assert round(alpha_star_1_result,2) == round(0.0001418318772494868,2)
+    # assert round(alpha_star_err_1_result,2) == round(0.0008399596540331241,2)
+    # assert round(alpha_star_2_result,2) == round(-1.774506451062984,2)
+    # assert round(alpha_star_err_2_result,2) == round(0.9946532141625982,2)
 
 #     # test_result = cv2.imread('__tests__/test_rud_dSch.png')
 #     # pytest_result = cv2.imread('__tests__/pytest_rud_dSch.png')
@@ -723,10 +729,9 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
         ]),
         np.array([-20.7, 6.16e-3, -0.79, 6.16e-3, -0.79]))
     
-    # lowkey hack because I got real tired of these assert values :0 
-    # 
-    all_real = list(all_sch2_model_phi_result)
-    all_real = [ round(x,2) for x in all_real ]
+    # round all assertions to 2 decimal places
+    all_result = list(all_sch2_model_phi_result)
+    all_result = [ round(x,2) for x in all_result ]
     all_test = [8.521602535554413e-08, 4.304795096021841e-06, 4.252947712862992e-05, 
         0.00016513644802319284, 0.00037724853104172785, 0.0006409589905341704, 0.0009291455434703172, 0.001246599413378984, 
         0.0016250833276945204, 0.0021183671618024385, 0.002805526837713822, 0.003802654108449027, 0.0052833317077602675, 
@@ -743,7 +748,5 @@ def test_get_double_schechter_phi_rudimentarily_no_plot( ):
     assert round(alpha_star_1_result,2) == round(0.0001418318772494868,2)
     assert round(alpha_star_err_1_result,2) == round(0.0008399596540331241,2)
     assert round(alpha_star_2_result,2) == round(-1.774506451062984,2)
-    
-    # Don't kill me for this. It was either me or Github, I had to win.
-    assert round(alpha_star_err_2_result,2) == round(alpha_star_err_2_result,2)
+    assert round(alpha_star_err_2_result,2) == round(0.9946532141625982,2)
 # -----------------------
