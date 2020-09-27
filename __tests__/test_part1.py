@@ -22,7 +22,7 @@ import lumfunc as lf
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-data_table = pd.read_csv('__tests__/catalogue_test.csv')
+data_table = pd.read_csv('test/catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -81,7 +81,7 @@ def test_get_maggy_inv_var_rudimentary( ):
 # -----------------------
 
 def test_get_rest_mag( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('test/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
     assert list(r_rest_mag_list[0:4]) == approx([-22.518710955165023, -20.36706085176511, -23.670847071363468, 

@@ -32,18 +32,39 @@ import pandas as pd
 
 # test data (photometric galaxian survey)
 data_table = pd.read_csv('catalogue_test.csv')
+
+ID_list = np.array(data_table['ID'])
+
 RA_list = np.array(data_table['RA'])
 Dec_list = np.array(data_table['Dec'])
+
+u_app_mag_list = np.array(data_table['u_mag'])
+u_app_mag_err_list = np.array(data_table['u_mag_err'])
 g_app_mag_list = np.array(data_table['g_mag'])
+g_app_mag_err_list = np.array(data_table['g_mag_err'])
 r_app_mag_list = np.array(data_table['r_mag'])
 r_app_mag_err_list = np.array(data_table['r_mag_err'])
+i_app_mag_list = np.array(data_table['i_mag'])
+i_app_mag_err_list = np.array(data_table['i_mag_err'])
+Z_app_mag_list = np.array(data_table['Z_mag'])
+Z_app_mag_err_list = np.array(data_table['Z_mag_err'])
+Y_app_mag_list = np.array(data_table['Y_mag'])
+Y_app_mag_err_list = np.array(data_table['Y_mag_err'])
+J_app_mag_list = np.array(data_table['J_mag'])
+J_app_mag_err_list = np.array(data_table['J_mag_err'])
+H_app_mag_list = np.array(data_table['H_mag'])
+H_app_mag_err_list = np.array(data_table['H_mag_err'])
+K_app_mag_list = np.array(data_table['K_mag'])
+K_app_mag_err_list = np.array(data_table['K_mag_err'])
+
 z_photo_list = np.array(data_table['z_photo'])
+z_spec_list = np.array(data_table['z_spec'])
 ```
 
 
-### 1. K-correction and Malmquist bias reduction:
+### 1. K-correction to rest-frame magnitudes:
 
-<details><summary><b>get_maggy( )</b>: Convert the measurements of flux in magnitudes to maggies for use with <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a></summary>
+<details><summary><b>get_maggy( )</b>: Convert the measurements of flux in magnitudes to maggies</summary>
 <p>
 
 Return maggies from magnitudes.
@@ -64,7 +85,7 @@ print(r_maggies_result[0:4])
 </p>
 </details>
 
-<details><summary><b>get_maggy_inv_var( )</b>: Convert the magnitude errors to maggy inverse variances for use with <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a></summary>
+<details><summary><b>get_maggy_inv_var( )</b>: Convert the magnitude errors to maggy inverse variances</summary>
 <p>
 
 Return maggy inverse variances from maggies and magnitude errors.
@@ -87,10 +108,146 @@ print(r_maggy_inv_var_result[0:4])
 </p>
 </details>
 
-<details><summary><b>get_rest_mag( )</b>: Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and output from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a> functions</summary>
+<details><summary><b>get_obs_maggies_file( )</b>: Save calculated maggies and inverse variances in a file</summary>
+<p>
+
+Calculate maggy and inverse variance values from apparent magnitude and their error values and save the values in a space delimited csv file with columns (without headers):
+        
+    redshift u_maggy g_maggy r_maggy... u_inv_var g_inv_var r_inv_var...
+    
+WARNING: any pre-existing file with the same name are over-written.
+    
+For 'ugriz' bands:
+    
+```python
+ugriz_test_obs_maggies_file_path = 'obs_maggies_ugriz_test.csv'
+ugriz_test_bands = 'ugriz'
+lf.get_obs_maggies_file(ugriz_test_obs_maggies_file_path,
+                        ugriz_test_bands,
+                        z_photo_list,
+                        u_app_mag_list,
+                        g_app_mag_list,
+                        r_app_mag_list,
+                        i_app_mag_list,
+                        Z_app_mag_list,
+                        u_app_mag_err_list = u_app_mag_err_list,
+                        g_app_mag_err_list = g_app_mag_err_list,
+                        r_app_mag_err_list = r_app_mag_err_list,
+                        i_app_mag_err_list = i_app_mag_err_list,
+                        Z_app_mag_err_list = Z_app_mag_err_list)
+# saves file obs_maggies_ugriz_test.csv  
+```
+
+Or, for 'ugriZYJHKs' bands:
+
+```python
+ugriZYJHKs_test_obs_maggies_file_path = 'obs_maggies_ugriZYJHKs_test.csv'
+ugriZYJHKs_test_bands = 'ugriZYJHKs'
+lf.get_obs_maggies_file(ugriZYJHKs_test_obs_maggies_file_path,
+                        ugriZYJHKs_test_bands,
+                        z_photo_list,
+                        u_app_mag_list,
+                        g_app_mag_list,
+                        r_app_mag_list,
+                        i_app_mag_list,
+                        Z_app_mag_list,
+                        Y_app_mag_list = Y_app_mag_list,
+                        J_app_mag_list = J_app_mag_list,
+                        H_app_mag_list = H_app_mag_list,
+                        Ks_app_mag_list = K_app_mag_list,
+                        u_app_mag_err_list = u_app_mag_err_list,
+                        g_app_mag_err_list = g_app_mag_err_list,
+                        r_app_mag_err_list = r_app_mag_err_list,
+                        i_app_mag_err_list = i_app_mag_err_list,
+                        Z_app_mag_err_list = Z_app_mag_err_list,
+                        Y_app_mag_err_list = Y_app_mag_err_list,
+                        J_app_mag_err_list = J_app_mag_err_list,
+                        H_app_mag_err_list = H_app_mag_err_list,
+                        Ks_app_mag_err_list = K_app_mag_err_list)
+# saves file obs_maggies_ugriZYJHKs_test.csv
+```
+    
+</p>
+</details>
+
+<details><summary><b>get_rec_maggies_files( )</b>: Save reconstructed maggies at required redshifts in a file</summary>
+<p>
+
+Define an array of required redshift values to reconstruct the observed maggy at.   
+    
+```python
+z_values = np.arange(0.00, 1.00, 0.01)
+rec_z_list = np.around(z_values, decimals=2)
+```
+
+Using file from function <code>get_obs_maggies_file()</code>, obtain reconstructed maggy values by best-fitting galaxy SEDs on data using templates, filter transmission curves and functions from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a> package, and save the reconstructed maggy values in a space delimited csv file with columns (without headers):
+    
+    redshift rec_u_maggy rec_g_maggy rec_r_maggy...
+
+WARNING: pre-existing file with the same name are over-written.
+    
+Example, for 'ugriz' bands: 
+    
+```python 
+ugriz_test_n_bands = 5
+lf.get_rec_maggies_files(ugriz_test_obs_maggies_file_path,
+                         ugriz_test_n_bands,
+                         rec_z_list,
+                         rec_maggies_outfile_affix='ugriz_test',
+                         survey='sdss',
+                         band_z_shift=0.0,
+                         template_vmatrix_file_path='vmatrix.default.dat',
+                         template_lambda_file_path='lambda.default.dat',
+                         filters_list_file_path='sdss_filters.dat')
+# saves files maggies_at_z[redshift-value]_ugriz_test.csv
+```
+    
+Or, for 'ugriZYJHKs' bands:
+    
+```python 
+ugriZYJHKs_test_n_bands = 9
+lf.get_rec_maggies_files(ugriZYJHKs_test_obs_maggies_file_path,
+                         ugriZYJHKs_test_n_bands,
+                         rec_z_list,
+                         rec_maggies_outfile_affix='ugriZYJHKs_test',
+                         survey='test',
+                         band_z_shift=0.0,
+                         template_vmatrix_file_path='vmatrix.test.dat',
+                         template_lambda_file_path='lambda.test.dat',
+                         filters_list_file_path='test_filters.dat')
+# saves files maggies_at_z[redshift-value]_ugriZYJHKs_test.csv    
+```
+    
+</p>
+</details>
+
+<details><summary><b>get_rest_maggy_ratio_file( )</b>: Save calculated rest-frame maggy ratios in a file</summary>
 <p>
     
-Load maggy ratios output file from <a href="https://github.com/nirinA/kcorrect_python">kcorrect_python</a>.
+Calculate rest-frame maggy ratios i.e. (obs_maggy/rest_maggy), and save them in a csv file with 3 space delimited columns, of headers:
+        
+    ID rest_z maggy_ratio
+    
+WARNING: pre-existing file with the same name are over-written.    
+
+```python 
+r_test_band_index = 3
+ugriz_test_rest_maggies_file_path = 'maggies_at_z0.0_ugriz_test.csv'
+lf.get_rest_maggy_ratio_file(ID_list,
+                             ugriz_test_obs_maggies_file_path,
+                             ugriz_test_rest_maggies_file_path,
+                             r_test_band_index,
+                             rest_maggy_ratio_outfile_affix='r_ugriz_test')
+# saves file rest_maggy_ratios_ugriz_test.csv    
+```    
+    
+</p>
+</details>
+
+<details><summary><b>get_rest_mag( )</b>: Convert the measured apparent magnitudes into rest-frame magnitudes using the catalogue data and rest-frame maggy ratios</summary>
+<p>
+    
+Load maggy ratios output file from the <code>get_rest_maggy_ratio_file()</code> function.
 
 ```python
 r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
@@ -113,6 +270,51 @@ print(r_rest_mag_result[0:4])
 # [-22.50048221 -20.3671756  -23.61190369 -23.75133512]
 ```
 
+</p>
+</details>
+
+### 2. Malmquist bias reduction:
+
+<details><summary><b>get_maggy_ratio_file( )</b>: Save calculated reconstructed maggy ratios in a file</summary>
+<p>
+
+Calculate reconstructed maggy ratios i.e. (rec_maggy/rest_maggy), and save them in a csv file with 3 space delimited columns, of headers:
+        
+    ID rest_z maggy_ratio
+    
+WARNING: pre-existing file with the same name are over-written.      
+    
+```python
+ugriz_test_rec_maggies_file_path = 'maggies_at_z0.01_ugriz_test.csv'
+lf.get_maggy_ratio_file(ID_list,
+                        ugriz_test_rest_maggies_file_path,
+                        ugriz_test_rec_maggies_file_path,
+                        0.01,
+                        r_test_band_index,
+                        maggy_ratio_outfile_affix='r_ugriz_test')
+# saves file maggy_ratios_at_z0.01_ugriz_test.csv   
+```  
+    
+</p>
+</details>
+
+<details><summary><b>get_all_maggy_ratios_file( )</b>: Consolidate all files of calculated reconstructed maggy ratios</summary>
+<p>
+
+Perform <code>get_maggy_ratio_file()</code> at each redshift value in rec_z_list in a separate csv file and consolidate all maggy ratios by joining the above files in the order of rec_z_list in a single csv file with 3 space delimited columns, of headers:
+        
+    ID rec_z maggy_ratio
+
+The file with all maggy ratios can be used to calculate ![zmax](https://render.githubusercontent.com/render/math?math=z_{max} ).
+WARNING: pre-existing file with same name will be over-written. 
+
+```python
+lf.get_all_maggy_ratios_file(rec_z_list,
+                             ID_list,
+                             r_test_band_index,
+                             maggies_and_out_files_affix='ugriz_test')
+# saves files maggy_ratios_at_z[redshift-value]_ugriz_test.csv and all_maggy_ratios_ugriz_test.csv
+```    
 </p>
 </details>
 
@@ -189,7 +391,7 @@ print(phi_result)
 </details>
 
 
-### 2. Spatial variances of the phi, <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi">, values:
+### 3. Spatial variances of the phi, <img src="https://render.githubusercontent.com/render/math?math=\phi" alt="phi">, values:
 
 <details><summary><b>get_patch_centers( )</b>: First, divide uniformly and randomly simulated data points over the survey area into equally distributed and equally sized patches</summary>
 <p>
@@ -201,16 +403,23 @@ uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
 uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
 ```
     
-Return patch centers as (RA, Dec) from the uniform RA, Dec and number of patches.
+Calculates n_patches centers (RA,Dec) from RA, Dec and number of patches and saves in a csv file 
+with 2 space delimited columns (without headers):
+        
+    RA Dec
+
+Function does not overwrite any existing file with the same name. File need not be updated with every run.
 
 ```python
 n_patches = 10
-centers_guesses = lf.get_patch_centers(uniform_RA_list,
+lf.get_patch_centers(uniform_RA_list,
                      uniform_Dec_list,
                      n_patches,
                      survey='kids',
                      max_iterations=int(100),
-                     tolerance=1.0e-2)
+                     tolerance=1.0e-2,
+                     patch_centers_outfile_affix='ugriz_test')
+# saves file patch_centers_tol0.01_ugriz_test.csv
 ```
 
 </p>
@@ -219,31 +428,17 @@ centers_guesses = lf.get_patch_centers(uniform_RA_list,
 <details><summary><b>get_patch_labels( )</b>: Then, use the patch centers to label the survey data points by equally distributed and equally sized patches</summary>
 <p>
 
-Load patch center guesses from file.
+Return patch labels for each data point from RA, Dec, number of patches and patch center guesses file.
 
 ```python
 ugriz_test_patch_centers_file_path = 'patch_centers_tol0.01_ugriz_test.csv'
-centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
-ra_guesses = centers_table[ : , 0]
-dec_guesses = centers_table[ : , 1]
-ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
-```
-
-Return patch labels for each data point from RA, Dec, number of patches and patch center guesses.
-
-```python
 labels = lf.get_patch_labels(RA_list,
                              Dec_list,
                              n_patches,
-                             ugriz_test_patch_centers_guesses,
+                             ugriz_test_patch_centers_file_path,
                              survey='kids',
                              numba_installed=True,
                              plot_savename='test_patches.png')
-
-print(labels[0:4])
-# returns
-# [1 3 5 6]
-
 # displays plot
 ```
 
@@ -270,7 +465,7 @@ print(phi_err_list)
 </details>
 
 
-### 3. Visualisation:
+### 4. Visualisation:
 
 <details><summary><b>get_plot( )</b>: Perform <code>get_binned_phi()</code> , <code>get_patch_labels()</code> and <code>get_binned_phi_error()</code> functions using only one composite function and visualise the luminsoity function</summary>
 <p>
@@ -278,14 +473,14 @@ print(phi_err_list)
 Plot the ![1/Vmax](https://render.githubusercontent.com/render/math?math=\frac{1}{V_{max}} ) weighted luminosity function, binned by magnitude.
 
 ```python
-plot_M_list, plot_M_err_list, plot_phi_list, plot_phi_err_list = lf.get_plot(
+M_list, M_err_list, phi_list, phi_err_list = lf.get_plot(
     r_rest_mag_list,
     Vmax_list,
     n_bins,
     RA_list,
     Dec_list,
     n_patches,
-    ugriz_test_patch_centers_guesses,
+    ugriz_test_patch_centers_file_path,
     survey='kids',
     numba_installed=True,
     plot_savename='test_LF.png')
@@ -327,6 +522,7 @@ Calculate rest-frame magnitudes in a higher wavelength band.
 ```python
 g_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_g_ugriz_test.csv', delimiter=' ')
 g_maggy_ratio_list = np.array(g_maggy_ratios_table['maggy_ratio'])
+
 g_rest_mag_list = lf.get_rest_mag(z_photo_list, g_app_mag_list, g_maggy_ratio_list)
 ```                                  
 
@@ -345,7 +541,7 @@ all_M_list, all_M_err_list, all_phi_list, all_phi_err_list, red_M_list, red_M_er
     RA_list,
     Dec_list,
     n_patches,
-    ugriz_test_patch_centers_guesses,
+    ugriz_test_patch_centers_file_path,
     survey='kids',
     numba_installed=True,
     plot_savename='test_LF_colour.png')
@@ -405,6 +601,7 @@ print(blue_phi_err_list)
 #  5.48267776e-04 4.41552058e-04 5.12621058e-04 4.59003142e-03
 #  2.20983143e-03 1.64360385e-01]
 
+
 # displays plot
 ```
 
@@ -414,7 +611,7 @@ print(blue_phi_err_list)
 </details>
 
 
-### 4. Modelling with Schechter functions:
+### 5. Modelling with Schechter functions:
 
 <details><summary><b>SchechterMagModel( )</b></summary>
 <p>
@@ -525,6 +722,47 @@ print(all_alpha_star_err)
 
 ![get_schechter_phi](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_all_Sch.png)
 
+```python
+blue_sch1_model_phi_list, blue_chi_sq, blue_M_star, blue_M_star_err, blue_phi_star, blue_phi_star_err, blue_alpha_star, blue_alpha_star_err = lf.get_schechter_phi(
+    blue_M_list,
+    blue_M_err_list,
+    blue_phi_list,
+    blue_phi_err_list,
+    np.array([M_star_guess, phi_star_guess, alpha_guess]),
+    plot_savename='test_blue_Sch.png')
+
+print(blue_sch1_model_phi_list)
+# returns
+# [1.98420348e-10 2.18093482e-06 6.21018522e-05 2.57111492e-04
+#  5.70169944e-04 1.03300833e-03 1.75300151e-03 2.91245392e-03
+#  4.80570005e-03 7.91206256e-03]
+print(blue_chi_sq)
+# returns
+# 0.18163420708695324
+print(blue_M_star)
+# returns
+# -21.842075975175316
+print(blue_M_star_err)
+# returns
+# 0.31845816378631797
+print(blue_phi_star)
+# returns
+# 0.0003029586014597913
+print(blue_phi_star_err)
+# returns
+# 0.00012126827264875354
+print(blue_alpha_star)
+# returns
+# -1.4411669183679228
+print(blue_alpha_star_err)
+# returns
+# 0.06358938020533868
+
+# displays plot
+```
+
+![get_schechter_phi](https://raw.githubusercontent.com/manasveesaraf/lumfunc/master/test/test_blue_Sch.png)
+
 </p>
 </details>
 
@@ -542,7 +780,7 @@ red_sch2_model_phi_list, red_chi_sq, red_M_star, red_M_star_err, red_phi_star_1,
     np.array([M_star_guess, phi_star_1_guess, alpha_1_guess, phi_star_2_guess, alpha_2_guess]),
     plot_savename='test_red_dSch.png')
 
-print(list(red_sch2_model_phi_list))
+print(red_sch2_model_phi_list)
 # returns
 # [0.00000000e+000 0.00000000e+000 0.00000000e+000 0.00000000e+000
 #  0.00000000e+000 0.00000000e+000 0.00000000e+000 2.63752933e-229
