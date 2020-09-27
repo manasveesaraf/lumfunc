@@ -236,79 +236,79 @@ def get_obs_maggies_file(obs_maggies_outfile_name: str,
             '\tCheck the source code for basic structure of this function that creates the required file if using other bands.'
         )
 
-def get_rec_maggies_files(obs_maggies_file_path: str,
-                          n_bands: int,
-                          rec_z_list: np.ndarray,
-                          rec_maggies_outfile_affix='',
-                          survey='sdss',
-                          band_z_shift=0.0,
-                          template_vmatrix_file_path='vmatrix.default.dat',
-                          template_lambda_file_path='lambda.default.dat',
-                          filters_list_file_path='sdss_filters.dat'):
-    '''
-    Reconstructs the observed maggy values at required redshift values
-    by best-fitting galaxy SEDs on data using templates and filter transmission curves,
-    and saves the reconstructed maggy values in a space delimited csv file with columns (without headers):
+# def get_rec_maggies_files(obs_maggies_file_path: str,
+#                           n_bands: int,
+#                           rec_z_list: np.ndarray,
+#                           rec_maggies_outfile_affix='',
+#                           survey='sdss',
+#                           band_z_shift=0.0,
+#                           template_vmatrix_file_path='vmatrix.default.dat',
+#                           template_lambda_file_path='lambda.default.dat',
+#                           filters_list_file_path='sdss_filters.dat'):
+#     '''
+#     Reconstructs the observed maggy values at required redshift values
+#     by best-fitting galaxy SEDs on data using templates and filter transmission curves,
+#     and saves the reconstructed maggy values in a space delimited csv file with columns (without headers):
         
-        redshift rec_u_maggy rec_g_maggy rec_r_maggy...
+#         redshift rec_u_maggy rec_g_maggy rec_r_maggy...
     
-    File is required to be used with the get_maggy_ratio_file or get_rest_maggy_ratio_file functions.
-    WARNING: pre-existing file with same name will be over-written.
+#     File is required to be used with the get_maggy_ratio_file or get_rest_maggy_ratio_file functions.
+#     WARNING: pre-existing file with same name will be over-written.
     
-    Parameters
-    ----------
-    obs_maggies_file_path : str
-        path of '.csv' file with the observed maggies and respective inverse variance values. File can be obtained from the get_obs_maggies_file function
-    n_bands : int
-        number of bands used in the survey (and present in the obs_maggies_file)
-    rec_z_list : np.ndarray
-        redshift values required to reconstruct maggies at
-    rec_maggies_outfile_affix : str
-        output file identifier - reconstructed maggies will be saved in 'maggies_at_z[redshift-value]_[identifier].csv'
-    survey : str
-        name of survey being used. Set as 'sdss' by default - do not change if sdss-ugriz are being used
-    band_z_shift : float
-        redshift value to shift the bandpasses/filters by, default is set at 0.0 i.e. no shift
-    template_vmatrix_file_path : str
-        path of '.dat' file with vmatrix of SED templates - must change if survey parameter is not 'sdss'
-    template_lambda_file_path : str
-        path of '.dat' file with lambda of SED templates - must change if survey parameter is not 'sdss'
-    filters_list_file_path : str
-        path of '.dat' file with the list of '.dat' files corresponding to each band and containing its filter transmission curve - must change if survey parameter is not 'sdss'
-    '''
+#     Parameters
+#     ----------
+#     obs_maggies_file_path : str
+#         path of '.csv' file with the observed maggies and respective inverse variance values. File can be obtained from the get_obs_maggies_file function
+#     n_bands : int
+#         number of bands used in the survey (and present in the obs_maggies_file)
+#     rec_z_list : np.ndarray
+#         redshift values required to reconstruct maggies at
+#     rec_maggies_outfile_affix : str
+#         output file identifier - reconstructed maggies will be saved in 'maggies_at_z[redshift-value]_[identifier].csv'
+#     survey : str
+#         name of survey being used. Set as 'sdss' by default - do not change if sdss-ugriz are being used
+#     band_z_shift : float
+#         redshift value to shift the bandpasses/filters by, default is set at 0.0 i.e. no shift
+#     template_vmatrix_file_path : str
+#         path of '.dat' file with vmatrix of SED templates - must change if survey parameter is not 'sdss'
+#     template_lambda_file_path : str
+#         path of '.dat' file with lambda of SED templates - must change if survey parameter is not 'sdss'
+#     filters_list_file_path : str
+#         path of '.dat' file with the list of '.dat' files corresponding to each band and containing its filter transmission curve - must change if survey parameter is not 'sdss'
+#     '''
 
-    if survey == 'sdss':
-        kcorrect.load_templates()
-        print('\tTemplates loaded.')
-        kcorrect.load_filters(band_shift=band_z_shift)
-        print('\tFilters loaded.')
-    else:
-        kcorrect.load_templates(v=template_vmatrix_file_path,
-                                l=template_lambda_file_path)
-        print('\tTemplates loaded.')
-        kcorrect.load_filters(filters_list_file_path, band_shift=band_z_shift)
-        print('\tFilters loaded.')
+#     if survey == 'sdss':
+#         kcorrect.load_templates()
+#         print('\tTemplates loaded.')
+#         kcorrect.load_filters(band_shift=band_z_shift)
+#         print('\tFilters loaded.')
+#     else:
+#         kcorrect.load_templates(v=template_vmatrix_file_path,
+#                                 l=template_lambda_file_path)
+#         print('\tTemplates loaded.')
+#         kcorrect.load_filters(filters_list_file_path, band_shift=band_z_shift)
+#         print('\tFilters loaded.')
 
-    maggy_inv_var_table = np.genfromtxt(obs_maggies_file_path, delimiter=' ')
-    print('\tRead ' + obs_maggies_file_path + '.')
+#     maggy_inv_var_table = np.genfromtxt(obs_maggies_file_path, delimiter=' ')
+#     print('\tRead ' + obs_maggies_file_path + '.')
 
-    for rec_z in rec_z_list:
-        rec_maggies_outfile_name = 'maggies_at_z' + str(rec_z) + '_' + rec_maggies_outfile_affix + '.csv'
-        rec_maggies_stack = []
-        for i in range(len(maggy_inv_var_table[:, 0])):
-            redshift = maggy_inv_var_table[i, 0]
-            maggies = maggy_inv_var_table[i, 1:(n_bands + 1)]
-            maggies_inv_var = maggy_inv_var_table[i, (n_bands + 1):((2 * n_bands) + 1)]
-            coeffs = kcorrect.fit_nonneg(redshift, maggies, maggies_inv_var)
-            rec_maggies_row = kcorrect.reconstruct_maggies(coeffs, redshift=rec_z)
-            rec_maggies_stack.append(rec_maggies_row)
-        rec_maggies_table = np.array(rec_maggies_stack)
-        ascii.write(rec_maggies_table,
-                    rec_maggies_outfile_name,
-                    overwrite=True,
-                    format='no_header')
-        print('\t' + rec_maggies_outfile_name + ' saved.')
-    print('\tMaggies reconstructed at all redshifts in input array rec_z_list.')
+#     for rec_z in rec_z_list:
+#         rec_maggies_outfile_name = 'maggies_at_z' + str(rec_z) + '_' + rec_maggies_outfile_affix + '.csv'
+#         rec_maggies_stack = []
+#         for i in range(len(maggy_inv_var_table[:, 0])):
+#             redshift = maggy_inv_var_table[i, 0]
+#             maggies = maggy_inv_var_table[i, 1:(n_bands + 1)]
+#             maggies_inv_var = maggy_inv_var_table[i, (n_bands + 1):((2 * n_bands) + 1)]
+#             coeffs = kcorrect.fit_nonneg(redshift, maggies, maggies_inv_var)
+#             rec_maggies_row = kcorrect.reconstruct_maggies(coeffs, redshift=rec_z)
+#             rec_maggies_stack.append(rec_maggies_row)
+#         rec_maggies_table = np.array(rec_maggies_stack)
+#         ascii.write(rec_maggies_table,
+#                     rec_maggies_outfile_name,
+#                     overwrite=True,
+#                     format='no_header')
+#         print('\t' + rec_maggies_outfile_name + ' saved.')
+#     print('\tMaggies reconstructed at all redshifts in input array rec_z_list.')
 
 def get_rest_maggy_ratio_file(ID_list: np.ndarray,
                               obs_maggies_file_path: str,
@@ -492,7 +492,7 @@ def get_all_maggy_ratios_file(rec_z_list: np.ndarray,
 
     rest_maggy_ratio_file_name = 'maggy_ratios_at_z' + str(rec_z_list[0]) + '_' + maggies_and_out_files_affix + '.csv'
 
-    all_maggy_ratios_file = open(all_maggy_ratios_outfile_name, 'a')
+    all_maggy_ratios_file = open(all_maggy_ratios_outfile_name, 'w')
     # first file:
     for line in open(rest_maggy_ratio_file_name):
         all_maggy_ratios_file.write(line)
@@ -500,8 +500,8 @@ def get_all_maggy_ratios_file(rec_z_list: np.ndarray,
     for i in range(len(rec_z_list) - 1):
         maggy_ratio_file_name = 'maggy_ratios_at_z' + str(rec_z_list[i + 1]) + '_' + maggies_and_out_files_affix + '.csv'
         maggy_ratio_file = open(maggy_ratio_file_name)
-        maggy_ratio_file.next()  # skip the header
-        for line in maggy_ratio_file:
+        maggy_ratio_lines = maggy_ratio_file.readlines()[1:]  # skip the header
+        for line in maggy_ratio_lines:
             all_maggy_ratios_file.write(line)
         maggy_ratio_file.close()
     all_maggy_ratios_file.close()
