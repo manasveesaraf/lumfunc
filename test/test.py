@@ -69,6 +69,92 @@ print(list(r_maggy_inv_var_result[0:4]))
 # [2.613534842093864e+20, 2.2154049929330334e+20, 2.632956307424491e+20, 1.520310051334256e+20]
 # -----------------------
 
+ugriz_test_obs_maggies_file_path = 'obs_maggies_ugriz_test.csv'
+ugriz_test_bands = 'ugriz'
+lf.get_obs_maggies_file(ugriz_test_obs_maggies_file_path,
+                        ugriz_test_bands,
+                        z_photo_list,
+                        u_app_mag_list,
+                        g_app_mag_list,
+                        r_app_mag_list,
+                        i_app_mag_list,
+                        Z_app_mag_list,
+                        u_app_mag_err_list = u_app_mag_err_list,
+                        g_app_mag_err_list = g_app_mag_err_list,
+                        r_app_mag_err_list = r_app_mag_err_list,
+                        i_app_mag_err_list = i_app_mag_err_list,
+                        Z_app_mag_err_list = Z_app_mag_err_list)
+
+ugriZYJHKs_test_obs_maggies_file_path = 'obs_maggies_ugriZYJHKs_test.csv'
+ugriZYJHKs_test_bands = 'ugriZYJHKs'
+lf.get_obs_maggies_file(ugriZYJHKs_test_obs_maggies_file_path,
+                        ugriZYJHKs_test_bands,
+                        z_photo_list,
+                        u_app_mag_list,
+                        g_app_mag_list,
+                        r_app_mag_list,
+                        i_app_mag_list,
+                        Z_app_mag_list,
+                        Y_app_mag_list = Y_app_mag_list,
+                        J_app_mag_list = J_app_mag_list,
+                        H_app_mag_list = H_app_mag_list,
+                        Ks_app_mag_list = K_app_mag_list,
+                        u_app_mag_err_list = u_app_mag_err_list,
+                        g_app_mag_err_list = g_app_mag_err_list,
+                        r_app_mag_err_list = r_app_mag_err_list,
+                        i_app_mag_err_list = i_app_mag_err_list,
+                        Z_app_mag_err_list = Z_app_mag_err_list,
+                        Y_app_mag_err_list = Y_app_mag_err_list,
+                        J_app_mag_err_list = J_app_mag_err_list,
+                        H_app_mag_err_list = H_app_mag_err_list,
+                        Ks_app_mag_err_list = K_app_mag_err_list)
+# -----------------------
+
+
+z_values = np.arange(0.00, 1.00, 0.01)
+rec_z_list = np.around(z_values, decimals=2)
+
+ugriz_test_n_bands = 5
+# lf.get_rec_maggies_files(ugriz_test_obs_maggies_file_path,
+#                          ugriz_test_n_bands,
+#                          rec_z_list,
+#                          rec_maggies_outfile_affix='ugriz_test',
+#                          survey='sdss',
+#                          band_z_shift=0.0,
+#                          template_vmatrix_file_path='vmatrix.default.dat',
+#                          template_lambda_file_path='lambda.default.dat',
+#                          filters_list_file_path='sdss_filters.dat')
+
+# # need test template files to run
+# ugriZYJHKs_test_n_bands = 9
+# lf.get_rec_maggies_files(ugriZYJHKs_test_obs_maggies_file_path,
+#                          ugriZYJHKs_test_n_bands,
+#                          rec_z_list,
+#                          rec_maggies_outfile_affix='ugriZYJHKs_test',
+#                          survey='test',
+#                          band_z_shift=0.0,
+#                          template_vmatrix_file_path='vmatrix.test.dat',
+#                          template_lambda_file_path='lambda.test.dat',
+#                          filters_list_file_path='test_filters.dat')
+# -----------------------
+
+
+r_test_band_index = 3
+ugriz_test_rest_maggies_file_path = 'maggies_at_z0.0_ugriz_test.csv'
+lf.get_rest_maggy_ratio_file(ID_list,
+                             ugriz_test_obs_maggies_file_path,
+                             ugriz_test_rest_maggies_file_path,
+                             r_test_band_index,
+                             rest_maggy_ratio_outfile_affix='r_ugriz_test')
+
+g_test_band_index = 2
+ugriz_test_rest_maggies_file_path = 'maggies_at_z0.0_ugriz_test.csv'
+lf.get_rest_maggy_ratio_file(ID_list,
+                             ugriz_test_obs_maggies_file_path,
+                             ugriz_test_rest_maggies_file_path,
+                             g_test_band_index,
+                             rest_maggy_ratio_outfile_affix='g_ugriz_test')
+# -----------------------
 
 r_maggy_ratios_table = pd.read_csv('rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
 r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
@@ -87,6 +173,21 @@ print(list(r_rest_mag_result[0:4]))
 # [-22.50048221280549, -20.367175595236922, -23.611903685248716, -23.751335116325944]
 # -----------------------
 
+ugriz_test_rec_maggies_file_path = 'maggies_at_z0.01_ugriz_test.csv'
+lf.get_maggy_ratio_file(ID_list,
+                        ugriz_test_rest_maggies_file_path,
+                        ugriz_test_rec_maggies_file_path,
+                        0.01,
+                        r_test_band_index,
+                        maggy_ratio_outfile_affix='r_ugriz_test')
+# -----------------------
+
+
+lf.get_all_maggy_ratios_file(rec_z_list,
+                             ID_list,
+                             r_test_band_index,
+                             maggies_and_out_files_affix='ugriz_test')
+# -----------------------
 
 zmax_table = pd.read_csv('zmax_test.csv', delimiter=' ')
 z_max_list = np.array(zmax_table['zmax'])
@@ -144,37 +245,22 @@ uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
 uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
 
 n_patches = 10
-centers_guesses = lf.get_patch_centers(uniform_RA_list,
+lf.get_patch_centers(uniform_RA_list,
                      uniform_Dec_list,
                      n_patches,
                      survey='kids',
                      max_iterations=int(100),
-                     tolerance=1.0e-2)
-print(list(centers_guesses))
-# returns
-# [array([223.25956531,   1.24525691]),
-#  array([223.15175072,   2.24830099]),
-#  array([223.28727953,  -1.83027433]),
-#  array([223.25181969,   2.73045313]),
-#  array([223.23336142,   1.68595717]),
-#  array([223.36725045,   2.07319784]),
-#  array([223.25230466,  -0.82353628]),
-#  array([2.23246689e+02, 2.17238520e-01]),
-#  array([223.25119842,   0.7459858 ]),
-#  array([223.23769478,  -0.28535647])]
+                     tolerance=1.0e-2,
+                     patch_centers_outfile_affix='ugriz_test')
+# saves file patch_centers_tol0.01_ugriz_test.csv
 # -----------------------
 
 
 ugriz_test_patch_centers_file_path = 'patch_centers_tol0.01_ugriz_test.csv'
-centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
-ra_guesses = centers_table[ : , 0]
-dec_guesses = centers_table[ : , 1]
-ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
-
 labels = lf.get_patch_labels(RA_list,
                              Dec_list,
                              n_patches,
-                             ugriz_test_patch_centers_guesses,
+                             ugriz_test_patch_centers_file_path,
                              survey='kids',
                              numba_installed=True,
                              plot_savename='test_patches.png')
@@ -210,7 +296,7 @@ plot_M_list, plot_M_err_list, plot_phi_list, plot_phi_err_list = lf.get_plot(
     RA_list,
     Dec_list,
     n_patches,
-    ugriz_test_patch_centers_guesses,
+    ugriz_test_patch_centers_file_path,
     survey='kids',
     numba_installed=True,
     plot_savename='test_LF.png')
@@ -251,7 +337,7 @@ all_M_list, all_M_err_list, all_phi_list, all_phi_err_list, red_M_list, red_M_er
     RA_list,
     Dec_list,
     n_patches,
-    ugriz_test_patch_centers_guesses,
+    ugriz_test_patch_centers_file_path,
     survey='kids',
     numba_installed=True,
     plot_savename='test_LF_colour.png')

@@ -12,7 +12,8 @@
 import math 
 import numpy as np
 import pandas as pd
-# import cv2
+import os
+import cv2
 from pytest import approx
 import sys
 sys.path.insert(1, 'lumfunc/')
@@ -22,7 +23,7 @@ import lumfunc as lf
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-data_table = pd.read_csv('__tests__/catalogue_test.csv')
+data_table = pd.read_csv('test/catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -57,112 +58,104 @@ z_spec_list = np.array(data_table['z_spec'])
 # -----------------------
 
 def test_get_patch_centers( ):
-    uniform_data_table = pd.read_csv('__tests__/uniform_catalogue_test.csv')
+    uniform_data_table = pd.read_csv('test/uniform_catalogue_test.csv')
     uniform_RA_list = np.array(uniform_data_table['uniform_RA'])
     uniform_Dec_list = np.array(uniform_data_table['uniform_Dec'])
 
     n_patches = 10
-    centers_guesses = lf.get_patch_centers(uniform_RA_list,
+    lf.get_patch_centers(uniform_RA_list,
                         uniform_Dec_list,
                         n_patches,
                         survey='kids',
                         max_iterations=int(100),
-                        tolerance=1.0e-2)
-    assert len(centers_guesses[:, 0]) == n_patches
-    assert len(centers_guesses[:, 1]) == n_patches
-# -----------------------
-
-# def test_get_patch_labels( ):
-#     ugriz_test_patch_centers_file_path = '__tests__/patch_centers_tol0.01_ugriz_test.csv'
-#     centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
-#     ra_guesses = centers_table[ : , 0]
-#     dec_guesses = centers_table[ : , 1]
-#     ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
-
-#     n_patches = 10
-#     labels = lf.get_patch_labels(RA_list,
-#                                 Dec_list,
-#                                 n_patches,
-#                                 ugriz_test_patch_centers_guesses,
-#                                 survey='kids',
-#                                 numba_installed=True,
-#                                 plot_savename='pytest_patches.png')
-#     assert list(labels[0:4]) == [1, 3, 5, 6]
+                        tolerance=1.0e-3,
+                        patch_centers_outfile_affix='ugriz_pytest')
     
-#     # test_result = cv2.imread('__tests__/test_patches.png')
-#     # pytest_result = cv2.imread('__tests__/pytest_patches.png')
-#     # difference = cv2.subtract(test_result, pytest_result)
-#     # b, g, r = cv2.split(difference)
-#     # assert test_result.shape == pytest_result.shape
-#     # assert cv2.countNonZero(b) == 0
-#     # assert cv2.countNonZero(g) == 0
-#     # assert cv2.countNonZero(r) == 0
-
-def test_get_patch_labels_no_plot( ):
-    ugriz_test_patch_centers_file_path = '__tests__/patch_centers_tol0.01_ugriz_test.csv'
+    ugriz_test_patch_centers_file_path = 'patch_centers_tol0.001_ugriz_pytest.csv'
     centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
     ra_guesses = centers_table[ : , 0]
     dec_guesses = centers_table[ : , 1]
-    ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
+    assert len(ra_guesses) == n_patches
+    assert len(dec_guesses) == n_patches
+
+    os.remove('patch_centers_tol0.001_ugriz_pytest.csv')
+# -----------------------
+
+def test_get_patch_labels( ):
+    ugriz_test_patch_centers_file_path = 'test/patch_centers_tol0.01_ugriz_test.csv'
 
     n_patches = 10
     labels = lf.get_patch_labels(RA_list,
                                 Dec_list,
                                 n_patches,
-                                ugriz_test_patch_centers_guesses,
+                                ugriz_test_patch_centers_file_path,
+                                survey='kids',
+                                numba_installed=True,
+                                plot_savename='__tests__/pytest_patches.png')
+    assert list(labels[0:4]) == [1, 3, 5, 6]
+    
+    test_result = cv2.imread('test/test_patches.png')
+    pytest_result = cv2.imread('__tests__/pytest_patches.png')
+    difference = cv2.subtract(test_result, pytest_result)
+    b, g, r = cv2.split(difference)
+    assert test_result.shape == pytest_result.shape
+    assert cv2.countNonZero(b) == 0
+    assert cv2.countNonZero(g) == 0
+    assert cv2.countNonZero(r) == 0
+
+def test_get_patch_labels_no_plot( ):
+    ugriz_test_patch_centers_file_path = 'test/patch_centers_tol0.01_ugriz_test.csv'
+
+    n_patches = 10
+    labels = lf.get_patch_labels(RA_list,
+                                Dec_list,
+                                n_patches,
+                                ugriz_test_patch_centers_file_path,
                                 survey='kids',
                                 numba_installed=True)
     assert list(labels[0:4]) == [1, 3, 5, 6]
 
-# def test_get_patch_labels_no_numba( ):
-#     ugriz_test_patch_centers_file_path = '__tests__/patch_centers_tol0.01_ugriz_test.csv'
-#     centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
-#     ra_guesses = centers_table[ : , 0]
-#     dec_guesses = centers_table[ : , 1]
-#     ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
-
-#     n_patches = 10
-#     labels = lf.get_patch_labels(RA_list,
-#                                 Dec_list,
-#                                 n_patches,
-#                                 ugriz_test_patch_centers_guesses,
-#                                 survey='kids',
-#                                 numba_installed=False,
-#                                 plot_savename='pytest_patches_no_numba.png')
-#     assert list(labels[0:4]) == [1, 3, 5, 6]
-    
-#     # test_result = cv2.imread('__tests__/test_patches.png')
-#     # pytest_result = cv2.imread('__tests__/pytest_patches_no_numba.png')
-#     # difference = cv2.subtract(test_result, pytest_result)
-#     # b, g, r = cv2.split(difference)
-#     # assert test_result.shape == pytest_result.shape
-#     # assert cv2.countNonZero(b) == 0
-#     # assert cv2.countNonZero(g) == 0
-#     # assert cv2.countNonZero(r) == 0
-
-def test_get_patch_labels_no_numba_no_plot( ):
-    ugriz_test_patch_centers_file_path = '__tests__/patch_centers_tol0.01_ugriz_test.csv'
-    centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
-    ra_guesses = centers_table[ : , 0]
-    dec_guesses = centers_table[ : , 1]
-    ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
+def test_get_patch_labels_no_numba( ):
+    ugriz_test_patch_centers_file_path = 'test/patch_centers_tol0.01_ugriz_test.csv'
 
     n_patches = 10
     labels = lf.get_patch_labels(RA_list,
                                 Dec_list,
                                 n_patches,
-                                ugriz_test_patch_centers_guesses,
+                                ugriz_test_patch_centers_file_path,
+                                survey='kids',
+                                numba_installed=False,
+                                plot_savename='__tests__/pytest_patches_no_numba.png')
+    assert list(labels[0:4]) == [1, 3, 5, 6]
+    
+    test_result = cv2.imread('test/test_patches.png')
+    pytest_result = cv2.imread('__tests__/pytest_patches_no_numba.png')
+    difference = cv2.subtract(test_result, pytest_result)
+    b, g, r = cv2.split(difference)
+    assert test_result.shape == pytest_result.shape
+    assert cv2.countNonZero(b) == 0
+    assert cv2.countNonZero(g) == 0
+    assert cv2.countNonZero(r) == 0
+
+def test_get_patch_labels_no_numba_no_plot( ):
+    ugriz_test_patch_centers_file_path = 'test/patch_centers_tol0.01_ugriz_test.csv'
+
+    n_patches = 10
+    labels = lf.get_patch_labels(RA_list,
+                                Dec_list,
+                                n_patches,
+                                ugriz_test_patch_centers_file_path,
                                 survey='kids',
                                 numba_installed=False)
     assert list(labels[0:4]) == [1, 3, 5, 6]
 # -----------------------
 
 def test_get_binned_phi_error( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('test/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('__tests__/zmax_test.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test/zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
@@ -170,16 +163,12 @@ def test_get_binned_phi_error( ):
     n_bins = 10
     
     n_patches = 10
-    ugriz_test_patch_centers_file_path = '__tests__/patch_centers_tol0.01_ugriz_test.csv'
-    centers_table = np.genfromtxt(ugriz_test_patch_centers_file_path, delimiter=' ')
-    ra_guesses = centers_table[ : , 0]
-    dec_guesses = centers_table[ : , 1]
-    ugriz_test_patch_centers_guesses = np.column_stack((ra_guesses, dec_guesses))
+    ugriz_test_patch_centers_file_path = 'test/patch_centers_tol0.01_ugriz_test.csv'
     
     labels = lf.get_patch_labels(RA_list,
                                 Dec_list,
                                 n_patches,
-                                ugriz_test_patch_centers_guesses,
+                                ugriz_test_patch_centers_file_path,
                                 survey='kids')
 
     phi_err_list = lf.get_binned_phi_error(r_rest_mag_list, Vmax_list, labels, n_patches, n_bins)

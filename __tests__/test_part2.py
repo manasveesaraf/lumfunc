@@ -1,5 +1,7 @@
 """This file tests the following functions:
 
+    * get_maggy_ratio_file
+    * get_all_maggy_ratios_file
     * get_volume
     * get_binned_phi
     
@@ -11,7 +13,7 @@
 import math 
 import numpy as np
 import pandas as pd
-# import cv2
+import os
 from pytest import approx
 import sys
 sys.path.insert(1, 'lumfunc/')
@@ -21,7 +23,7 @@ import lumfunc as lf
 # Unpack Test Data
 # -----------------------
 # test data (photometric galaxian survey)
-data_table = pd.read_csv('__tests__/catalogue_test.csv')
+data_table = pd.read_csv('test/catalogue_test.csv')
 
 ID_list = np.array(data_table['ID'])
 
@@ -55,8 +57,68 @@ z_spec_list = np.array(data_table['z_spec'])
 # Test Methods
 # -----------------------
 
+def test_get_maggy_ratio_file( ):
+
+    os.chdir('__tests__')
+
+    ugriz_test_rest_maggies_file_path = 'maggies_at_z0.0_ugriz_pytest.csv'
+    ugriz_test_rec_maggies_file_path = 'maggies_at_z0.01_ugriz_pytest.csv'
+    r_test_band_index = 3
+
+    lf.get_maggy_ratio_file(ID_list,
+                            ugriz_test_rest_maggies_file_path,
+                            ugriz_test_rec_maggies_file_path,
+                            0.01,
+                            r_test_band_index,
+                            maggy_ratio_outfile_affix='r_ugriz_pytest')                        
+    
+    test_result_table = pd.read_csv('../test/maggy_ratios_at_z0.01_r_ugriz_test.csv', delimiter=' ')
+    test_result_ID_list = np.array(test_result_table['ID'])
+    test_result_rec_z_list = np.array(test_result_table['rec_z'])
+    test_result_maggy_ratio_list = np.array(test_result_table['maggy_ratio'])
+    pytest_result_table = pd.read_csv('maggy_ratios_at_z0.01_r_ugriz_pytest.csv', delimiter=' ')
+    pytest_result_ID_list = np.array(pytest_result_table['ID'])
+    pytest_result_rec_z_list = np.array(pytest_result_table['rec_z'])
+    pytest_result_maggy_ratio_list = np.array(pytest_result_table['maggy_ratio'])
+
+    assert list(pytest_result_ID_list) == list(test_result_ID_list)
+    assert list(pytest_result_rec_z_list) == list(test_result_rec_z_list)
+    assert list(pytest_result_maggy_ratio_list) == list(test_result_maggy_ratio_list)
+
+    os.chdir('..')
+# -----------------------
+
+def test_get_all_maggy_ratios_file( ):
+    z_values = np.arange(0.00, 1.00, 0.01)
+    rec_z_list = np.around(z_values, decimals=2)
+
+    r_test_band_index = 3
+
+    os.chdir('__tests__')
+    
+    lf.get_all_maggy_ratios_file(rec_z_list,
+                                ID_list,
+                                r_test_band_index,
+                                maggies_and_out_files_affix='ugriz_pytest')                           
+    
+    test_result_table = pd.read_csv('../test/all_maggy_ratios_ugriz_test.csv', delimiter=' ')
+    test_result_ID_list = np.array(test_result_table['ID'])
+    test_result_rec_z_list = np.array(test_result_table['rec_z'])
+    test_result_maggy_ratio_list = np.array(test_result_table['maggy_ratio'])
+    pytest_result_table = pd.read_csv('all_maggy_ratios_ugriz_pytest.csv', delimiter=' ')
+    pytest_result_ID_list = np.array(pytest_result_table['ID'])
+    pytest_result_rec_z_list = np.array(pytest_result_table['rec_z'])
+    pytest_result_maggy_ratio_list = np.array(pytest_result_table['maggy_ratio'])
+
+    assert list(pytest_result_ID_list) == list(test_result_ID_list)
+    assert list(pytest_result_rec_z_list) == list(test_result_rec_z_list)
+    assert list(pytest_result_maggy_ratio_list) == list(test_result_maggy_ratio_list)
+# -----------------------
+
 def test_get_volume( ):
-    zmax_table = pd.read_csv('__tests__/zmax_test.csv', delimiter=' ')
+    os.chdir('..')
+    
+    zmax_table = pd.read_csv('test/zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
 
     survey_area = 2.5 #sq. degrees
@@ -69,11 +131,11 @@ def test_get_volume_rudimentary( ):
 # -----------------------
 
 def test_get_binned_phi( ):
-    r_maggy_ratios_table = pd.read_csv('__tests__/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
+    r_maggy_ratios_table = pd.read_csv('test/rest_maggy_ratios_r_ugriz_test.csv', delimiter=' ')
     r_maggy_ratio_list = np.array(r_maggy_ratios_table['maggy_ratio'])
     r_rest_mag_list = lf.get_rest_mag(z_photo_list, r_app_mag_list, r_maggy_ratio_list)
 
-    zmax_table = pd.read_csv('__tests__/zmax_test.csv', delimiter=' ')
+    zmax_table = pd.read_csv('test/zmax_test.csv', delimiter=' ')
     z_max_list = np.array(zmax_table['zmax'])
     survey_area = 2.5 #sq. degrees
     Vmax_list = lf.get_volume(survey_area, z_max_list)
